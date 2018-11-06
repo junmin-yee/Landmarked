@@ -1,1 +1,1 @@
-A team project
+Landmarked - Point your phone at a landmark and get information about it! 
