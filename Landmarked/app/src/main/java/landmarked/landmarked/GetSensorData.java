@@ -69,6 +69,7 @@ public class GetSensorData extends AppCompatActivity implements SensorEventListe
         //Get location data from phone
         mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
         try {
+            currlocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     LOCATION_REFRESH_TIME_IN_MS, LOCATION_REFRESH_DISTANCE, mLocationListener);
         }
@@ -86,7 +87,7 @@ public class GetSensorData extends AppCompatActivity implements SensorEventListe
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+                    // task you need to do.
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
