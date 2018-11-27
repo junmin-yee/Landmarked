@@ -1,6 +1,7 @@
 package landmarked.landmarked;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,12 +14,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
 public class GetSensorData extends AppCompatActivity implements SensorEventListener {
 
+    public static final String ACTIVITY_MESSAGE = "Sending to Map";
     public static final long LOCATION_REFRESH_TIME_IN_MS = 1000;
     public static final float LOCATION_REFRESH_DISTANCE = 0;
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
@@ -158,4 +161,17 @@ public class GetSensorData extends AppCompatActivity implements SensorEventListe
 
         }
     };
+    public void showMap(View v)
+    {
+        Intent i = new Intent(this, DisplayMap.class);
+
+        double[] arr = new double[2];
+
+        arr[0] = currlocation.getLatitude();
+        arr[1] = currlocation.getLongitude();
+
+        i.putExtra(ACTIVITY_MESSAGE, arr);
+
+        startActivity(i);
+    }
 }
