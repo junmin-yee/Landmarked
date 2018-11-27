@@ -28,7 +28,7 @@ public class DisplayMap extends AppCompatActivity {
                 .styleUrl(Style.OUTDOORS)
                 .camera(new CameraPosition.Builder()
                         .target(new LatLng(arr[0], arr[1]))
-                                .zoom(12)
+                                .zoom(17)
                                 .build());
 
         demoView = new MapView(this, options);
