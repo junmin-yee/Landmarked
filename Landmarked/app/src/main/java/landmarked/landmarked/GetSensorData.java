@@ -15,8 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 public class GetSensorData extends AppCompatActivity implements SensorEventListener {
 
     public static final long LOCATION_REFRESH_TIME_IN_MS = 1000;
