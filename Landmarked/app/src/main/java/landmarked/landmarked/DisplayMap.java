@@ -34,4 +34,9 @@ public class DisplayMap extends AppCompatActivity {
         demoView = new MapView(this, options);
         setContentView(demoView);
     }
+
+    @Override
+    public void onBackPressed() {
+        //return back to SensorData without crashing
+    }
 }

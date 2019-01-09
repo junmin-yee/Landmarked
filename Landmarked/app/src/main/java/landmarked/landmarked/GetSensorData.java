@@ -69,14 +69,14 @@ public class GetSensorData extends AppCompatActivity implements SensorEventListe
         //Get location data from phone
         mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
         try {
-<<<<<<< HEAD
+//<<<<<<< HEAD
             currlocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (currlocation != null) {
                 locationTV.setText("Latitude: " + currlocation.getLatitude() + "\nLongitude: " +
                         currlocation.getLongitude() + "\nElevation: " + currlocation.getAltitude());
             }
-=======
->>>>>>> parent of 80810b7... Merge branch 'master' of https://github.com/Redgreed4/Landmarked
+//=======
+//>>>>>>> parent of 80810b7... Merge branch 'master' of https://github.com/Redgreed4/Landmarked
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     LOCATION_REFRESH_TIME_IN_MS, LOCATION_REFRESH_DISTANCE, mLocationListener);
         }
