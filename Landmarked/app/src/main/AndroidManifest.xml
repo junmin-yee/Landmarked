@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".DisplayMap"></activity>
+        <activity android:name=".test"></activity>
     </application>
 
 </manifest>

@@ -16,8 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
-public class GetSensorData extends AppCompatActivity implements SensorEventListener {
+//this is just a temporary file that will be deleted and replaced when a main page is created
+public class test extends AppCompatActivity implements SensorEventListener {
 
     public static final String ACTIVITY_MESSAGE = "Sending to Map";
     public static final long LOCATION_REFRESH_TIME_IN_MS = 1000;
@@ -135,7 +135,7 @@ public class GetSensorData extends AppCompatActivity implements SensorEventListe
                 float orientation[] = new float[3];
                 SensorManager.getOrientation(R, orientation);
                 directionTV.setText("Azimuth (z): " + orientation[0] + "\nPitch (x): " +
-                    orientation[1] + "\nRoll (y): " + orientation[2]);
+                        orientation[1] + "\nRoll (y): " + orientation[2]);
             }
         }
     }
