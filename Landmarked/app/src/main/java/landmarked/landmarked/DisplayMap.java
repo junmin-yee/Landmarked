@@ -38,5 +38,9 @@ public class DisplayMap extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //return back to SensorData without crashing
+        Intent i = new Intent(this, test.class);
+
+        startActivity(i);
+        //finish();
     }
 }
