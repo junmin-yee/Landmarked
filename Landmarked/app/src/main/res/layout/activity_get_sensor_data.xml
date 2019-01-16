@@ -63,11 +63,12 @@
         tools:layout_constraintTop_toBottomOf="@+id/simple_layout" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/buttonCustom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:onClick="seeCustomLandmarks"
         android:text="Custom"
         app:layout_constraintBottom_toTopOf="@+id/simple_layout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +84,7 @@
         android:text="History"
         app:layout_constraintBottom_toTopOf="@+id/simple_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button4"
+        app:layout_constraintTop_toTopOf="@+id/buttonCustom"
         app:layout_constraintVertical_bias="0.0" />
 
 

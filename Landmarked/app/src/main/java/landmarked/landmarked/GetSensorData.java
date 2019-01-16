@@ -197,4 +197,11 @@ public class GetSensorData extends AppCompatActivity {
         startActivity(i);
         finish();
     }
+
+    public void seeCustomLandmarks(View v)
+    {
+        Intent customLand = new Intent(this, CustomLandmark.class);
+
+        startActivity(customLand);
+    }
 }

@@ -18,8 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DisplayMap"></activity>
-        <activity android:name=".test"></activity>
+        <activity android:name=".DisplayMap" />
+        <activity android:name=".test" />
+        <activity android:name=".CustomLandmark"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

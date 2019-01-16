@@ -41,6 +41,8 @@ public class DisplayMap extends AppCompatActivity {
         Intent i = new Intent(this, test.class);
 
         startActivity(i);
+
+        //for some reason this crashes if uncommented
         //finish();
     }
 }

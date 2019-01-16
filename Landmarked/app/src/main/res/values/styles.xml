@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ListElemText">
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="ListElemImg">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    </style>
 </resources>
