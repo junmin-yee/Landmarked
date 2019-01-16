@@ -17,7 +17,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class GetSensorData extends AppCompatActivity implements SensorEventListener {
+public class GetSensorData extends AppCompatActivity {
 
     public static final String ACTIVITY_MESSAGE = "Sending to Map";
     public static final long LOCATION_REFRESH_TIME_IN_MS = 1000;
@@ -32,6 +32,7 @@ public class GetSensorData extends AppCompatActivity implements SensorEventListe
     public TextView directionTV;
     public TextView locationTV;
 
+    //This is where it starts, when the app launches, this is called
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,16 +41,26 @@ public class GetSensorData extends AppCompatActivity implements SensorEventListe
         directionTV = findViewById(R.id.current_direction_text);
         locationTV = findViewById(R.id.current_location_text);
 
+        getCurrentOrientation();
+
+        checkLocationPermission();
+        getCurrentLocation();
+    }
+
+    public void getCurrentOrientation(){
         //Get sensor data from phone
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(mSensorEventListener, accelerometer,
+                SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(mSensorEventListener, magnetometer,
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
 
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
+    public void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -65,18 +76,17 @@ public class GetSensorData extends AppCompatActivity implements SensorEventListe
         } else {
             // Permission has already been granted
         }
+    }
 
+    public void getCurrentLocation() {
         //Get location data from phone
         mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
         try {
-//<<<<<<< HEAD
             currlocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (currlocation != null) {
                 locationTV.setText("Latitude: " + currlocation.getLatitude() + "\nLongitude: " +
                         currlocation.getLongitude() + "\nElevation: " + currlocation.getAltitude());
             }
-//=======
-//>>>>>>> parent of 80810b7... Merge branch 'master' of https://github.com/Redgreed4/Landmarked
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     LOCATION_REFRESH_TIME_IN_MS, LOCATION_REFRESH_DISTANCE, mLocationListener);
         }
@@ -109,41 +119,44 @@ public class GetSensorData extends AppCompatActivity implements SensorEventListe
 
     protected void OnResume() {
         super.onResume();
-        //mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(mSensorEventListener, accelerometer,
+                SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     protected void OnPause(){
         super.onPause();
-        mSensorManager.unregisterListener(this);
+        mSensorManager.unregisterListener(mSensorEventListener);
     }
 
-    float[] mGravity;
-    float[] mGeomagnetic;
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
-            mGravity = event.values;
-        }
-        if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
-            mGeomagnetic = event.values;
-        }
-        if (mGravity != null && mGeomagnetic != null){
-            float R[] = new float[9];
-            float I[] = new float[9];
-            boolean passed = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
-            if (passed) {
-                float orientation[] = new float[3];
-                SensorManager.getOrientation(R, orientation);
-                directionTV.setText("Azimuth (z): " + orientation[0] + "\nPitch (x): " +
-                    orientation[1] + "\nRoll (y): " + orientation[2]);
+    private final SensorEventListener mSensorEventListener = new SensorEventListener() {
+        float[] mGravity;
+        float[] mGeomagnetic;
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+                mGravity = event.values;
+            }
+            if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
+                mGeomagnetic = event.values;
+            }
+            if (mGravity != null && mGeomagnetic != null){
+                float R[] = new float[9];
+                float I[] = new float[9];
+                boolean passed = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+                if (passed) {
+                    float orientation[] = new float[3];
+                    SensorManager.getOrientation(R, orientation);
+                    directionTV.setText("Azimuth (z): " + orientation[0] + "\nPitch (x): " +
+                            orientation[1] + "\nRoll (y): " + orientation[2]);
+                }
             }
         }
-    }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
+        }
+    };
 
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
@@ -179,7 +192,7 @@ public class GetSensorData extends AppCompatActivity implements SensorEventListe
 
         i.putExtra(ACTIVITY_MESSAGE, arr);
 
-        mSensorManager.unregisterListener(this);
+        mSensorManager.unregisterListener(mSensorEventListener);
 
         startActivity(i);
         finish();
