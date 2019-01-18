@@ -36,11 +36,8 @@ public class GetSensorData extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         setContentView(R.layout.activity_get_sensor_data);
-        GoogleAuthentication auth = new GoogleAuthentication();
+
         directionTV = findViewById(R.id.current_direction_text);
         locationTV = findViewById(R.id.current_location_text);
 

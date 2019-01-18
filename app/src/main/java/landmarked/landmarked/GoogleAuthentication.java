@@ -26,10 +26,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-        setContentView(R.layout.login_screen);
+        //setContentView(R.layout.activity_main);
 
         //GoogleSignInOptions are where we add requests for different types of permissions. As per the google sign in docs, i've used
         //minimal permission requests, only the requestEmail(). However, if necesarry, this is where we would add them. more information here:
@@ -76,8 +73,6 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             //user has already logged in previously. No need to display log in button
             View LoginButton = findViewById(R.id.sign_in_button);
             LoginButton.setVisibility(View.GONE);
-            setContentView(R.layout.activity_get_sensor_data);
-
         }
     }
 
@@ -86,9 +81,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     //probably either need to be a sign in form, or if the user is already signed in some kind of "hello ____! welcome back!"
     @Override protected void onStart()
     {
-
         super.onStart();
-        //setContentView(R.layout.login_screen);
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null. We'll test this in the manager function CheckForExistingSignIn by sending account as an arg
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
