@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/logo3"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GetSensorData">
+        <activity android:name=".LandmarkedMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
