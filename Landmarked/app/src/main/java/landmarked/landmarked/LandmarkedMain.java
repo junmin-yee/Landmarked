@@ -34,13 +34,31 @@ public class LandmarkedMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_sensor_data);
 
-        checkLocationPermission();
-
         //Instantiate with this context
         mSensorData = new SensorData(this);
 
         directionTV = findViewById(R.id.current_direction_text);
         locationTV = findViewById(R.id.current_location_text);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        checkLocationPermission();
+
+        //Register listeners
+        mSensorData.registerOrientationSensors();
+        mSensorData.registerLocationSensor();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        //Unregister listeners
+        mSensorData.unregisterOrientationSensors();
+        mSensorData.unregisterLocationSensor();
     }
 
     public void checkLocationPermission() {
@@ -82,14 +100,6 @@ public class LandmarkedMain extends AppCompatActivity {
             // other 'case' lines to check for other
             // permissions this app might request.
         }
-    }
-
-    protected void OnResume() {
-        super.onResume();
-    }
-
-    protected void OnPause(){
-        super.onPause();
     }
 
     public void testSensors(View v)

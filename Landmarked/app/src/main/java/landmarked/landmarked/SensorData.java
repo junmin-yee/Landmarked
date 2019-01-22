@@ -38,13 +38,23 @@ public class SensorData {
         //Find sensors
         accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+    }
 
+    public void registerOrientationSensors() {
         //Register sensors
         mSensorManager.registerListener(mSensorEventListener, accelerometer,
                 SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(mSensorEventListener, magnetometer,
                 SensorManager.SENSOR_DELAY_NORMAL);
+    }
 
+    public void unregisterOrientationSensors() {
+        //Unregister sensors
+        mSensorManager.unregisterListener(mSensorEventListener, accelerometer);
+        mSensorManager.unregisterListener(mSensorEventListener, magnetometer);
+    }
+
+    public void registerLocationSensor() {
         try {
             mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
@@ -54,6 +64,11 @@ public class SensorData {
         catch (SecurityException e) {
             throw e;
         }
+    }
+
+    public void unregisterLocationSensor() {
+        //Stop location call back, DRAINS BATTERY if line below is commented
+        mLocationManager.removeUpdates(mLocationListener);
     }
 
     public float[] getCurrentOrientation(){
@@ -99,9 +114,6 @@ public class SensorData {
         @Override
         public void onLocationChanged(Location location) {
             mLocation = location;
-
-            //Stop location call back, DRAINS BATTERY if line below is commented
-            //mLocationManager.removeUpdates(this);
         }
 
         @Override
