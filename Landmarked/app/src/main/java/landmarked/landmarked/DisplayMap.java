@@ -20,7 +20,7 @@ public class DisplayMap extends AppCompatActivity {
 
 
         Intent obtained = getIntent();
-        double[] arr = obtained.getDoubleArrayExtra(LandmarkedMain.ACTIVITY_MESSAGE);
+        double[] arr = obtained.getDoubleArrayExtra(GetSensorData.ACTIVITY_MESSAGE);
 
         Mapbox.getInstance(this, "pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g");
 
@@ -37,7 +37,7 @@ public class DisplayMap extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //return back to LandmarkedMain without crashing
+        //return back to SensorData without crashing
         Intent i = new Intent(this, test.class);
 
         startActivity(i);
