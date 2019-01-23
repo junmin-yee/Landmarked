@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LandmarkedMain">
+    tools:context=".GetSensorData">
 
     <LinearLayout
         android:id="@+id/simple_layout"
@@ -76,19 +76,6 @@
         app:layout_constraintVertical_bias="0.095" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="testSensors"
-        android:text="GetData"
-        app:layout_constraintBottom_toTopOf="@+id/simple_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonCustom"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,6 +86,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/buttonCustom"
         app:layout_constraintVertical_bias="0.0" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content" />
 
 
 </android.support.constraint.ConstraintLayout>
