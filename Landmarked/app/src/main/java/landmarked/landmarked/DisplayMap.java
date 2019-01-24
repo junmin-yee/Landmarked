@@ -38,9 +38,10 @@ public class DisplayMap extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //return back to LandmarkedMain without crashing
-        Intent i = new Intent(this, test.class);
+        Intent i = new Intent(this, LandmarkedMain.class);
 
         startActivity(i);
+        //consider changing this is future to be more efficient
 
         //for some reason this crashes if uncommented
         //finish();

@@ -109,7 +109,7 @@ public class LandmarkedMain extends AppCompatActivity {
                 currOrientation[1] + "\nRoll (y): " + currOrientation[2]);
 
         try{
-            currLocation = mSensorData.getCurrentLocation();
+            currLocation = mSensorData.getCurrentLocation();//gets called in showMap as well, consider changing?
             locationTV.setText("Latitude: " + currLocation.getLatitude() + "\nLongitude: " +
                     currLocation.getLongitude() + "\nElevation: " + currLocation.getAltitude());
         }
@@ -120,6 +120,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
     public void showMap(View v)
     {
+        currLocation = mSensorData.getCurrentLocation();//gets called in testSensors as well, consider changing?
         Intent i = new Intent(this, DisplayMap.class);
 
         double[] arr = new double[2];
