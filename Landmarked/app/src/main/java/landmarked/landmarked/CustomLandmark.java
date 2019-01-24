@@ -54,6 +54,7 @@ public class CustomLandmark extends AppCompatActivity {
         tempView = new TextView(this);
         tempView.setText("Hello");
         tempView.setLayoutParams(params);
+        tempView.setPadding(10,5,5,5);
         tempView.setTextAppearance(R.style.ListElemText);
         vert.addView(tempView);
 
