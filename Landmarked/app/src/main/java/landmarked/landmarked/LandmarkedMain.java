@@ -28,11 +28,20 @@ public class LandmarkedMain extends AppCompatActivity {
     public float[] currOrientation = new float[3];
     public SensorData mSensorData;
 
+    public GoogleAuthentication mAuth;
     //This is where it starts, when the app launches, this is called
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+            Intent ii = new Intent(this, GoogleAuthentication.class);
+            startActivity(ii);
+
         setContentView(R.layout.activity_get_sensor_data);
+
+
+
 
         //Instantiate with this context
         mSensorData = new SensorData(this);
@@ -44,6 +53,7 @@ public class LandmarkedMain extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
 
         checkLocationPermission();
 
