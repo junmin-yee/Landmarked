@@ -27,7 +27,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
+
         setContentView(R.layout.sign_in_page);
         //GoogleSignInOptions are where we add requests for different types of permissions. As per the google sign in docs, i've used
         //minimal permission requests, only the requestEmail(). However, if necesarry, this is where we would add them. more information here:
@@ -61,9 +61,8 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     }
 
 
-    //BY DEFAULT: our google sign in button is going to be invisible. Based on whether or not a user has previously signed in to our app,
-    //we will either hide the button or display the button to sign in. This is a manager function that i chose to make modular in case we
-    //end up making changes to our XML or home screen. It's called when GoogleSignIn.getLastSignedInAccount(...) is called.
+  //If there's no signed in user, the login button will appear. if there's a signed in user already, then there will be a prompt that offers such information
+    //as welcome back user email / user name
 
     protected void CheckForExistingSignIn(GoogleSignInAccount acct)
     {
@@ -81,7 +80,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             TextView welcomeBanner = (TextView)findViewById(R.id.welcome);
             welcomeBanner.setText("Welcome back user " +" " + acct.getEmail() + System.lineSeparator() + acct.getGivenName() + " " + acct.getFamilyName() + System.lineSeparator());
 
-          //  finish();
+
         }
     }
 
