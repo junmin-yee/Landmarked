@@ -36,10 +36,9 @@ public class LandmarkedMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-            db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "Landmarks").build(); // CREATE DB
-            Intent ii = new Intent(this, GoogleAuthentication.class);
-            startActivity(ii);
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "Landmarks").build(); // CREATE DB
+        Intent ii = new Intent(this, GoogleAuthentication.class);
+        startActivity(ii);
 
         setContentView(R.layout.activity_get_sensor_data);
 

@@ -19,13 +19,13 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class LocalLandmark {
     @PrimaryKey
-    public int UserID;
+    public int LandmarkID;
 
     @ColumnInfo(name="Name")
     public String m_name;
 
     @ColumnInfo(name = "Latitude")
-    public String m_lattitude;
+    public String m_latitude;
 
     @ColumnInfo(name = "Longitude")
     public String m_longitude;
