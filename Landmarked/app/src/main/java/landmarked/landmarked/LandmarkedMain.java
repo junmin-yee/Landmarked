@@ -146,8 +146,8 @@ public class LandmarkedMain extends AppCompatActivity {
 
     public void seeCustomLandmarks(View v)
     {
-        Intent customLand = new Intent(this, CustomLandmark.class);
+        /*Intent customLand = new Intent(this, CustomLandmark.class);
 
-        startActivity(customLand);
+        startActivity(customLand);*/
     }
 }
