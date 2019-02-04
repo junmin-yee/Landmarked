@@ -1,6 +1,7 @@
 package landmarked.landmarked;
 
 import android.Manifest;
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -27,6 +28,7 @@ public class LandmarkedMain extends AppCompatActivity {
     public Location currLocation;
     public float[] currOrientation = new float[3];
     public SensorData mSensorData;
+    AppDatabase db;
 
     public GoogleAuthentication mAuth;
     //This is where it starts, when the app launches, this is called
@@ -35,13 +37,11 @@ public class LandmarkedMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
+            db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "Landmarks").build(); // CREATE DB
             Intent ii = new Intent(this, GoogleAuthentication.class);
             startActivity(ii);
 
         setContentView(R.layout.activity_get_sensor_data);
-
-
-
 
         //Instantiate with this context
         mSensorData = new SensorData(this);
