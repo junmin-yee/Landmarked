@@ -23,13 +23,50 @@ import java.util.List;
 @Dao
 public interface AccessorMethods {
     @Query("SELECT * FROM LocalLandmark")
-    List<LocalLandmark>getAll();
+    List<LocalLandmark> getAll();
 
 
-    //get...
+    @Query("SELECT Name FROM LocalLandmark")
+    String getName();
 
-    //set....
+    @Query("SELECT Latitude FROM LocalLandmark")
+    String getLatitude();
+
+    @Query("SELECT Longitude FROM LocalLandmark")
+    String getLongitude();
+
+    @Query("SELECT Elevation FROM LocalLandmark")
+    float getElevation();
+
+    @Query("SELECT WikiInfo FROM LocalLandmark")
+    String getWiki();
 
 
-    //etc....
+
+    ///////////////////////////////////////////////
+    ////BEGIN CUSTOM LM GETTERS
+
+
+    @Query("Select Name From CustomLocalLandmark")
+    String CustomLM_getName();
+
+    @Query("SELECT Latitude FROM CustomLocalLandmark")
+    String CustomLM_getLatitude();
+
+    @Query("SELECT Longitude FROM CustomLocalLandmark")
+    String CustomLM_getLongitude();
+
+    @Query("SELECT Elevation FROM CustomLocalLandmark")
+    float CustomLM_getElevation();
+
+    @Query("SELECT DateSaved FROM CustomLocalLandmark")
+    long CustomLM_getDateSaved();
+
+
+
+
+
+
+
+
 }

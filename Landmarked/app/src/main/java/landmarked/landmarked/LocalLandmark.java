@@ -35,4 +35,8 @@ public class LocalLandmark {
 
     @ColumnInfo(name = "WikiInfo")
     public String m_wiki_info;
+    public void getAll()
+    {
+
+    }
 }

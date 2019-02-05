@@ -25,4 +25,6 @@ public class CustomLocalLandmark {
 
     @ColumnInfo(name = "DateSaved")
     public Date m_datesaved;
+
+
 }
