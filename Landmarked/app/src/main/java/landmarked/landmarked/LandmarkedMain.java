@@ -36,7 +36,11 @@ public class LandmarkedMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "Landmarks").build(); // CREATE DB
+        //calling a STATIC METHOD on the DB containing class.
+        //This method will use a singleton pattern to either return the already existing instance
+        //or create a new one. We pass in this as a context.
+        db.getM_DB_instance(this);
+
         Intent ii = new Intent(this, GoogleAuthentication.class);
         startActivity(ii);
 
