@@ -5,6 +5,9 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /////////////////////////////////read me/////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 //This is the " script " that creates our DB locally. Mind the types and how they are different from our
@@ -17,7 +20,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 
 @Entity
-public class LocalLandmark {
+public class LocalLandmark implements LocalLandmarkAccessorMethods {
     @PrimaryKey
     public int LandmarkID;
 
@@ -35,8 +38,42 @@ public class LocalLandmark {
 
     @ColumnInfo(name = "WikiInfo")
     public String m_wiki_info;
-    public void getAll()
-    {
 
+
+    public List<LocalLandmark> getAll()
+    {
+        List<LocalLandmark> temp = new ArrayList<>();
+        return temp;
     }
+
+    public String getName()
+    {
+        String name = " ";
+        return name;
+    }
+    public String getLatitude()
+    {
+        String latt = " ";
+        return latt;
+    }
+
+    public String getLongitude()
+    {
+        String longitude = " " ;
+        return longitude;
+    }
+
+    public float getElevation()
+    {
+        float elevation = 0.0f;
+        return elevation;
+    }
+
+    public String getWiki()
+    {
+        String wiki_information = " ";
+        return wiki_information;
+    }
+
+
 }

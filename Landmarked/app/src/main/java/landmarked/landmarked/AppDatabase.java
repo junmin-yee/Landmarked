@@ -4,7 +4,6 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
 
 @Database(entities = {LocalLandmark.class, CustomLocalLandmark.class,
@@ -15,7 +14,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase m_DB_instance; //Singleton instance of DB;
 
-    public abstract AccessorMethods methods(); //Interface methods found in AccessorMethods.java
+    public abstract LocalLandmarkAccessorMethods methods(); //Interface methods found in LocalLandmarkAccessorMethods.java
 
     private static Context m_context;
 

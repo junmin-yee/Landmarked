@@ -21,7 +21,7 @@ import java.util.List;
 //For more information on accessing data in the DB:
 //https://developer.android.com/training/data-storage/room/accessing-data
 @Dao
-public interface AccessorMethods {
+public interface LocalLandmarkAccessorMethods {
     @Query("SELECT * FROM LocalLandmark")
     List<LocalLandmark> getAll();
 
@@ -47,20 +47,7 @@ public interface AccessorMethods {
     ////BEGIN CUSTOM LM GETTERS
 
 
-    @Query("Select Name From CustomLocalLandmark")
-    String CustomLM_getName();
 
-    @Query("SELECT Latitude FROM CustomLocalLandmark")
-    String CustomLM_getLatitude();
-
-    @Query("SELECT Longitude FROM CustomLocalLandmark")
-    String CustomLM_getLongitude();
-
-    @Query("SELECT Elevation FROM CustomLocalLandmark")
-    float CustomLM_getElevation();
-
-    @Query("SELECT DateSaved FROM CustomLocalLandmark")
-    long CustomLM_getDateSaved();
 
 
 
