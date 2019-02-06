@@ -43,10 +43,6 @@ public interface LocalLandmarkAccessorMethods {
 
 
 
-    ///////////////////////////////////////////////
-    ////BEGIN CUSTOM LM GETTERS
-
-
 
 
 

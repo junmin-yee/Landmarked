@@ -1,7 +1,9 @@
 package landmarked.landmarked;
 
+import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 
+@Dao
 public interface CustomLocalLandmarkAccessorMethods {
 
     @Query("Select Name From CustomLocalLandmark")
