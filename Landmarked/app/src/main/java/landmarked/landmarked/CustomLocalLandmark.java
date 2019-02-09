@@ -55,5 +55,14 @@ public class CustomLocalLandmark implements CustomLocalLandmarkAccessorMethods {
         long Date = 0x11111111;
         return Date;
     }
+    public void insertCustomLandmarkPrimitive(String nameArg, String latArg, String longArg, float elevationArg,  Date dateArg)
+    {
+
+    }
+
+    public void insertCustomLandmarkStructure(CustomLocalLandmark landmarkArg)
+    {
+
+    }
 
 }

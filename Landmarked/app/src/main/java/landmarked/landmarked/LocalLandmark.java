@@ -3,6 +3,7 @@ package landmarked.landmarked;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class LocalLandmark implements LocalLandmarkAccessorMethods {
         return temp;
     }
 
-    public String getName()
+    public String getLocalLandmarkName()
     {
         String name = " ";
         return name;
@@ -75,5 +76,11 @@ public class LocalLandmark implements LocalLandmarkAccessorMethods {
         return wiki_information;
     }
 
+//why do i have problems when i try and create an insert function that takes numerous primitive type arguments?
 
+
+    public void insertLocalLandmarkStructure(LocalLandmark landmarkArg)
+    {
+
+    }
 }

@@ -1,9 +1,14 @@
 package landmarked.landmarked;
 
 //import retrofit2.http.Query;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Dao;
+
+import java.util.Date;
 import java.util.List;
+
 
 
 
@@ -22,12 +27,15 @@ import java.util.List;
 //https://developer.android.com/training/data-storage/room/accessing-data
 @Dao
 public interface LocalLandmarkAccessorMethods {
+
+
+
     @Query("SELECT * FROM LocalLandmark")
     List<LocalLandmark> getAll();
 
 
     @Query("SELECT Name FROM LocalLandmark")
-    String getName();
+    String getLocalLandmarkName();
 
     @Query("SELECT Latitude FROM LocalLandmark")
     String getLatitude();
@@ -42,15 +50,8 @@ public interface LocalLandmarkAccessorMethods {
     String getWiki();
 
 
-
-    ///////////////////////////////////////////////
-    ////BEGIN CUSTOM LM GETTERS
-
-
-
-
-
-
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public void insertLocalLandmarkStructure(LocalLandmark LandmarkArg);
 
 
 
