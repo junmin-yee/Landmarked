@@ -40,50 +40,6 @@ public class LocalLandmark  {
     @ColumnInfo(name = "WikiInfo")
     public String m_wiki_info;
 
-/*
-    public List<LocalLandmark> getAll()
-    {
-        List<LocalLandmark> temp = new ArrayList<>();
-        return temp;
-    }
 
-    public String getLocalLandmarkName()
-    {
-        String name = " ";
-        return name;
-    }
-    public String getLatitude()
-    {
-        String latt = " ";
-        return latt;
-    }
-
-    public String getLongitude()
-    {
-        String longitude = " " ;
-        return longitude;
-    }
-
-    public float getElevation()
-    {
-        float elevation = 0.0f;
-        return elevation;
-    }
-
-    public String getWiki()
-    {
-        String wiki_information = " ";
-        return wiki_information;
-    }
-
-//why do i have problems when i try and create an insert function that takes numerous primitive type arguments?
-
-
-    public void insertLocalLandmarkStructure(LocalLandmark landmarkArg)
-    {
-
-    }
-
-*/
 
 }

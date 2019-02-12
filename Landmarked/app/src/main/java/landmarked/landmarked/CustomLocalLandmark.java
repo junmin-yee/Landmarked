@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 import java.util.Date;
 
 @Entity
-public class CustomLocalLandmark implements CustomLocalLandmarkAccessorMethods {
+public class CustomLocalLandmark {
     @PrimaryKey
     public int CustomLandmarkID;
 
@@ -26,39 +26,6 @@ public class CustomLocalLandmark implements CustomLocalLandmarkAccessorMethods {
     @ColumnInfo(name = "DateSaved")
     public Date m_datesaved;
 
-    public String CustomLM_getName()
-    {
-        String name = " ";
-        return name;
-    }
 
-    public String CustomLM_getLatitude()
-    {
-        String latitude = " ";
-        return latitude;
-    }
-
-    public String CustomLM_getLongitude()
-    {
-        String longitude = " ";
-        return longitude;
-    }
-
-    public float CustomLM_getElevation()
-    {
-        float elevation = 0.0f;
-        return elevation;
-    }
-
-    public long CustomLM_getDateSaved()
-    {
-        long Date = 0x11111111;
-        return Date;
-    }
-
-    public void insertCustomLandmarkStructure(CustomLocalLandmark landmarkArg)
-    {
-
-    }
 
 }

@@ -43,7 +43,8 @@ public class LandmarkedMain extends AppCompatActivity {
         db.getM_DB_instance(this);
         LocalLandmarkAccessorMethods m_methods = db.methodsVar();
         LocalLandmark land = new LocalLandmark();
-        m_methods.insertLocalLandmarkStructure(land);
+
+        m_methods.insertLandmarkStructure(land);
         List<LocalLandmark> lst = m_methods.getAll();
 
 
