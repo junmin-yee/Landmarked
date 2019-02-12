@@ -14,7 +14,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase m_DB_instance; //Singleton instance of DB;
 
-    public abstract LocalLandmarkAccessorMethods methods(); //Interface methods found in LocalLandmarkAccessorMethods.java
+    public abstract LocalLandmarkAccessorMethods methodsVar(); //Interface methods found in LocalLandmarkAccessorMethods.java
 
     private static Context m_context;
 

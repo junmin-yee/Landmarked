@@ -21,7 +21,7 @@ import java.util.List;
 
 
 @Entity
-public class LocalLandmark implements LocalLandmarkAccessorMethods {
+public class LocalLandmark  {
     @PrimaryKey
     public int LandmarkID;
 
@@ -40,7 +40,7 @@ public class LocalLandmark implements LocalLandmarkAccessorMethods {
     @ColumnInfo(name = "WikiInfo")
     public String m_wiki_info;
 
-
+/*
     public List<LocalLandmark> getAll()
     {
         List<LocalLandmark> temp = new ArrayList<>();
@@ -83,4 +83,7 @@ public class LocalLandmark implements LocalLandmarkAccessorMethods {
     {
 
     }
+
+*/
+
 }

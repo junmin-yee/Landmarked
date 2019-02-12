@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import java.util.List;
 
 public class LandmarkedMain extends AppCompatActivity {
 
@@ -40,6 +41,11 @@ public class LandmarkedMain extends AppCompatActivity {
         //This method will use a singleton pattern to either return the already existing instance
         //or create a new one. We pass in this as a context.
         db.getM_DB_instance(this);
+        LocalLandmarkAccessorMethods m_methods = db.methodsVar();
+        LocalLandmark land = new LocalLandmark();
+        m_methods.insertLocalLandmarkStructure(land);
+        List<LocalLandmark> lst = m_methods.getAll();
+
 
         Intent ii = new Intent(this, GoogleAuthentication.class);
         startActivity(ii);

@@ -28,6 +28,5 @@ public interface CustomLocalLandmarkAccessorMethods {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertCustomLandmarkStructure(CustomLocalLandmark LandmarkArg);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertCustomLandmarkPrimitive(String nameArg, String latArg, String longArg, float elevationArg,  Date dateArg);
+
 }

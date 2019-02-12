@@ -50,10 +50,8 @@ public interface LocalLandmarkAccessorMethods {
     String getWiki();
 
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void insertLocalLandmarkStructure(LocalLandmark LandmarkArg);
-
-
 
 
 
