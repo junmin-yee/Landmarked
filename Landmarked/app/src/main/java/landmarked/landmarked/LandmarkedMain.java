@@ -39,6 +39,7 @@ public class LandmarkedMain extends AppCompatActivity {
     AppDatabase db;
 
     public GoogleAuthentication mAuth;
+    public AzureConnectionClass mConn;
     //This is where it starts, when the app launches, this is called
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,6 @@ public class LandmarkedMain extends AppCompatActivity {
         insertLandmarkStructureArg(land);
 
         List<LocalLandmark> landmarks = getData();
-
 
 
         Intent ii = new Intent(this, GoogleAuthentication.class);
