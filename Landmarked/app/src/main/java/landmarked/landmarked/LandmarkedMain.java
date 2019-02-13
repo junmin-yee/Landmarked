@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.lang.Object.*;
 
 public class LandmarkedMain extends AppCompatActivity {
 
@@ -55,7 +56,10 @@ public class LandmarkedMain extends AppCompatActivity {
 
         //Same thing here, but inserting  by LocalLandmark instead of primitive data types
         LocalLandmark land = new LocalLandmark("Mount Ashland", "9999", "8888", 0.0f, "wikiwiki");
-        insertLandmarkStructure(land);
+        insertLandmarkStructureArg(land);
+
+        List<LocalLandmark> landmarks = getData();
+
 
 
         Intent ii = new Intent(this, GoogleAuthentication.class);
@@ -96,7 +100,7 @@ public class LandmarkedMain extends AppCompatActivity {
     {
         //no error checking, at this point it's assumed that the primitive data is correct
         //It's also assumed that an instance of the DB has been initialized
-        LocalLandmarkAccessorMethods m_methods = db.methodsVar();
+
         //insert is called through an instance of the interface LocalLandmarkAccessorMethods
 
         //Dummy data to prove taht insert works
@@ -113,7 +117,7 @@ public class LandmarkedMain extends AppCompatActivity {
             }
         }).start();
     }
-    public void insertLandmarkStructure(LocalLandmark landmarkArg)
+    public void insertLandmarkStructureArg(LocalLandmark landmarkArg)
     {
         //all sql ops must be done on thread other than main thread
         new Thread(new Runnable() {
@@ -128,6 +132,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
             }
         }).start();
+
     }
 
 
