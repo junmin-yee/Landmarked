@@ -44,12 +44,18 @@ public class LandmarkedMain extends AppCompatActivity {
         //calling a STATIC METHOD on the DB containing class.
         //This method will use a singleton pattern to either return the already existing instance
         //or create a new one.
-
         db = db.getM_DB_instance(getApplicationContext());
 
 
+        //In real use this function would be called after our algorithm retrieves the data. Here it exists only as a test / proof that insert works
         insertLandmarkPrimitive("crater lake", "222.222", "333.333", 0.0f, "Crater lake in southern oregon");
 
+
+
+
+        //Same thing here, but inserting  by LocalLandmark instead of primitive data types
+        LocalLandmark land = new LocalLandmark("Mount Ashland", "9999", "8888", 0.0f, "wikiwiki");
+        insertLandmarkStructure(land);
 
 
         Intent ii = new Intent(this, GoogleAuthentication.class);
@@ -102,24 +108,52 @@ public class LandmarkedMain extends AppCompatActivity {
             //this function must be overridden each time a new thread is called
             public void run()
             {
-
                 //work to be done on new thread:
                 db.methodsVar().insertLandmarkStructure(land);
-
-                //this array will hold the contents resulting form the query select * from LocalLandmark. it's only here to prove that data is being retrieved from the db
-                LocalLandmark[] ray = db.methodsVar().getAll();
             }
-
-
         }).start();
     }
     public void insertLandmarkStructure(LocalLandmark landmarkArg)
     {
-        LocalLandmarkAccessorMethods m_methods = db.methodsVar();
-        //insert is called through an instance of the interface LocalLandmarkAccessorMethods
-        m_methods.insertLandmarkStructure(landmarkArg);
+        //all sql ops must be done on thread other than main thread
+        new Thread(new Runnable() {
+            @Override
+            //this function must be overridden each time a new thread is called
+            public void run()
+            {
+
+                //work to be done on new thread:
+                db.methodsVar().insertLandmarkStructure(landmarkArg);
+
+
+            }
+        }).start();
     }
 
+
+    //This function will return all rows from local DB and return them in the form of a list
+    public List<LocalLandmark> getData()
+    {
+        List lst = new ArrayList<LocalLandmark>();
+        //all sql ops must be run on a thread other than main thread otherwise crashes will occur everytime
+        new Thread(new Runnable() {
+            @Override
+            //this function must be overridden each time a new thread is called
+            public void run()
+            {
+                //this array will hold the contents resulting form the query select * from LocalLandmark. it's only here to prove that data is being retrieved from the db
+                LocalLandmark[] ray = db.methodsVar().getAll();
+                //All results are now in ray, but they need to be in a container that i can return. So, i'll iterate the array and add them to the list i initialized at top of func
+                for(int x = 0; x < ray.length; x++)
+                {
+                    lst.add(ray[x]);
+                }
+            }
+        }).start();
+        //will contain contents of getAll()
+        return lst;
+
+    }
 
 
     public void checkLocationPermission() {
