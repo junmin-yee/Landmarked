@@ -34,6 +34,8 @@ public class LandmarkedMain extends AppCompatActivity {
     public Location currLocation;
     public float[] currOrientation = new float[3];
     public SensorData mSensorData;
+    public LandmarkRetrieval mLandmarkRetrieval;
+
     AppDatabase db;
 
     public GoogleAuthentication mAuth;
@@ -69,6 +71,9 @@ public class LandmarkedMain extends AppCompatActivity {
 
         //Instantiate with this context
         mSensorData = new SensorData(this);
+
+        //Instantiate with existing SensorData object
+        mLandmarkRetrieval = new LandmarkRetrieval(mSensorData);
 
         directionTV = findViewById(R.id.current_direction_text);
         locationTV = findViewById(R.id.current_location_text);
