@@ -17,7 +17,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class LandmarkedMain extends AppCompatActivity {
 
@@ -39,13 +43,30 @@ public class LandmarkedMain extends AppCompatActivity {
 
         //calling a STATIC METHOD on the DB containing class.
         //This method will use a singleton pattern to either return the already existing instance
-        //or create a new one. We pass in this as a context.
-        db.getM_DB_instance(this);
-        LocalLandmarkAccessorMethods m_methods = db.methodsVar();
-        LocalLandmark land = new LocalLandmark();
+        //or create a new one.
 
-        m_methods.insertLandmarkStructure(land);
-        List<LocalLandmark> lst = m_methods.getAll();
+        db = db.getM_DB_instance(getApplicationContext());
+
+
+
+
+            //no error checking, at this point it's assumed that the primitive data is correct
+            //It's also assumed that an instance of the DB has been initialized
+            LocalLandmarkAccessorMethods m_methods = db.methodsVar();
+            //insert is called through an instance of the interface LocalLandmarkAccessorMethods
+            LocalLandmark land = new LocalLandmark("crater lake", "222.222", "333.333", 0.0f, "Crater lake in southern oregon");
+            new Thread(new Runnable() {
+                @Override
+                public void run()
+                {
+                    db.methodsVar().insertLandmarkStructure(land);
+                    LocalLandmark[] ray = db.methodsVar().getAll();
+                }
+
+
+                }).start();
+
+
 
 
         Intent ii = new Intent(this, GoogleAuthentication.class);
@@ -80,6 +101,31 @@ public class LandmarkedMain extends AppCompatActivity {
         mSensorData.unregisterOrientationSensors();
         mSensorData.unregisterLocationSensor();
     }
+
+    //Insert local data by primitive type
+    public void insertLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki)
+    {
+        Executor BackgroundThread = Executors.newSingleThreadExecutor();
+        BackgroundThread.execute(() -> {
+
+
+
+        //no error checking, at this point it's assumed that the primitive data is correct
+        //It's also assumed that an instance of the DB has been initialized
+        LocalLandmarkAccessorMethods m_methods = db.methodsVar();
+        //insert is called through an instance of the interface LocalLandmarkAccessorMethods
+        LocalLandmark land = new LocalLandmark(name, latitude, longitude, elevation, wiki);
+        m_methods.insertLandmarkStructure(land);
+        });
+    }
+    public void insertLandmarkStructure(LocalLandmark landmarkArg)
+    {
+        LocalLandmarkAccessorMethods m_methods = db.methodsVar();
+        //insert is called through an instance of the interface LocalLandmarkAccessorMethods
+        m_methods.insertLandmarkStructure(landmarkArg);
+    }
+
+
 
     public void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)

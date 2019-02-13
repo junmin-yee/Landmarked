@@ -6,6 +6,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface LocalLandmarkAccessorMethods {
 
 
     @Query("SELECT * FROM LocalLandmark")
-    List<LocalLandmark> getAll();
+    public LocalLandmark[] getAll();
 
 
     @Query("SELECT Name FROM LocalLandmark")
@@ -50,8 +51,10 @@ public interface LocalLandmarkAccessorMethods {
     String getWiki();
 
 
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void insertLandmarkStructure(LocalLandmark LandmarkArg);
+
 
 
 

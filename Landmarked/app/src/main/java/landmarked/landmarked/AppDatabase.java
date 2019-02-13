@@ -20,12 +20,23 @@ public abstract class AppDatabase extends RoomDatabase {
 
 
 
-    public static AppDatabase getM_DB_instance(Context context) // if hte db already exists, we'll return the instance. otherwise create the db
+    public static AppDatabase getM_DB_instance(final Context context) // if hte db already exists, we'll return the instance. otherwise create the db
     {
-        if(m_DB_instance == null)
+        if (m_DB_instance == null)
         {
-            m_DB_instance  = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "Landmarks").build(); // CREATE DB
+            synchronized (LocalLandmarkAccessorMethods.class)
+            {
+                if (m_DB_instance == null)
+                {
+                    m_DB_instance = Room.databaseBuilder(context.getApplicationContext(),
+                            AppDatabase.class, "Landmarks")
+                            .fallbackToDestructiveMigration()
+                            .build(); // CREATE DB
+                }
+                return m_DB_instance;
+            }
         }
         return m_DB_instance;
     }
+
 }
