@@ -6,7 +6,7 @@ import com.mapbox.core.exceptions.ServicesException;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
-import com.mapbox.api.geocoding.v5.models.CarmenFeature
+//import com.mapbox.api.geocoding.v5.models.CarmenFeature
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 public class LandmarkRetrieval {

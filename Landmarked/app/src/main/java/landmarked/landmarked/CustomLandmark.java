@@ -30,9 +30,9 @@ public class CustomLandmark extends AppCompatActivity {
         setContentView(R.layout.activity_custom_landmark);
 
         //get user ID that correlates to the database
-        landmarkInfo = findViewById(R.id.textView2);
+        landmarkInfo = findViewById(R.id.LandmarkAttributes);
 
-        //landmarkInfo.setText("Hello");
+        landmarkInfo.setText("Custom Landmarks");
 
         LandmarkList = findViewById(R.id.landmarkList);
 
@@ -64,6 +64,7 @@ public class CustomLandmark extends AppCompatActivity {
         img.setBackgroundColor(Color.WHITE);
 
         ViewGroup.LayoutParams imgSize = new ViewGroup.LayoutParams(200, 200);
+        //custom pictures would ideally go in here
         img.setImageResource(R.drawable.logo3);
         img.setLayoutParams(imgSize);
         vert.addView(img);
