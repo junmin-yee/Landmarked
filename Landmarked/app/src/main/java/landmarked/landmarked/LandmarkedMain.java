@@ -48,24 +48,7 @@ public class LandmarkedMain extends AppCompatActivity {
         db = db.getM_DB_instance(getApplicationContext());
 
 
-
-
-            //no error checking, at this point it's assumed that the primitive data is correct
-            //It's also assumed that an instance of the DB has been initialized
-            LocalLandmarkAccessorMethods m_methods = db.methodsVar();
-            //insert is called through an instance of the interface LocalLandmarkAccessorMethods
-            LocalLandmark land = new LocalLandmark("crater lake", "222.222", "333.333", 0.0f, "Crater lake in southern oregon");
-            new Thread(new Runnable() {
-                @Override
-                public void run()
-                {
-                    db.methodsVar().insertLandmarkStructure(land);
-                    LocalLandmark[] ray = db.methodsVar().getAll();
-                }
-
-
-                }).start();
-
+        insertLandmarkPrimitive("crater lake", "222.222", "333.333", 0.0f, "Crater lake in southern oregon");
 
 
 
@@ -105,18 +88,30 @@ public class LandmarkedMain extends AppCompatActivity {
     //Insert local data by primitive type
     public void insertLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki)
     {
-        Executor BackgroundThread = Executors.newSingleThreadExecutor();
-        BackgroundThread.execute(() -> {
-
-
-
         //no error checking, at this point it's assumed that the primitive data is correct
         //It's also assumed that an instance of the DB has been initialized
         LocalLandmarkAccessorMethods m_methods = db.methodsVar();
         //insert is called through an instance of the interface LocalLandmarkAccessorMethods
+
+        //Dummy data to prove taht insert works
         LocalLandmark land = new LocalLandmark(name, latitude, longitude, elevation, wiki);
-        m_methods.insertLandmarkStructure(land);
-        });
+
+        //SQL operations are required to be on their own thread, if they aren't on their own thread they will crash the app for trying to run on the main thread.
+        new Thread(new Runnable() {
+            @Override
+            //this function must be overridden each time a new thread is called
+            public void run()
+            {
+
+                //work to be done on new thread:
+                db.methodsVar().insertLandmarkStructure(land);
+
+                //this array will hold the contents resulting form the query select * from LocalLandmark. it's only here to prove that data is being retrieved from the db
+                LocalLandmark[] ray = db.methodsVar().getAll();
+            }
+
+
+        }).start();
     }
     public void insertLandmarkStructure(LocalLandmark landmarkArg)
     {
