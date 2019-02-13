@@ -24,6 +24,9 @@ import io.reactivex.annotations.NonNull;
 
 @Entity
 public class LocalLandmark  {
+
+    private static Thread backgroundThread;
+
     @PrimaryKey
     public int LandmarkID;
 
@@ -72,6 +75,23 @@ public class LocalLandmark  {
         m_longitude = landmarkArg.m_longitude;
         m_elevation = landmarkArg.m_elevation;
         m_wiki_info = landmarkArg.m_wiki_info;
+    }
+
+    //going to use a singleton pattern toinitialize a single thread for sql operations to share
+    public void initThread()
+    {
+        if(backgroundThread == null)
+        {
+            if(backgroundThread == null)
+            {
+                backgroundThread = new Thread();
+            }
+        }
+    }
+
+    public Thread getThreadInstance()
+    {
+        return backgroundThread;
     }
 
     public final String getName()
