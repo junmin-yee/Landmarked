@@ -45,13 +45,7 @@ public class LocalLandmark  {
     @ColumnInfo(name = "WikiInfo")
     public String m_wiki_info;
 
-    @NonNull
-    String getM_name()
-    {
-        return m_name;
-    }
-
-
+    //default ctor
     public LocalLandmark()
     {
         m_name = "none provided";
@@ -59,7 +53,10 @@ public class LocalLandmark  {
         m_longitude = "none provided";
         m_elevation = 0.0f;
         m_wiki_info = "none provided";
+        initThread();
     }
+
+    //primitive arg ctor
     public LocalLandmark(String name, String latitude, String longitude, float elevation, String wiki)
     {
         m_name = name;
@@ -67,7 +64,11 @@ public class LocalLandmark  {
         m_longitude = longitude;
         m_elevation = elevation;
         m_wiki_info = wiki;
+        initThread();
     }
+
+
+    //copy ctor
     public LocalLandmark(LocalLandmark landmarkArg)
     {
         m_name = landmarkArg.m_name;
@@ -75,6 +76,7 @@ public class LocalLandmark  {
         m_longitude = landmarkArg.m_longitude;
         m_elevation = landmarkArg.m_elevation;
         m_wiki_info = landmarkArg.m_wiki_info;
+        initThread();
     }
 
     //going to use a singleton pattern toinitialize a single thread for sql operations to share
@@ -89,6 +91,9 @@ public class LocalLandmark  {
         }
     }
 
+    //Returns the thread, should be called after initThread ONLY. i seperated this form initThread to save the overhead
+    //of checking each time if backgroundThread is null, but this could easily be changed if it's too confusing to
+    //maintain two seperate functions
     public Thread getThreadInstance()
     {
         return backgroundThread;

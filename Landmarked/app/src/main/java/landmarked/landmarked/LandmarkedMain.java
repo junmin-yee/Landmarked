@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.lang.Object.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class LandmarkedMain extends AppCompatActivity {
 
@@ -35,7 +36,6 @@ public class LandmarkedMain extends AppCompatActivity {
     public float[] currOrientation = new float[3];
     public SensorData mSensorData;
     public LandmarkRetrieval mLandmarkRetrieval;
-
     AppDatabase db;
 
     public GoogleAuthentication mAuth;
@@ -45,22 +45,26 @@ public class LandmarkedMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         //calling a STATIC METHOD on the DB containing class.
         //This method will use a singleton pattern to either return the already existing instance
         //or create a new one.
         db = db.getM_DB_instance(getApplicationContext());
+        //initialize reentrant lock that will be used to keep sql operations threadsafe
 
+
+        //Bear in mind that the following 3 function calls and landmark initialization are just for testing. they can be removed at any time.
+        //They are sharing a Reentrant lock so that we can manage simultaneous
 
         //In real use this function would be called after our algorithm retrieves the data. Here it exists only as a test / proof that insert works
         insertLandmarkPrimitive("crater lake", "222.222", "333.333", 0.0f, "Crater lake in southern oregon");
-
-
-
 
         //Same thing here, but inserting  by LocalLandmark instead of primitive data types
         LocalLandmark land = new LocalLandmark("Mount Ashland", "9999", "8888", 0.0f, "wikiwiki");
         insertLandmarkStructureArg(land);
 
+        //getData returns a list from LocalDB with all rows
         List<LocalLandmark> landmarks = getData();
 
 
@@ -105,7 +109,6 @@ public class LandmarkedMain extends AppCompatActivity {
     {
         //no error checking, at this point it's assumed that the primitive data is correct
         //It's also assumed that an instance of the DB has been initialized
-
         //insert is called through an instance of the interface LocalLandmarkAccessorMethods
 
         //Dummy data to prove taht insert works
