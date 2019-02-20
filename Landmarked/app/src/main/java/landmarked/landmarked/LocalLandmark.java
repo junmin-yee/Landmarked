@@ -53,7 +53,7 @@ public class LocalLandmark  {
         m_longitude = "none provided";
         m_elevation = 0.0f;
         m_wiki_info = "none provided";
-        
+
     }
 
     //primitive arg ctor
