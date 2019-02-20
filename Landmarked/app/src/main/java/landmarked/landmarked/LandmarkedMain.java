@@ -156,18 +156,22 @@ public class LandmarkedMain extends AppCompatActivity {
     public void insertLandmarkStructureArg(LocalLandmark landmarkArg)
     {
         //all sql ops must be done on thread other than main thread
-        new Thread(new Runnable() {
-            @Override
-            //this function must be overridden each time a new thread is called
-            public void run()
-            {
+       Runnable insertStructure = new Runnable()
+       {
+           @Override
+           //overriding required method Run()
+           public void run()
+           {
+               db.methodsVar().insertLandmarkStructure(landmarkArg);
+           }
 
-                //work to be done on new thread:
-                db.methodsVar().insertLandmarkStructure(landmarkArg);
+       };
+       //Execute our new Runnable with our thread pool
+       m_thread.execute(insertStructure);
 
 
-            }
-        }).start();
+
+
 
     }
 
