@@ -245,6 +245,7 @@ public class LandmarkedMain extends AppCompatActivity {
             currLocation = mSensorData.getCurrentLocation();//gets called in showMap as well, consider changing?
             locationTV.setText("Latitude: " + currLocation.getLatitude() + "\nLongitude: " +
                     currLocation.getLongitude() + "\nElevation: " + currLocation.getAltitude());
+            mLandmarkRetrieval.FilterFeatures(currLocation);
         }
         catch (SecurityException | NullPointerException e){
             locationTV.setText("Location not found");
