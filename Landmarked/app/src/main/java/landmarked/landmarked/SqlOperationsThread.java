@@ -13,6 +13,17 @@ public class SqlOperationsThread extends Thread {
 
     public void start()
     {
+        //this function will overload Thread.start() to initialize a thread if it hasn't been initialized. For example
+        //when the app is being started up.
+        if(myThread == null)
+        {
+            myThread = new Thread(this, "SQL operations");
+        }
+        myThread.start();
+    }
 
+    public void lock()
+    {
+        myThread.
     }
 }

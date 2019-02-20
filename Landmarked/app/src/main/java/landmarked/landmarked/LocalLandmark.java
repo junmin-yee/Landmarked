@@ -25,7 +25,7 @@ import io.reactivex.annotations.NonNull;
 @Entity
 public class LocalLandmark  {
 
-    private static Thread backgroundThread;
+
 
     @PrimaryKey
     public int LandmarkID;
@@ -53,7 +53,7 @@ public class LocalLandmark  {
         m_longitude = "none provided";
         m_elevation = 0.0f;
         m_wiki_info = "none provided";
-        initThread();
+        
     }
 
     //primitive arg ctor
@@ -64,7 +64,7 @@ public class LocalLandmark  {
         m_longitude = longitude;
         m_elevation = elevation;
         m_wiki_info = wiki;
-        initThread();
+
     }
 
 
@@ -76,28 +76,16 @@ public class LocalLandmark  {
         m_longitude = landmarkArg.m_longitude;
         m_elevation = landmarkArg.m_elevation;
         m_wiki_info = landmarkArg.m_wiki_info;
-        initThread();
+
     }
 
     //going to use a singleton pattern toinitialize a single thread for sql operations to share
-    public void initThread()
-    {
-        if(backgroundThread == null)
-        {
-            if(backgroundThread == null)
-            {
-                backgroundThread = new Thread();
-            }
-        }
-    }
+
 
     //Returns the thread, should be called after initThread ONLY. i seperated this form initThread to save the overhead
     //of checking each time if backgroundThread is null, but this could easily be changed if it's too confusing to
     //maintain two seperate functions
-    public Thread getThreadInstance()
-    {
-        return backgroundThread;
-    }
+
 
     public final String getName()
     {
