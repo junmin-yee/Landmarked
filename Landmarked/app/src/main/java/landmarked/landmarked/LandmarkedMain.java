@@ -21,6 +21,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.lang.Object.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -36,7 +37,14 @@ public class LandmarkedMain extends AppCompatActivity {
     public float[] currOrientation = new float[3];
     public SensorData mSensorData;
     public LandmarkRetrieval mLandmarkRetrieval;
+
+    //DB instance
     AppDatabase db;
+
+    //Thread pool instance
+    private ExecutorService m_thread;
+
+
 
     public GoogleAuthentication mAuth;
     public AzureConnectionClass mConn;
@@ -44,6 +52,7 @@ public class LandmarkedMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        m_thread = Executors.newSingleThreadExecutor();
 
 
 
@@ -105,8 +114,9 @@ public class LandmarkedMain extends AppCompatActivity {
     }
 
     //Insert local data by primitive type
-    public void insertLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki)
-    {
+    public void insertLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki) {
+
+
         //no error checking, at this point it's assumed that the primitive data is correct
         //It's also assumed that an instance of the DB has been initialized
         //insert is called through an instance of the interface LocalLandmarkAccessorMethods
@@ -115,16 +125,31 @@ public class LandmarkedMain extends AppCompatActivity {
         LocalLandmark land = new LocalLandmark(name, latitude, longitude, elevation, wiki);
 
         //SQL operations are required to be on their own thread, if they aren't on their own thread they will crash the app for trying to run on the main thread.
-        new Thread(new Runnable() {
+
+
+        //Creating a Runnable action that will run when our thread calls execute on it.
+        Runnable runCommand = new Runnable() {
             @Override
-            //this function must be overridden each time a new thread is called
-            public void run()
-            {
-                //work to be done on new thread:
+            public void run() {
                 db.methodsVar().insertLandmarkStructure(land);
             }
-        }).start();
+        };
+        //m thread is our single thread pool, we've built a Runnable, and now we call execute to run it on the thread pool. The way this is supposed to work is that
+        //simultaneous sql operations will be queued and eventually all run on the same thread.
+        //What we're trying to avoid is incomplete data result if , for example, an insert and a select * are done on different threads? who knows. This way, they execute one at a time,
+        //FIFO, and we can guarantee asyncrhnous behavior AKA SQL calls will be performed in the order they are called.
+        m_thread.execute(runCommand);
+
     }
+
+
+
+
+
+      //  m_thread.execute(db.methodsVar().insertLandmarkStructure(land));
+
+
+
     public void insertLandmarkStructureArg(LocalLandmark landmarkArg)
     {
         //all sql ops must be done on thread other than main thread
