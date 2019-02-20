@@ -71,12 +71,15 @@ public class LandmarkedMain extends AppCompatActivity {
 
         //Same thing here, but inserting  by LocalLandmark instead of primitive data types
         LocalLandmark land = new LocalLandmark("Mount Ashland", "9999", "8888", 0.0f, "wikiwiki");
-        insertLandmarkStructureArg(land);
+      //  insertLandmarkStructureArg(land);
 
         //getData returns a list from LocalDB with all rows
         List<LocalLandmark> landmarks = getData();
 
-
+        for(int x = 0; x < landmarks.size(); x++)
+        {
+            LocalLandmark temp = landmarks.get(x);
+        }
         Intent ii = new Intent(this, GoogleAuthentication.class);
         startActivity(ii);
 
@@ -173,12 +176,11 @@ public class LandmarkedMain extends AppCompatActivity {
     public List<LocalLandmark> getData()
     {
         List lst = new ArrayList<LocalLandmark>();
-        //all sql ops must be run on a thread other than main thread otherwise crashes will occur everytime
-        new Thread(new Runnable() {
+        //creating an action to execute on our sql thread
+        Runnable getData = new Runnable(){
             @Override
             //this function must be overridden each time a new thread is called
-            public void run()
-            {
+            public void run()            {
                 //this array will hold the contents resulting form the query select * from LocalLandmark. it's only here to prove that data is being retrieved from the db
                 LocalLandmark[] ray = db.methodsVar().getAll();
                 //All results are now in ray, but they need to be in a container that i can return. So, i'll iterate the array and add them to the list i initialized at top of func
@@ -187,7 +189,9 @@ public class LandmarkedMain extends AppCompatActivity {
                     lst.add(ray[x]);
                 }
             }
-        }).start();
+        };
+        //Now that we've built a runnable operation, call execute on it from our sql thread.
+        m_thread.execute(getData);
         //will contain contents of getAll()
         return lst;
 
