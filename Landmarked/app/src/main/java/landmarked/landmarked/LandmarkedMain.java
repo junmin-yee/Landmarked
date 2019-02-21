@@ -251,12 +251,15 @@ public class LandmarkedMain extends AppCompatActivity {
             double elev_result = 0;
             if (test_elev)
                 elev_result = test2.getmLandmarkElevation();
+            else {
+                elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
+            }
             double lat_result = test2.getmLandmarkLatitude();
             double lon_result = test2.getmLandmarkLongitude();
             String lan_name = test2.getmLandmarkName();
             String lan_placename = test2.getmLandmarkPlaceName();
 
-            elev_result = 0; // throwaway
+            //elev_result = 0; // throwaway
 
             landmarkGet = new LocalLandmarkPass(lan_name, Double.toString(lat_result), Double.toString(lon_result), (float) elev_result);
 
