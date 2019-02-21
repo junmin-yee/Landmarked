@@ -22,8 +22,8 @@ public class LandmarkRetrieval {
 
     private SensorData mSensorData;
     private Location mCurrLocation;
-    List<CarmenFeature> mRevResults;
-    List<CarmenFeature> mFwdResults;
+    public List<CarmenFeature> mRevResults;
+    public List<CarmenFeature> mFwdResults;
 
     // These categories limit the search results (or, at least, heavily bias them)
     // Need more categories or perhaps have the user define the search???
@@ -180,7 +180,8 @@ public class LandmarkRetrieval {
     public List<CarmenFeature> getCarmenFeatureFwdResults() {
 
         // Return list of Carmen Features.
-        return mFwdResults;
+        List<CarmenFeature> fwdResults = this.mFwdResults;
+        return fwdResults;
     }
 
 }

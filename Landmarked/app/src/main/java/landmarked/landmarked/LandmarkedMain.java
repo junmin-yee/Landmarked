@@ -243,11 +243,15 @@ public class LandmarkedMain extends AppCompatActivity {
             // Test Geocode Searching
             mLandmarkRetrieval.LandmarkSearch(currLocation, null);
 
+            List<CarmenFeature> test1 = mLandmarkRetrieval.getCarmenFeatureFwdResults();
+            CarmenFeatureHelper test2 = new CarmenFeatureHelper(test1.get(0));
+
             // Example Usage of getCarmenFeatureFwdResults: 
             //List<CarmenFeature> test1;
             //test1 =mLandmarkRetrieval.getCarmenFeatureFwdResults(); // returns a List<CarmenFeature> of variable size.
             //CarmenFeatureHelper test2;
             //test2 = new CarmenFeatureHelper(mFwdResults.get(0)); // gets only the first feature in the List object. Must iterate through for every CarmenFeature returned by getCarmenFeatureFwdResults.
+
         }
         catch (SecurityException | NullPointerException e){
             locationTV.setText("Location not found");
