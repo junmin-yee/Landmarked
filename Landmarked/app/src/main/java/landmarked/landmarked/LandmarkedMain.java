@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -256,6 +258,12 @@ public class LandmarkedMain extends AppCompatActivity {
 
             // Test Geocode Searching
             mLandmarkRetrieval.LandmarkSearch(currLocation, null);
+
+            // Example Usage of getCarmenFeatureFwdResults: 
+            //List<CarmenFeature> test1;
+            //test1 =mLandmarkRetrieval.getCarmenFeatureFwdResults(); // returns a List<CarmenFeature> of variable size.
+            //CarmenFeatureHelper test2;
+            //test2 = new CarmenFeatureHelper(mFwdResults.get(0)); // gets only the first feature in the List object. Must iterate through for every CarmenFeature returned by getCarmenFeatureFwdResults.
         }
         catch (SecurityException | NullPointerException e){
             locationTV.setText("Location not found");

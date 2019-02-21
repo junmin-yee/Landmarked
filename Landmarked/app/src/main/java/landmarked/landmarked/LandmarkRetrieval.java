@@ -115,7 +115,7 @@ public class LandmarkRetrieval {
     private void ForwardGeocodeSearch(Location location){
         mCurrLocation = location;
 
-        ReverseGeocodeSearch(location);
+        ReverseGeocodeSearch(mCurrLocation);
 
         Location proximity_search = CalculateMaxLineofSight();
 
@@ -177,7 +177,7 @@ public class LandmarkRetrieval {
 
     }
 
-    public List<CarmenFeature> getCarmenFeatureResult() {
+    public List<CarmenFeature> getCarmenFeatureFwdResults() {
 
         // Return list of Carmen Features.
         return mFwdResults;
