@@ -261,7 +261,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
             //elev_result = 0; // throwaway
 
-            landmarkGet = new LocalLandmarkPass(lan_name, Double.toString(lat_result), Double.toString(lon_result), (float) elev_result);
+            landmarkGet = new LocalLandmarkPass(lan_placename, Double.toString(lat_result), Double.toString(lon_result), (float) elev_result);
 
             // Example Usage of getCarmenFeatureFwdResults: 
             //List<CarmenFeature> test1;
