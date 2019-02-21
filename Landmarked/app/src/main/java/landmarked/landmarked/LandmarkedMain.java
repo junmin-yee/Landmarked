@@ -246,6 +246,17 @@ public class LandmarkedMain extends AppCompatActivity {
             List<CarmenFeature> test1 = mLandmarkRetrieval.getCarmenFeatureFwdResults();
             CarmenFeatureHelper test2 = new CarmenFeatureHelper(test1.get(0));
 
+            boolean test_elev = test2.checkElevationExists();
+            double elev_result;
+            if (test_elev)
+                elev_result = test2.getmLandmarkElevation();
+            double lat_result = test2.getmLandmarkLatitude();
+            double lon_result = test2.getmLandmarkLongitude();
+            String lan_name = test2.getmLandmarkName();
+            String lan_placename = test2.getmLandmarkPlaceName();
+
+            elev_result = 0; // throwaway
+
             // Example Usage of getCarmenFeatureFwdResults: 
             //List<CarmenFeature> test1;
             //test1 =mLandmarkRetrieval.getCarmenFeatureFwdResults(); // returns a List<CarmenFeature> of variable size.
