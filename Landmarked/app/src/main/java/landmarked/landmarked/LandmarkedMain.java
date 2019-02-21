@@ -47,6 +47,7 @@ public class LandmarkedMain extends AppCompatActivity {
     private ExecutorService m_thread;
 
 
+    public LocalLandmarkPass landmarkGet;
 
     public GoogleAuthentication mAuth;
     public AzureConnectionClass mConn;
@@ -247,7 +248,7 @@ public class LandmarkedMain extends AppCompatActivity {
             CarmenFeatureHelper test2 = new CarmenFeatureHelper(test1.get(0));
 
             boolean test_elev = test2.checkElevationExists();
-            double elev_result;
+            double elev_result = 0;
             if (test_elev)
                 elev_result = test2.getmLandmarkElevation();
             double lat_result = test2.getmLandmarkLatitude();
@@ -256,6 +257,8 @@ public class LandmarkedMain extends AppCompatActivity {
             String lan_placename = test2.getmLandmarkPlaceName();
 
             elev_result = 0; // throwaway
+
+            landmarkGet = new LocalLandmarkPass(lan_name, Double.toString(lat_result), Double.toString(lon_result), (float) elev_result);
 
             // Example Usage of getCarmenFeatureFwdResults: 
             //List<CarmenFeature> test1;
@@ -288,6 +291,8 @@ public class LandmarkedMain extends AppCompatActivity {
     public void seeCustomLandmarks(View v)
     {
         Intent customLand = new Intent(this, CustomLandmark.class);
+
+        customLand.putExtra("sending_landmark", landmarkGet);
 
         startActivity(customLand);
     }

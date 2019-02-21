@@ -44,7 +44,6 @@ public class CustomLandmark extends AppCompatActivity {
     public TextView landmarkInfo;
     public LinearLayout LandmarkList;
     public TextView tempView;
-    public SensorData mSensorData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,19 +56,16 @@ public class CustomLandmark extends AppCompatActivity {
 
         LandmarkList = findViewById(R.id.landmarkList);
 
-        /*mSensorData = new SensorData(this);
-        mSensorData.registerOrientationSensors();
-        mSensorData.registerLocationSensor();
+        Intent i = getIntent();
 
-        LandmarkRetrieval grabLandmark = new LandmarkRetrieval(mSensorData);
+        LocalLandmarkPass recievedLandmark = (LocalLandmarkPass)i.getParcelableExtra("sending_landmark");
 
-        Location loc = mSensorData.getCurrentLocation();
-        if(loc != null) {
-            grabLandmark.LandmarkSearch(loc, null);
+        if(recievedLandmark != null)
+        {
+            AddElement(recievedLandmark.getName(), recievedLandmark.getLatitiude(), recievedLandmark.getLongitude(), recievedLandmark.getElevation());
+        }
 
-            List<CarmenFeature> landmarkList = grabLandmark.getCarmenFeatureFwdResults();
-
-            for (CarmenFeature feat : landmarkList) {
+            /*for (CarmenFeature feat : landmarkList) {
                 CarmenFeatureHelper landmarkHelper = new CarmenFeatureHelper(feat);
                 String name = landmarkHelper.getmLandmarkName();
                 String latitude = Double.toString(landmarkHelper.getmLandmarkLatitude());
@@ -77,9 +73,7 @@ public class CustomLandmark extends AppCompatActivity {
                 float elevation = (float) landmarkHelper.getmLandmarkElevation();
 
                 AddElement(name, latitude, longitude, elevation);
-            }
-        }
-        */
+            }*/
 
 
         AddElement("temp", "34.5634", "-54.4464", (float)1000.65);
