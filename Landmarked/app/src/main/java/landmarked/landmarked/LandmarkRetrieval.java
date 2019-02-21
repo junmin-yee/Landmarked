@@ -117,6 +117,8 @@ public class LandmarkRetrieval {
 
         ReverseGeocodeSearch(location);
 
+        Location proximity_search = CalculateMaxLineofSight();
+
         // Hardcoded "lake" for testing purposes - must set up a better way. One potential solution (but very inefficient) would be to have separate queries for each type of landmark.
         String query_string = "lake near " + mRevResults.get(0).placeName();//+ mCurrLocation.getLongitude() + ", " + mCurrLocation.getLatitude();
 
@@ -128,7 +130,7 @@ public class LandmarkRetrieval {
         MapboxGeocoding forwardGeocode = MapboxGeocoding.builder()
                 .accessToken("pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g")
                 .query(query_string)
-                .proximity(Point.fromLngLat(mCurrLocation.getLongitude(), mCurrLocation.getLatitude()))      // Useful for setting a bias of results toward a specific point - Calculate point in front of user?
+                .proximity(Point.fromLngLat(proximity_search.getLongitude(), proximity_search.getLatitude()))      // Useful for setting a bias of results toward a specific point - Calculate point in front of user?
                 .limit(10)
                 .build();
 
