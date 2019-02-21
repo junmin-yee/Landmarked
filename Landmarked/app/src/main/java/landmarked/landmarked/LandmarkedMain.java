@@ -63,23 +63,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //initialize reentrant lock that will be used to keep sql operations threadsafe
 
 
-        //Bear in mind that the following 3 function calls and landmark initialization are just for testing. they can be removed at any time.
-        //They are sharing a Reentrant lock so that we can manage simultaneous
-
-        //In real use this function would be called after our algorithm retrieves the data. Here it exists only as a test / proof that insert works
-        insertLandmarkPrimitive("crater lake", "222.222", "333.333", 0.0f, "Crater lake in southern oregon");
-
-        //Same thing here, but inserting  by LocalLandmark instead of primitive data types
-        LocalLandmark land = new LocalLandmark("Mount Ashland", "9999", "8888", 0.0f, "wikiwiki");
-      //  insertLandmarkStructureArg(land);
-
-        //getData returns a list from LocalDB with all rows
-        List<LocalLandmark> landmarks = getData();
-
-        for(int x = 0; x < landmarks.size(); x++)
-        {
-            LocalLandmark temp = landmarks.get(x);
-        }
+       
         Intent ii = new Intent(this, GoogleAuthentication.class);
         startActivity(ii);
 
@@ -124,7 +108,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //It's also assumed that an instance of the DB has been initialized
         //insert is called through an instance of the interface LocalLandmarkAccessorMethods
 
-        //Dummy data to prove taht insert works
+        //Make a LocalLandmark from passed in data
         LocalLandmark land = new LocalLandmark(name, latitude, longitude, elevation, wiki);
 
         //SQL operations are required to be on their own thread, if they aren't on their own thread they will crash the app for trying to run on the main thread.
