@@ -18,6 +18,7 @@ import retrofit2.Response;
 import static android.support.constraint.Constraints.TAG;
 
 public class LandmarkRetrieval {
+    final int EARTH_RADIUS = 6378137;
 
     private SensorData mSensorData;
     private Location mCurrLocation;
@@ -30,6 +31,34 @@ public class LandmarkRetrieval {
     public LandmarkRetrieval(SensorData sensorData) {
         mSensorData = sensorData;
 
+    }
+
+    // Calculate line of sight based on sensor data
+    private Location CalculateMaxLineofSight()
+    {
+        // Variable for max line of sight distance in meters
+        int losdistance = 0;
+        // Get current pitch and roll
+        float pitch = mSensorData.getCurrentOrientation()[1];
+        float roll = mSensorData.getCurrentOrientation()[2];
+
+        // Check phone pitch
+        if (pitch < -Math.PI/4)
+            losdistance = 5000;
+        else if (pitch > -Math.PI/4 && pitch < 0)
+            losdistance = 2000;
+
+        // Calculate change in distance in Cartesian
+        double x = losdistance*Math.sin(pitch)*Math.cos(roll);
+        double y = losdistance*Math.sin(pitch)*Math.sin(roll);
+        //double z = losdistance*Math.cos(pitch);
+
+        // Create new loaction of distance away
+        Location max = new Location("Provider");
+        max.setLatitude(mCurrLocation.getLatitude() + (180/Math.PI)*(y/6378137));
+        max.setLongitude(mCurrLocation.getLongitude() + (180/Math.PI)*(x/6378137)/Math.cos(mCurrLocation.getLatitude()));
+
+        return max;
     }
 
     private void buildGeocodeSearch(final Location location) {

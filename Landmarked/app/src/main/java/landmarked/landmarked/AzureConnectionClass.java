@@ -8,37 +8,44 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class AzureConnectionClass {
-    public Connection mConnection;
+    private Connection mConnection;
 
-    public Connection GetConnection()
+    public AzureConnectionClass()
     {
-        TestConnect();
-        return mConnection;
+        mConnection = null;
     }
 
-    private void TestConnect()
+    public Connection Connect()
     {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         mConnection = null;
-        String ConnectionURL = null;
+        // Connect to database
+        String ConnectionURL = String.format("jdbc:jtds:sqlserver://landmarks.database.windows.net:1433;databaseName=Landmarked;" +
+                "user=landmarked.admin@landmarks;password=ReallyIntricatePassword18.;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
         try
         {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            ConnectionURL = "jdbc:jtds:sqlserver://landmarks.database.windows.net:1433;DatabaseName=Landmarked;user=landmarked.admin@landmarks;password=ReallyIntricatePassword18.;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
             mConnection = DriverManager.getConnection(ConnectionURL);
         }
         catch (SQLException se)
         {
-            Log.e("error here 1 : ", se.getMessage());
-        }
-        catch (ClassNotFoundException e)
-        {
-            Log.e("error here 2 : ", e.getMessage());
+            Log.e("Error 1","Failed to connect to SQL Database");
         }
         catch (Exception e)
         {
-            Log.e("error here 3 : ", e.getMessage());
+            Log.e("Error 2","Something went wrong");
+        }
+        return mConnection;
+    }
+
+    public void Disconnect()
+    {
+        try {
+            mConnection.close();
+        }
+        catch (SQLException se)
+        {
+            Log.e("Error 1","Connection not open");
         }
     }
 }
