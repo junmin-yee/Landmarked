@@ -1,0 +1,7 @@
+Landmarked Sprint Meeting Topics 2/25/19
+
+Offline Functionality
+Users/Logins
+Device Syncing
+GUI Design
+App Testing
