@@ -8,4 +8,5 @@ App Testing
 
 
 refactoring into a single landmark class that will be used consistently
+get everyone on the same page and understanding of what our gui is going to do
 
