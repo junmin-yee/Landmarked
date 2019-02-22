@@ -5,3 +5,7 @@ Users/Logins
 Device Syncing
 GUI Design
 App Testing
+
+
+refactoring into a single landmark class that will be used consistently
+
