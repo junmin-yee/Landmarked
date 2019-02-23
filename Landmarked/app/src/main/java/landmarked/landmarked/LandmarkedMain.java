@@ -104,7 +104,7 @@ public class LandmarkedMain extends AppCompatActivity {
     }
 
     //Insert local data by primitive type
-    public void insertLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki) {
+    public void insertLocalLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki) {
 
 
         //no error checking, at this point it's assumed that the primitive data is correct
@@ -134,10 +134,13 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
 
+    public void insertCustomLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki )
+    {
+        CustomLocalLandmark land = new CustomLocalLandmark(name, latitude, longitude, elevation, wiki);
+    }
 
 
-
-
+    //We need to do some conversion to a customLocalLandmark arg
     public void insertCustomLandmarkStructure(CustomLocalLandmark LandmarkArg)
     {
         Runnable insertStructure = new Runnable()
