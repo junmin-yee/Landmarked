@@ -146,7 +146,7 @@ public class LandmarkedMain extends AppCompatActivity {
             //overriding required method Run()
             public void run()
             {
-                db.methodsVar().insertCustomLandmarkStructure(LandmarkArg);
+                db.CustomMethodsVar().insertCustomLandmarkStructure(LandmarkArg);
             }
 
         };
