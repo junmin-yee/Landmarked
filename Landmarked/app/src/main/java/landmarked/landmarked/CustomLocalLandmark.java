@@ -26,6 +26,28 @@ public class CustomLocalLandmark {
     @ColumnInfo(name = "DateSaved")
     public Date m_datesaved;
 
+    @ColumnInfo(name="Wiki")
+    public String m_wiki_info;
 
+    public final String getName()
+    {
+        return m_name;
+    }
+    public final String getLatitude()
+    {
+        return m_latitude;
+    }
+    public final String getLongitude()
+    {
+        return m_longitude;
+    }
+    public final float getElevation()
+    {
+        return m_elevation;
+    }
+    public final String getWiki()
+    {
+        return m_wiki_info;
+    }
 
 }
