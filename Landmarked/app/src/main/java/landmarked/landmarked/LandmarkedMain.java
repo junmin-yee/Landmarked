@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -134,9 +135,9 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
 
-    public void insertCustomLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki )
+    public void insertCustomLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki, Date date )
     {
-        CustomLocalLandmark land = new CustomLocalLandmark(name, latitude, longitude, elevation, wiki);
+        CustomLocalLandmark land = new CustomLocalLandmark(name, latitude, longitude, elevation, wiki, date);
     }
 
 

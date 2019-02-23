@@ -50,4 +50,13 @@ public class CustomLocalLandmark {
         return m_wiki_info;
     }
 
+    CustomLocalLandmark(String name, String latitude, String longitude, float elevation, String wiki, Date date)
+    {
+        m_name = name;
+        m_latitude = latitude;
+        m_longitude = longitude;
+        m_elevation =elevation;
+        m_wiki_info = wiki;
+        m_datesaved = date;
+    }
 }
