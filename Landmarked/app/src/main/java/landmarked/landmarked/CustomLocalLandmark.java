@@ -49,6 +49,7 @@ public class CustomLocalLandmark {
     {
         return m_wiki_info;
     }
+    public final Date getDate() { return m_datesaved; }
 
     public CustomLocalLandmark(String name, String latitude, String longitude, float elevation, String wiki, Date date)
     {
