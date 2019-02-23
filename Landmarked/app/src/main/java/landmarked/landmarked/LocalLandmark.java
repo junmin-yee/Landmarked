@@ -7,6 +7,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
@@ -45,6 +46,9 @@ public class LocalLandmark  {
     @ColumnInfo(name = "WikiInfo")
     public String m_wiki_info;
 
+    @ColumnInfo(name="DateSaved")
+    public Date m_date_saved;
+
     //default ctor
     public LocalLandmark()
     {
@@ -57,13 +61,14 @@ public class LocalLandmark  {
     }
 
     //primitive arg ctor
-    public LocalLandmark(String name, String latitude, String longitude, float elevation, String wiki)
+    public LocalLandmark(String name, String latitude, String longitude, float elevation, String wiki, Date date)
     {
         m_name = name;
         m_latitude = latitude;
         m_longitude = longitude;
         m_elevation = elevation;
         m_wiki_info = wiki;
+        m_date_saved = date;
 
     }
 

@@ -105,7 +105,7 @@ public class LandmarkedMain extends AppCompatActivity {
     }
 
     //Insert local data by primitive type
-    public void insertLocalLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki) {
+    public void insertLocalLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki, Date date) {
 
 
         //no error checking, at this point it's assumed that the primitive data is correct
@@ -113,7 +113,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //insert is called through an instance of the interface LocalLandmarkAccessorMethods
 
         //Make a LocalLandmark from passed in data
-        LocalLandmark land = new LocalLandmark(name, latitude, longitude, elevation, wiki);
+        LocalLandmark land = new LocalLandmark(name, latitude, longitude, elevation, wiki,date);
 
         //SQL operations are required to be on their own thread, if they aren't on their own thread they will crash the app for trying to run on the main thread.
 
