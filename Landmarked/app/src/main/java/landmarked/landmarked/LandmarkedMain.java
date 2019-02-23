@@ -136,8 +136,22 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
 
-      //  m_thread.execute(db.methodsVar().insertLandmarkStructure(land));
 
+
+    public void insertCustomLandmarkStructure(CustomLocalLandmark LandmarkArg)
+    {
+        Runnable insertStructure = new Runnable()
+        {
+            @Override
+            //overriding required method Run()
+            public void run()
+            {
+                db.methodsVar().insertCustomLandmarkStructure(LandmarkArg);
+            }
+
+        };
+
+    }
 
 
     public void insertLandmarkStructureArg(LocalLandmark landmarkArg)
