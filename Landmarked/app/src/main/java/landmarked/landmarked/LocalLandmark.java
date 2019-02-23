@@ -81,6 +81,7 @@ public class LocalLandmark  {
         m_longitude = landmarkArg.m_longitude;
         m_elevation = landmarkArg.m_elevation;
         m_wiki_info = landmarkArg.m_wiki_info;
+        m_date_saved = landmarkArg.m_date_saved;
 
     }
 
