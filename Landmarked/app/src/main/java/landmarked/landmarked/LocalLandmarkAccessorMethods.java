@@ -53,7 +53,7 @@ public interface LocalLandmarkAccessorMethods {
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insertLandmarkStructure(LocalLandmark LandmarkArg);
+    public void insertLocalLandmarkStructure(LocalLandmark LandmarkArg);
 
 
 

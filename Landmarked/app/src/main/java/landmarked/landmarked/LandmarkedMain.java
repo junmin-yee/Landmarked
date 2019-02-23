@@ -122,7 +122,7 @@ public class LandmarkedMain extends AppCompatActivity {
         Runnable runCommand = new Runnable() {
             @Override
             public void run() {
-                db.LocalLandmarkMethodsVar().insertLandmarkStructure(land);
+                db.LocalLandmarkMethodsVar().insertLocalLandmarkStructure(land);
             }
         };
         //m thread is our single thread pool, we've built a Runnable, and now we call execute to run it on the thread pool. The way this is supposed to work is that
@@ -151,7 +151,27 @@ public class LandmarkedMain extends AppCompatActivity {
         };
 
     }
+    public List<CustomLocalLandmark> getAllCustomLocals()
+    {
+        List lst = new ArrayList<CustomLocalLandmark>();
+        //creating an action to execute on our sql thread
+        Runnable getData = new Runnable() {
+            @Override
+            //this function must be overridden each time a new thread is called
+            public void run() {
+                //this array will hold the contents resulting form the query select * from CustomLocalLandmark
+                CustomLocalLandmark[] ray = db.CustomMethodsVar().getAll();
+                //All results are now in ray, but they need to be in a container that i can return. So, i'll iterate the array and add them to the list i initialized at top of func
+                for (int x = 0; x < ray.length; x++) {
+                    lst.add(ray[x]);
+                }
+            }
+        };
+        m_thread.execute(getData);
+            //will contain contents of getAll()
+        return lst;
 
+    }
 
     //We need to do some conversion to a customLocalLandmark arg
     public void insertCustomLandmarkStructure(CustomLocalLandmark LandmarkArg)
@@ -171,7 +191,7 @@ public class LandmarkedMain extends AppCompatActivity {
     }
 
 
-    public void insertLandmarkStructureArg(LocalLandmark landmarkArg)
+    public void insertLocalLandmarkStructureArg(LocalLandmark landmarkArg)
     {
         //all sql ops must be done on thread other than main thread
        Runnable insertStructure = new Runnable()
@@ -180,22 +200,17 @@ public class LandmarkedMain extends AppCompatActivity {
            //overriding required method Run()
            public void run()
            {
-               db.LocalLandmarkMethodsVar().insertLandmarkStructure(landmarkArg);
+               db.LocalLandmarkMethodsVar().insertLocalLandmarkStructure(landmarkArg);
            }
 
        };
        //Execute our new Runnable with our thread pool
        m_thread.execute(insertStructure);
-
-
-
-
-
     }
 
 
     //This function will return all rows from local DB and return them in the form of a list
-    public List<LocalLandmark> getData()
+    public List<LocalLandmark> getLocalLandmarkData()
     {
         List lst = new ArrayList<LocalLandmark>();
         //creating an action to execute on our sql thread
