@@ -10,8 +10,8 @@ import java.util.Date;
 @Dao
 public interface CustomLocalLandmarkAccessorMethods {
 
-    @Query("Select Name From CustomLocalLandmark")
-    String CustomLM_getName();
+    @Query("Select * From CustomLocalLandmark")
+    public CustomLocalLandmark[] getAll();
 
     @Query("SELECT Latitude FROM CustomLocalLandmark")
     String CustomLM_getLatitude();

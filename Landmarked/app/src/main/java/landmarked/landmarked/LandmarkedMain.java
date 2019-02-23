@@ -122,7 +122,7 @@ public class LandmarkedMain extends AppCompatActivity {
         Runnable runCommand = new Runnable() {
             @Override
             public void run() {
-                db.methodsVar().insertLandmarkStructure(land);
+                db.LocalLandmarkMethodsVar().insertLandmarkStructure(land);
             }
         };
         //m thread is our single thread pool, we've built a Runnable, and now we call execute to run it on the thread pool. The way this is supposed to work is that
@@ -134,10 +134,22 @@ public class LandmarkedMain extends AppCompatActivity {
     }
 
 
-
+    //This function will turn raw data into a CustomLocalLandmark and insert it
     public void insertCustomLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki, Date date )
     {
         CustomLocalLandmark land = new CustomLocalLandmark(name, latitude, longitude, elevation, wiki, date);
+        Runnable insertStructure = new Runnable()
+        {
+            @Override
+            //overriding required method Run()
+            public void run()
+            {
+                db.CustomMethodsVar().insertCustomLandmarkStructure(land);
+                //db instance call it's member variable for custom landmarks that's able to call insertCustom..... that's declared in interface CustomLocalLandmarkAccessorMethods
+            }
+
+        };
+
     }
 
 
@@ -168,7 +180,7 @@ public class LandmarkedMain extends AppCompatActivity {
            //overriding required method Run()
            public void run()
            {
-               db.methodsVar().insertLandmarkStructure(landmarkArg);
+               db.LocalLandmarkMethodsVar().insertLandmarkStructure(landmarkArg);
            }
 
        };
@@ -192,7 +204,7 @@ public class LandmarkedMain extends AppCompatActivity {
             //this function must be overridden each time a new thread is called
             public void run()            {
                 //this array will hold the contents resulting form the query select * from LocalLandmark. it's only here to prove that data is being retrieved from the db
-                LocalLandmark[] ray = db.methodsVar().getAll();
+                LocalLandmark[] ray = db.LocalLandmarkMethodsVar().getAll();
                 //All results are now in ray, but they need to be in a container that i can return. So, i'll iterate the array and add them to the list i initialized at top of func
                 for(int x = 0; x < ray.length; x++)
                 {
