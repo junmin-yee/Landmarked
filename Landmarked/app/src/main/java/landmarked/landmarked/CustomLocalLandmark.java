@@ -59,4 +59,14 @@ public class CustomLocalLandmark {
         m_wiki_info = wiki;
         m_datesaved = date;
     }
+
+    public CustomLocalLandmark(CustomLocalLandmark landmarkArg)
+    {
+        m_name = landmarkArg.m_name;
+        m_latitude = landmarkArg.m_latitude;
+        m_longitude = landmarkArg.m_longitude;
+        m_elevation = landmarkArg.m_elevation;
+        m_wiki_info = landmarkArg.m_wiki_info;
+        m_datesaved = landmarkArg.m_datesaved;
+    }
 }
