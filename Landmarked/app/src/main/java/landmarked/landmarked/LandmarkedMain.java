@@ -147,6 +147,7 @@ public class LandmarkedMain extends AppCompatActivity {
             public void run()
             {
                 db.CustomMethodsVar().insertCustomLandmarkStructure(LandmarkArg);
+                //db instance call it's member variable for custom landmarks that's able to call insertCustom..... that's declared in interface CustomLocalLandmarkAccessorMethods
             }
 
         };
