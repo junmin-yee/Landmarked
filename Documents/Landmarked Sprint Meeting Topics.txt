@@ -8,5 +8,7 @@ App Testing
 
 
 refactoring into a single landmark class that will be used consistently
+
 get everyone on the same page and understanding of what our gui is going to do. Seems like we're all picturing something different
 
+consider having a person go back and start testing

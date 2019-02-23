@@ -79,12 +79,6 @@ public class LocalLandmark  {
 
     }
 
-    //going to use a singleton pattern toinitialize a single thread for sql operations to share
-
-
-    //Returns the thread, should be called after initThread ONLY. i seperated this form initThread to save the overhead
-    //of checking each time if backgroundThread is null, but this could easily be changed if it's too confusing to
-    //maintain two seperate functions
 
 
     public final String getName()
