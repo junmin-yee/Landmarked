@@ -10,3 +10,10 @@ App Testing
 refactoring into a single landmark class that will be used consistently
 get everyone on the same page and understanding of what our gui is going to do
 
+
+Showing Landmarks - how do we want this exactly?
+How is the User going to filter landmarks?
+How is the user going to initiate a landmark search and how are results displayed?
+Discussion on What is classified a Landmark? (Need to maintain a "list" of items for API filtering)
+Ideas on how to deal with with limited api results returned when there are many Landmarks in an area
+Are we going to allow the user to turn around (as if taking a panorama) and dynamically serve(and unserve) landmark information?
