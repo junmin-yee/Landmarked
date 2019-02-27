@@ -30,7 +30,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
 
         setContentView(R.layout.sign_in_page);
         //GoogleSignInOptions are where we add requests for different types of permissions. As per the google sign in docs, i've used
-        //minimal permission requests, only the requestEmail(). However, if necesarry, this is where we would add them. more information here:
+        //minimal permission requests, only the requestEmIail(). However, if necesarry, this is where we would add them. more information here:
         //https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInOptions#DEFAULT_SIGN_IN
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -75,11 +75,11 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         else
         {
             //user has already logged in previously. No need to display log in button
-            View LoginButton = findViewById(R.id.sign_in_button);
-            LoginButton.setVisibility(View.GONE);
-            TextView welcomeBanner = (TextView)findViewById(R.id.welcome);
-            welcomeBanner.setText("Welcome back user " +" " + acct.getEmail() + System.lineSeparator() + acct.getGivenName() + " " + acct.getFamilyName() + System.lineSeparator());
-
+            //View LoginButton = findViewById(R.id.sign_in_button);
+            //LoginButton.setVisibility(View.GONE);
+            //TextView welcomeBanner = (TextView)findViewById(R.id.welcome);
+            //welcomeBanner.setText("Welcome back user " +" " + acct.getEmail() + System.lineSeparator() + acct.getGivenName() + " " + acct.getFamilyName() + System.lineSeparator());
+           // setContentView(R.layout.activity_get_sensor_data);
 
         }
     }
@@ -134,5 +134,17 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         super.onStop();
         signOut();
 
+    }
+    @Override
+    public void onBackPressed()
+    {
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (acct != null) {
+            setContentView(R.layout.activity_get_sensor_data);
+
+        }
+        else {
+            setContentView(R.layout.sign_in_page);
+        }
     }
 }

@@ -40,16 +40,11 @@ public class LandmarkedMain extends AppCompatActivity {
     public float[] currOrientation = new float[3];
     public SensorData mSensorData;
     public LandmarkRetrieval mLandmarkRetrieval;
-
     //DB instance
     AppDatabase db;
-
     //Thread pool instance
     private ExecutorService m_thread;
-
-
     public LocalLandmarkPass landmarkGet;
-
     public GoogleAuthentication mAuth;
     public AzureConnectionClass mConn;
     //This is where it starts, when the app launches, this is called
@@ -58,16 +53,14 @@ public class LandmarkedMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         m_thread = Executors.newSingleThreadExecutor();
 
-
-
         //calling a STATIC METHOD on the DB containing class.
         //This method will use a singleton pattern to either return the already existing instance
         //or create a new one.
         db = db.getM_DB_instance(getApplicationContext());
         //initialize reentrant lock that will be used to keep sql operations threadsafe
-
-
-       
+        LocalLandmark land = new LocalLandmark("demo", "demo", "demo", 0.0F, "demo", new Date());
+        insertLocalLandmarkStructureArg(land);
+        List<LocalLandmark> lst = getLocalLandmarkData();
         Intent ii = new Intent(this, GoogleAuthentication.class);
         startActivity(ii);
 

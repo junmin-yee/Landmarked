@@ -10,6 +10,9 @@ import java.util.Date;
 @Dao
 public interface CustomLocalLandmarkAccessorMethods {
 
+    //format:
+    //Query
+    //Function prototype for the function that will call the query
     @Query("Select * From CustomLocalLandmark")
     public CustomLocalLandmark[] getAll();
 
