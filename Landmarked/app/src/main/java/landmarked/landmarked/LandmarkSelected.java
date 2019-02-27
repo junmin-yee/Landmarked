@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import landmarked.landmarked.Database.LocalLandmarkPass;
+
 public class LandmarkSelected extends AppCompatActivity {
 
     @Override
