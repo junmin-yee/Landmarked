@@ -60,7 +60,7 @@ public class LandmarkedMain extends AppCompatActivity {
         db = db.getM_DB_instance(getApplicationContext());
         //initialize reentrant lock that will be used to keep sql operations threadsafe
         LocalLandmark land = new LocalLandmark("demo", "demo", "demo", 0.0F, "demo", new Date());
-        insertLocalLandmarkStructureArg(land);
+        //insertLocalLandmarkStructureArg(land);
         List<LocalLandmark> lst = getLocalLandmarkData();
         Intent ii = new Intent(this, GoogleAuthentication.class);
         startActivity(ii);

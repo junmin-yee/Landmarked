@@ -7,7 +7,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 
 @Database(entities = {LocalLandmark.class, CustomLocalLandmark.class,
-        CustomLandmarkPhoto.class, CustomLandmarkNotes.class}, version = 1)
+        CustomLandmarkPhoto.class, CustomLandmarkNotes.class}, version = 2)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
