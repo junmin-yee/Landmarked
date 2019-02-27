@@ -7,7 +7,7 @@ GUI Design
 App Testing
 
 
-refactoring into a single landmark class that will be used consistently
+refactoring into a single landmark class that will be used consistently - decorator?
 
 get everyone on the same page and understanding of what our gui is going to do. Seems like we're all picturing something different
 
@@ -19,3 +19,14 @@ How is the user going to initiate a landmark search and how are results displaye
 Discussion on What is classified a Landmark? (Need to maintain a "list" of items for API filtering)
 Ideas on how to deal with with limited api results returned when there are many Landmarks in an area
 Are we going to allow the user to turn around (as if taking a panorama) and dynamically serve(and unserve) landmark information?
+
+Kelly - Refactor landmarks into one class using one database using decorator class - Fix login page - Offline Maps
+Garrett - Color templates - Localization - Designing new screens
+Logan - Helper class - Refined forward geocoding - Test the geocoding
+Junmin - User database storage - Cloud database connection
+
+Later work issues
+-Timeout when phone is minimized 
+-GUI Loading wheel when finding Landmarks
+-Categorize landmarks
+-Real time landmark search

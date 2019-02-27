@@ -4,13 +4,7 @@ import android.Manifest;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,11 +17,18 @@ import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.lang.Object.*;
-import java.util.concurrent.locks.ReentrantLock;
+
+import landmarked.landmarked.DataManipulation.CarmenFeatureHelper;
+import landmarked.landmarked.DataManipulation.LandmarkRetrieval;
+import landmarked.landmarked.DataManipulation.SensorData;
+import landmarked.landmarked.Database.AppDatabase;
+import landmarked.landmarked.Database.AzureConnectionClass;
+import landmarked.landmarked.Database.CustomLandmark;
+import landmarked.landmarked.Database.CustomLocalLandmark;
+import landmarked.landmarked.Database.LocalLandmark;
+import landmarked.landmarked.Database.LocalLandmarkPass;
 
 public class LandmarkedMain extends AppCompatActivity {
 

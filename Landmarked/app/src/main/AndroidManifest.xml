@@ -25,7 +25,7 @@
         <activity android:name=".DisplayMap" />
         <activity android:name=".test" />
         <activity
-            android:name=".CustomLandmark"
+            android:name=".Database.CustomLandmark"
             android:exported="true"></activity>
         <activity android:name=".GoogleAuthentication" />
     </application>
