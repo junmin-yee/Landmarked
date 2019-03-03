@@ -48,23 +48,24 @@ public class LandmarkedMain extends AppCompatActivity {
     public LocalLandmarkPass landmarkGet;
     public GoogleAuthentication mAuth;
     public AzureConnectionClass mConn;
+    private int login_flag = 0;
     //This is where it starts, when the app launches, this is called
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         m_thread = Executors.newSingleThreadExecutor();
 
-        //calling a STATIC METHOD on the DB containing class.
-        //This method will use a singleton pattern to either return the already existing instance
-        //or create a new one.
-        db = db.getM_DB_instance(getApplicationContext());
-        //initialize reentrant lock that will be used to keep sql operations threadsafe
-        LocalLandmark land = new LocalLandmark("demo", "demo", "demo", 0.0F, "demo", new Date());
-        //insertLocalLandmarkStructureArg(land);
-        List<LocalLandmark> lst = getLocalLandmarkData();
-        Intent ii = new Intent(this, GoogleAuthentication.class);
-        startActivity(ii);
 
+        //This method will use a singleton pattern to either return the already existing instance
+        db = db.getM_DB_instance(getApplicationContext());
+
+        if(login_flag == 0)
+        {
+            Intent ii = new Intent(this, GoogleAuthentication.class);
+            startActivity(ii);
+            login_flag = 1;
+        }
+        
         setContentView(R.layout.activity_get_sensor_data);
 
         //Instantiate with this context
