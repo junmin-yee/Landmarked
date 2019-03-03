@@ -46,7 +46,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         }
         else
         {
-            findViewById(R.id.continue_button).setOnClickListener(this);
+
             View LoginButton = findViewById(R.id.sign_in_button);
             LoginButton.setVisibility(View.INVISIBLE);
             View ContinueButton = findViewById(R.id.continue_button);
@@ -54,6 +54,12 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             TextView welcomeBanner = (TextView) findViewById(R.id.welcome);
             welcomeBanner.setVisibility(View.VISIBLE);
             welcomeBanner.setText("Welcome back " +" " + acct.getEmail() + System.lineSeparator() + acct.getGivenName() + " " + acct.getFamilyName() + System.lineSeparator());
+            ContinueButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GoogleAuthentication.this.finish();
+                }
+            });
         }
     }
 
@@ -71,9 +77,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         switch (v.getId()) {
             case R.id.sign_in_button:
                 signIn();
-            case R.id.continue_button:
-               // finish();
-                setContentView(R.layout.activity_get_sensor_data);
+
 
                 break;
 
@@ -152,7 +156,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     @Override protected void onStop()
     {
         super.onStop();
-        signOut();
+        //signOut();
 
     }
     @Override
