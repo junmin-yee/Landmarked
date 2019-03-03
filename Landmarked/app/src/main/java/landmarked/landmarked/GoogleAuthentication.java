@@ -29,15 +29,28 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.sign_in_page);
-        //GoogleSignInOptions are where we add requests for different types of permissions. As per the google sign in docs, i've used
-        //minimal permission requests, only the requestEmIail(). However, if necesarry, this is where we would add them. more information here:
-        //https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInOptions#DEFAULT_SIGN_IN
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestProfile()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        GoogleSignInAccount acct = null;
+        acct = GoogleSignIn.getLastSignedInAccount(this);
+        if(acct == null) {
+            //GoogleSignInOptions are where we add requests for different types of permissions. As per the google sign in docs, i've used
+            //minimal permission requests, only the requestEmIail(). However, if necesarry, this is where we would add them. more information here:
+            //https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInOptions#DEFAULT_SIGN_IN
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .requestProfile()
+                    .build();
+            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+            findViewById(R.id.sign_in_button).setOnClickListener(this);
+            View Button = findViewById(R.id.continue_button);
+            Button.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            View LoginButton = findViewById(R.id.sign_in_button);
+            LoginButton.setVisibility(View.INVISIBLE);
+            View ContinueButton = findViewById(R.id.continue_button);
+            ContinueButton.setVisibility(View.VISIBLE);
+        }
     }
 
     private void signIn() {
