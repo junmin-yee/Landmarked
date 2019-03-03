@@ -50,6 +50,8 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             LoginButton.setVisibility(View.INVISIBLE);
             View ContinueButton = findViewById(R.id.continue_button);
             ContinueButton.setVisibility(View.VISIBLE);
+            TextView welcomeBanner = (TextView) findViewById(R.id.welcome);
+            welcomeBanner.setText("Welcome back user " +" " + acct.getEmail() + System.lineSeparator() + acct.getGivenName() + " " + acct.getFamilyName() + System.lineSeparator());
         }
     }
 
