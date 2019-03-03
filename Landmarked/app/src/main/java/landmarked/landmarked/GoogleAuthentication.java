@@ -46,6 +46,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         }
         else
         {
+            findViewById(R.id.continue_button).setOnClickListener(this);
             View LoginButton = findViewById(R.id.sign_in_button);
             LoginButton.setVisibility(View.INVISIBLE);
             View ContinueButton = findViewById(R.id.continue_button);
@@ -70,6 +71,9 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         switch (v.getId()) {
             case R.id.sign_in_button:
                 signIn();
+            case R.id.continue_button:
+               // finish();
+                setContentView(R.layout.activity_get_sensor_data);
 
                 break;
 
