@@ -304,6 +304,7 @@ public class LandmarkedMain extends AppCompatActivity {
             double lon_result = test2.getmLandmarkLongitude();
             String lan_name = test2.getmLandmarkName();
             String lan_placename = test2.getmLandmarkPlaceName();
+            String lan_wikidata = test2.getmLandmarkWikiData();
 
             //elev_result = 0; // throwaway
 
