@@ -35,9 +35,5 @@ public class DisplayMap extends AppCompatActivity {
         setContentView(demoView);
     }
 
-    @Override
-    protected void  onStart()
-    {
-        super.onStart();
-    }
+
 }
