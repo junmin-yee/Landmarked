@@ -83,16 +83,17 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onClick(View v) {
                     GoogleAuthentication.this.finish();
+                    Intent ii = new Intent(getApplicationContext(), LandmarkedMain.class);
+                    startActivity(ii);
                 }
             });
         }
     }
 
-
     @Override protected void onStart()
     {
         super.onStart();
-        
+
     }
 
     @Override
@@ -127,20 +128,22 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     @Override protected void onStop()
     {
         super.onStop();
+        //I commented out this line because i don't think our users are going to want to have to log in everytime. The little function I wrote to signout can easily be
+        //used if the user selects an option that indicates they DO want to be logged out at each app close.
         //signOut();
 
     }
     @Override
     public void onBackPressed()
     {
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());//If the user tries to hit the back buton as sign in screen,
         if (acct != null)
         {
-            setContentView(R.layout.activity_get_sensor_data);
+            setContentView(R.layout.activity_get_sensor_data);// let them if they are already signed in.
         }
         else
         {
-            setContentView(R.layout.sign_in_page);
+            setContentView(R.layout.sign_in_page);//keep them at the sign in page if they aren't.
         }
     }
 }

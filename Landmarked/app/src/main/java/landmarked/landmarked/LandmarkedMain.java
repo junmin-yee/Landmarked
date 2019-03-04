@@ -62,8 +62,8 @@ public class LandmarkedMain extends AppCompatActivity {
         db = db.getM_DB_instance(getApplicationContext());
 
 
-            Intent ii = new Intent(this, GoogleAuthentication.class);
-            startActivity(ii);
+         //   Intent ii = new Intent(this, GoogleAuthentication.class);
+           // startActivity(ii);
 
 
 
@@ -334,7 +334,7 @@ public class LandmarkedMain extends AppCompatActivity {
         i.putExtra(ACTIVITY_MESSAGE, arr);
 
         startActivity(i);
-        finish();
+        //finish();
     }
 
     public void seeCustomLandmarks(View v)
