@@ -46,7 +46,9 @@ public class LandmarkedMain extends AppCompatActivity {
     //Thread pool instance
     private ExecutorService m_thread;
     public LocalLandmarkPass landmarkGet;
-    public GoogleAuthentication mAuth;
+
+
+
     public AzureConnectionClass mConn;
     private int login_flag = 0;
     //This is where it starts, when the app launches, this is called
@@ -59,13 +61,12 @@ public class LandmarkedMain extends AppCompatActivity {
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
 
-        if(login_flag == 0)
-        {
+
             Intent ii = new Intent(this, GoogleAuthentication.class);
             startActivity(ii);
-            login_flag = 1;
-        }
-        
+
+
+
         setContentView(R.layout.activity_get_sensor_data);
 
         //Instantiate with this context
@@ -248,7 +249,11 @@ public class LandmarkedMain extends AppCompatActivity {
             // Permission has already been granted
         }
     }
-
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {

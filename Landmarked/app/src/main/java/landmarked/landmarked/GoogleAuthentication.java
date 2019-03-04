@@ -27,40 +27,9 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.sign_in_page);
-        GoogleSignInAccount acct = null;
-        acct = GoogleSignIn.getLastSignedInAccount(this);
-        if(acct == null) {
-            //GoogleSignInOptions are where we add requests for different types of permissions. As per the google sign in docs, i've used
-            //minimal permission requests, only the requestEmIail(). However, if necesarry, this is where we would add them. more information here:
-            //https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInOptions#DEFAULT_SIGN_IN
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .requestProfile()
-                    .build();
-            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-            findViewById(R.id.sign_in_button).setOnClickListener(this);
-            View Button = findViewById(R.id.continue_button);
-            Button.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
-
-            View LoginButton = findViewById(R.id.sign_in_button);
-            LoginButton.setVisibility(View.INVISIBLE);
-            View ContinueButton = findViewById(R.id.continue_button);
-            ContinueButton.setVisibility(View.VISIBLE);
-            TextView welcomeBanner = (TextView) findViewById(R.id.welcome);
-            welcomeBanner.setVisibility(View.VISIBLE);
-            welcomeBanner.setText("Welcome back " +" " + acct.getEmail() + System.lineSeparator() + acct.getGivenName() + " " + acct.getFamilyName() + System.lineSeparator());
-            ContinueButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    GoogleAuthentication.this.finish();
-                }
-            });
-        }
+        setContentView(R.layout.sign_in_page);//set to our sign in page, our existing user check method has some logic that will either hide or make visible buttons depending on the case
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        CheckForExistingSignIn(account);
     }
 
     private void signIn() {
@@ -77,10 +46,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         switch (v.getId()) {
             case R.id.sign_in_button:
                 signIn();
-
-
                 break;
-
         }
     }
 
@@ -90,36 +56,43 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
 
     protected void CheckForExistingSignIn(GoogleSignInAccount acct)
     {
-        if(acct == null)
-        {
-            //user has not previouisly signed in, display sign in button
-            View LoginButton = findViewById(R.id.sign_in_button);
-            //LoginButton.setVisibility(View.VISIBLE);
+
+        if(acct == null) {
+            //GoogleSignInOptions are where we add requests for different types of permissions. As per the google sign in docs, i've used
+            //minimal permission requests, only the requestEmIail(). However, if necesarry, this is where we would add them. more information here:
+            //https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInOptions#DEFAULT_SIGN_IN
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .requestProfile()
+                    .build();
+            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+            findViewById(R.id.sign_in_button).setOnClickListener(this);
+            View Button = findViewById(R.id.continue_button);
+            Button.setVisibility(View.INVISIBLE);//if user account is null, make our continue button invisible
         }
         else
         {
-            //user has already logged in previously. No need to display log in button
-            //View LoginButton = findViewById(R.id.sign_in_button);
-            //LoginButton.setVisibility(View.GONE);
-            //TextView welcomeBanner = (TextView)findViewById(R.id.welcome);
-            //welcomeBanner.setText("Welcome back user " +" " + acct.getEmail() + System.lineSeparator() + acct.getGivenName() + " " + acct.getFamilyName() + System.lineSeparator());
-           // setContentView(R.layout.activity_get_sensor_data);
-
+            View LoginButton = findViewById(R.id.sign_in_button);
+            LoginButton.setVisibility(View.INVISIBLE);//if we have a user already, hide the google login button and
+            View ContinueButton = findViewById(R.id.continue_button);
+            ContinueButton.setVisibility(View.VISIBLE);//make the continue button visible and
+            TextView welcomeBanner = (TextView) findViewById(R.id.welcome);
+            welcomeBanner.setVisibility(View.VISIBLE);//make our TextView visible so that we can fill it with a warm, friendly, pay us all your money welcome message for the user.
+            welcomeBanner.setText("Welcome back " +" " + acct.getEmail() + System.lineSeparator() + acct.getGivenName() + " " + acct.getFamilyName() + System.lineSeparator());
+            ContinueButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GoogleAuthentication.this.finish();
+                }
+            });
         }
     }
 
 
-    //It's entirely likely that this code will need to go in our main file so we can check first thing if a user is already logged in. Our home screen will
-    //probably either need to be a sign in form, or if the user is already signed in some kind of "hello ____! welcome back!"
     @Override protected void onStart()
     {
         super.onStart();
-
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null. We'll test this in the manager function CheckForExistingSignIn by sending account as an arg
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        CheckForExistingSignIn(account);
-
+        
     }
 
     @Override
@@ -144,8 +117,6 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             // Signed in successfully, show authenticated UI.
             CheckForExistingSignIn(account);
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
 
             CheckForExistingSignIn(null);
         }
@@ -163,11 +134,12 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     public void onBackPressed()
     {
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-        if (acct != null) {
+        if (acct != null)
+        {
             setContentView(R.layout.activity_get_sensor_data);
-
         }
-        else {
+        else
+        {
             setContentView(R.layout.sign_in_page);
         }
     }

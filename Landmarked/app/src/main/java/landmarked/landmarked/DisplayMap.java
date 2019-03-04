@@ -35,15 +35,15 @@ public class DisplayMap extends AppCompatActivity {
         setContentView(demoView);
     }
 
-    @Override
+   // @Override
     public void onBackPressed() {
         //return back to LandmarkedMain without crashing
-        Intent i = new Intent(getApplicationContext(), LandmarkedMain.class);
+        //Intent i = new Intent(getApplicationContext(), LandmarkedMain.class);
 
-        startActivity(i);
+       // startActivity(i);
         //consider changing this is future to be more efficient
-
+       // setContentView(R.layout.activity_get_sensor_data);
         //for some reason this crashes if uncommented
-        //finish();
+      DisplayMap.this.finish();
     }
 }
