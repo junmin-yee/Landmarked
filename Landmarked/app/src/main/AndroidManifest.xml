@@ -16,7 +16,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".LandmarkSelected"></activity>
         <activity android:name=".LandmarkedMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".DisplayMap" />
         <activity android:name=".test" />
@@ -24,11 +28,7 @@
             android:name=".Database.CustomLandmark"
             android:exported="true"></activity>
         <activity android:name=".GoogleAuthentication" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
     </application>
 

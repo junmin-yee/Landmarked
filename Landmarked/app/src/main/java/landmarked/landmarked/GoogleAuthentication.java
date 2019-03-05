@@ -27,16 +27,13 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GoogleAuthentication.this.finish();
-        Intent ii = new Intent(getApplicationContext(), LandmarkedMain.class);
-        startActivity(ii);
-       // setContentView(R.layout.activity_get_sensor_data);//set to our sign in page, our existing user check method has some logic that will either hide or make visible buttons depending on the case
+        setContentView(R.layout.sign_in_page);//set to our sign in page, our existing user check method has some logic that will either hide or make visible buttons depending on the case
       //  Thread workerThread = new Thread(new Runnable()
      //   {
      //       public void run()
      //       {
-              //  GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-               // CheckForExistingSignIn(account);
+                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+                CheckForExistingSignIn(null);
       //      }
     //    });
 
@@ -48,7 +45,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_ON);
         onActivityResult(RC_SIGN_ON, RC_SIGN_ON, signInIntent);
-        finish();
+        //finish();
     }
 
 
@@ -95,8 +92,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onClick(View v) {
                     GoogleAuthentication.this.finish();
-                    Intent ii = new Intent(getApplicationContext(), LandmarkedMain.class);
-                    startActivity(ii);
+                   
                 }
             });
         }
@@ -118,8 +114,8 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+          //  Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+           // handleSignInResult(task);
         }
     }
 
