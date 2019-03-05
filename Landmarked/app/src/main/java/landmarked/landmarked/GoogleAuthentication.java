@@ -18,7 +18,7 @@ import com.google.android.gms.tasks.Task;
 import android.widget.TextView;
 import java.util.concurrent.TimeUnit ;
 
-public class GoogleAuthentication extends AppCompatActivity implements View.OnClickListener {
+public class GoogleAuthentication  implements View.OnClickListener {
     GoogleSignInClient mGoogleSignInClient;
     final int RC_SIGN_ON = 9001;
     public String Name;
