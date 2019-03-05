@@ -27,9 +27,21 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_in_page);//set to our sign in page, our existing user check method has some logic that will either hide or make visible buttons depending on the case
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        CheckForExistingSignIn(account);
+        GoogleAuthentication.this.finish();
+        Intent ii = new Intent(getApplicationContext(), LandmarkedMain.class);
+        startActivity(ii);
+       // setContentView(R.layout.activity_get_sensor_data);//set to our sign in page, our existing user check method has some logic that will either hide or make visible buttons depending on the case
+      //  Thread workerThread = new Thread(new Runnable()
+     //   {
+     //       public void run()
+     //       {
+              //  GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+               // CheckForExistingSignIn(account);
+      //      }
+    //    });
+
+      //  workerThread.start();
+
     }
 
     private void signIn() {
@@ -130,7 +142,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         super.onStop();
         //I commented out this line because i don't think our users are going to want to have to log in everytime. The little function I wrote to signout can easily be
         //used if the user selects an option that indicates they DO want to be logged out at each app close.
-        //signOut();
+       // signOut();
 
     }
     @Override
