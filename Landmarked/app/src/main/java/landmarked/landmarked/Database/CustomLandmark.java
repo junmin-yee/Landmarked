@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
 import landmarked.landmarked.R;
 
 import landmarked.landmarked.LandmarkSelected;
@@ -46,11 +49,16 @@ public class CustomLandmark extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        LocalLandmarkPass recievedLandmark = (LocalLandmarkPass)i.getParcelableExtra("sending_landmark");
+        ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_landmark");
 
-        if(recievedLandmark != null)
+        /*if(recievedLandmark != null)
         {
             AddElement(recievedLandmark.getName(), recievedLandmark.getLatitiude(), recievedLandmark.getLongitude(), recievedLandmark.getElevation());
+        }*/
+
+        for(int v = 0; v < recievedLandmark.size(); v++)
+        {
+            AddElement(recievedLandmark.get(v).getName(), recievedLandmark.get(v).getLatitude(), recievedLandmark.get(v).getLongitude(), recievedLandmark.get(v).getElevation());
         }
 
             /*for (CarmenFeature feat : landmarkList) {
@@ -64,8 +72,8 @@ public class CustomLandmark extends AppCompatActivity {
             }*/
 
 
-        AddElement("temp", "34.5634", "-54.4464", (float)1000.65);
-        AddElement("Shasta(fake)", "23.565", "-46.54", (float)2365.76784);
+        /*AddElement("temp", "34.5634", "-54.4464", (float)1000.65);
+        AddElement("Shasta(fake)", "23.565", "-46.54", (float)2365.76784);*/
     }
 
     void AddElement(String name, String latitude, String longitude, float elevation)

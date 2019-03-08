@@ -45,7 +45,9 @@ public class LandmarkedMain extends AppCompatActivity {
     AppDatabase db;
     //Thread pool instance
     private ExecutorService m_thread;
-    public LocalLandmarkPass landmarkGet;
+    //public LocalLandmark landmarkGet[];
+
+    public ArrayList<LocalLandmark> landmarkGet = new ArrayList<LocalLandmark>();
 
 
 
@@ -65,7 +67,7 @@ public class LandmarkedMain extends AppCompatActivity {
          //   Intent ii = new Intent(this, GoogleAuthentication.class);
            // startActivity(ii);
 
-
+        //setTheme(R.style.DarkTheme);
 
         setContentView(R.layout.activity_get_sensor_data);
 
@@ -308,7 +310,22 @@ public class LandmarkedMain extends AppCompatActivity {
 
             //elev_result = 0; // throwaway
 
-            landmarkGet = new LocalLandmarkPass(lan_placename, Double.toString(lat_result), Double.toString(lon_result), (float) elev_result);
+            landmarkGet.clear();
+            for(int i = 0; i < test1.size(); i++)
+            {
+                CarmenFeatureHelper retriever = new CarmenFeatureHelper(test1.get(i));
+
+                double lat = retriever.getmLandmarkLatitude();
+                double lon = retriever.getmLandmarkLongitude();
+                String name = retriever.getmLandmarkName();
+                String placename = retriever.getmLandmarkName();
+                String wikidata = retriever.getmLandmarkWikiData();
+                Date lan_date = new Date();
+
+                landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
+            }
+
+            //landmarkGet = new LocalLandmarkPass(lan_placename, Double.toString(lat_result), Double.toString(lon_result), (float) elev_result);
 
             // Example Usage of getCarmenFeatureFwdResults: 
             //List<CarmenFeature> test1;
@@ -342,7 +359,9 @@ public class LandmarkedMain extends AppCompatActivity {
     {
         Intent customLand = new Intent(this, CustomLandmark.class);
 
-        customLand.putExtra("sending_landmark", landmarkGet);
+        //customLand.putExtra("sending_landmark", landmarkGet);
+
+        customLand.putParcelableArrayListExtra("sending_landmark", landmarkGet);
 
         startActivity(customLand);
     }

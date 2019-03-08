@@ -19,8 +19,14 @@ public class CarmenFeatureHelper {
         mLandmarkLongitude = carmenFeature.center().longitude();
 
         // Returns null if there is no wikidata entry within "properties"
-        mLandmarkWikiData = carmenFeature.properties().get("wikidata").getAsString();
-
+        try
+        {
+            mLandmarkWikiData = carmenFeature.properties().get("wikidata").getAsString();
+        }
+        catch (NullPointerException e)
+        {
+            mLandmarkWikiData = "";
+        }
         // Checks if landmark has an associated altitude
         if ( carmenFeature.center().hasAltitude() ) {
             mLandmarkElevation = carmenFeature.center().altitude();
