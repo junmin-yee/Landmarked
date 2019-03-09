@@ -37,7 +37,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                 .requestProfile()
                 .build();
         m_GoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        m_account = GoogleSignIn.getLastSignedInAccount(this);
+
     }
 
 
@@ -111,13 +111,16 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     }
 
 
-    protected GoogleSignInAccount getUser()//returns true only if m_account is null
+    protected GoogleSignInAccount getUser()
     {
-        return m_account;
+        try {
+            return m_account;
+
+        } catch (NullPointerException e) {
+
+            updateAuth(null);
+        }
     }
-
-
-
 
 
     protected void signOut()
