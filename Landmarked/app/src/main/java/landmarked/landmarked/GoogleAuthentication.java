@@ -133,9 +133,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        //finish();
-                      //  Intent ii = m_GoogleSignInClient.getSignInIntent();
-                        //startActivityforResult(ii, RC_SIGN_ON);
+                       //Honestly i have no idea what's supposed to fill this function
 
                     }
                 });
@@ -151,7 +149,8 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     @Override
     public void onBackPressed()
     {
-        //Intentionally left empty to avoid the non overriden onBackPressed() calling the default finish()
+        //in the event that the user presses the back button from login screen without logging in, finish the main activity as well as the current activity.
+        //in my opinion, there't not really much else to do if the user doesn't want to log in. Possible we could use an offline mode?
         LandmarkedMain.getInstance().finish();
         finish();
 

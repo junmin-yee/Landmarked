@@ -36,7 +36,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
     public static final String ACTIVITY_MESSAGE = "Sending to Map";
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private static LandmarkedMain m_instance;
+    private static LandmarkedMain m_instance;//instance of the main activity that can be accessed through getter getInstance(), handy for things such as closing the app from another instance
 
     public TextView directionTV;
     public TextView locationTV;
@@ -66,12 +66,7 @@ public class LandmarkedMain extends AppCompatActivity {
         m_instance = this;
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
-
-
-         //   Intent ii = new Intent(this, GoogleAuthentication.class);
-           // startActivity(ii);
-
-
+        
 
         setContentView(R.layout.activity_get_sensor_data);
 
