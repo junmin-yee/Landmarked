@@ -63,7 +63,7 @@ public class LandmarkedMain extends AppCompatActivity {
         m_thread = Executors.newSingleThreadExecutor();
         Intent ii = new Intent(this, GoogleAuthentication.class);
         startActivity(ii);
-
+        m_instance = this;
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
 

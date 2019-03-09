@@ -151,6 +151,8 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     public void onBackPressed()
     {
         //Intentionally left empty to avoid the non overriden onBackPressed() calling the default finish()
+        LandmarkedMain.m_instance.finish();
+        finish();
 
     }
 }
