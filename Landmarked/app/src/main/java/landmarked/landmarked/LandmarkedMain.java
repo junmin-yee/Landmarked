@@ -66,7 +66,7 @@ public class LandmarkedMain extends AppCompatActivity {
         m_instance = this;
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
-        
+
 
         setContentView(R.layout.activity_get_sensor_data);
 
@@ -358,7 +358,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
         startActivity(customLand);
     }
-    public static LandmarkedMain getInstance()
+    public static LandmarkedMain getInstance()//return instance of main activity
     {
         return m_instance;
     }
