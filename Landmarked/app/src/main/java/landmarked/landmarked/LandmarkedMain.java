@@ -50,13 +50,8 @@ public class LandmarkedMain extends AppCompatActivity {
     private ExecutorService m_thread;
     public LocalLandmarkPass landmarkGet;
     GoogleSignInAccount m_user;
-    
-
-
-
     public AzureConnectionClass mConn;
-    private int login_flag = 0;
-    //This is where it starts, when the app launches, this is called
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
