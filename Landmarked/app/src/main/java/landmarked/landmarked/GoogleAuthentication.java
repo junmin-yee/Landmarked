@@ -31,9 +31,6 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        setContentView(R.layout.sign_in_page);
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
-
         super.onCreate(savedInstanceState);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -44,7 +41,12 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     }
 
 
-
+    @Override protected void onStart()
+    {
+        super.onStart();
+        m_account = GoogleSignIn.getLastSignedInAccount(this);
+        updateAuth(m_account);
+    }
 
     // sign_in_button is default name for google sign in button in our log in page's xml file
     @Override
@@ -84,6 +86,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         try {
             m_account = completedTask.getResult(ApiException.class);
             Name = m_account.getEmail();
+            //HERE IS WHERE WE NEED TO PUT GETTERS THAT WILL GET ALL OUR USER INFORMATION
             // Signed in successfully, show authenticated UI.
             updateAuth(m_account);
         } catch (ApiException e) {
@@ -91,15 +94,19 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             updateAuth(null);
         }
     }
+
+    //This function needs to remain very simple. The more logic we put here, the more "jank" we will get in our login screen.
+    //If there's something else to be tested at startup, this probably isn't the place
     private void updateAuth(GoogleSignInAccount acct)
     {
         if(acct == null)
         {
-
+            setContentView(R.layout.sign_in_page);
+            findViewById(R.id.sign_in_button).setOnClickListener(this);
         }
         else
         {
-
+            finish();
         }
     }
 
@@ -111,25 +118,6 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
 
 
 
-    @Override protected void onStart()
-    {
-        super.onStart();
-        setContentView(R.layout.sign_in_page);//set to our sign in page, our existing user check method has some logic that will either hide or make visible buttons depending on the case
-
-        //  findViewById(R.id.sign_in_button).setOnClickListener(this);
-      //  View ContinueButton = findViewById(R.id.continue_button);
-      //  ContinueButton.setVisibility(View.INVISIBLE);//make the continue button visible and
-        //CheckForExistingSignIn(m_account);
-      //  if(m_account == null)
-     //   {
-      //      Intent ii = m_GoogleSignInClient.getSignInIntent();
-      //      startActivityForResult(ii, RC_SIGN_ON);
-      //  }
-      //  else
-      //  {
-       //     finish();
-      //  }
-    }
 
 
     protected void signOut()
@@ -139,30 +127,22 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         //finish();
-                        setContentView(R.layout.sign_in_page);
+                      //  Intent ii = m_GoogleSignInClient.getSignInIntent();
+                        //startActivityforResult(ii, RC_SIGN_ON);
+
                     }
                 });
+        finish();
 
     }
     @Override protected void onStop()
     {
         super.onStop();
-        //I commented out this line because i don't think our users are going to want to have to log in everytime. The little function I wrote to signout can easily be
-        //used if the user selects an option that indicates they DO want to be logged out at each app close.
-       // signOut();
 
     }
     @Override
     public void onBackPressed()
     {
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());//If the user tries to hit the back buton as sign in screen,
-        if (acct != null)
-        {
-            setContentView(R.layout.activity_get_sensor_data);// let them if they are already signed in.
-        }
-        else
-        {
-            setContentView(R.layout.sign_in_page);//keep them at the sign in page if they aren't.
-        }
+        //Intentionally left empty to avoid the non overriden onBackPressed() calling the default finish()
     }
 }

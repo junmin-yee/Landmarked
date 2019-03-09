@@ -60,17 +60,8 @@ public class LandmarkedMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         m_thread = Executors.newSingleThreadExecutor();
-        //m_authVar = new GoogleAuthentication();
-        m_user = null;//GoogleSignIn.getLastSignedInAccount(this);
-      //  m_authVar.signOut();
-
-            Intent ii = new Intent(this, GoogleAuthentication.class);
-            startActivity(ii);
-
-      //  else
-      //  {
-
-     //   }
+        Intent ii = new Intent(this, GoogleAuthentication.class);
+        startActivity(ii);
 
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
