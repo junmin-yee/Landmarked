@@ -36,6 +36,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
     public static final String ACTIVITY_MESSAGE = "Sending to Map";
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    public static LandmarkedMain m_instance;
 
     public TextView directionTV;
     public TextView locationTV;

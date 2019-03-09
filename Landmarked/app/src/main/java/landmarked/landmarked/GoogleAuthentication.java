@@ -28,6 +28,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     public String Name;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -150,5 +151,6 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     public void onBackPressed()
     {
         //Intentionally left empty to avoid the non overriden onBackPressed() calling the default finish()
+
     }
 }
