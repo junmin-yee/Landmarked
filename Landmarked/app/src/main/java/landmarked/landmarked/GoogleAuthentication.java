@@ -37,10 +37,13 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                 .requestProfile()
                 .build();
         m_GoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
     }
 
-
+    //onStart looks for an account already signed in. The flow goes like this:
+    //if user is signed in already, skip login screen altogether
+    //if user is not already signed in, load login screen
+    //on click of login butotn login with google
+    //continue to main sensor screen
     @Override protected void onStart()
     {
         super.onStart();
@@ -111,14 +114,13 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     }
 
 
-    protected GoogleSignInAccount getUser()
-    {
+    protected GoogleSignInAccount getUser() {
         try {
             return m_account;
-
         } catch (NullPointerException e) {
 
-            updateAuth(null);
+            //some container in the gui to display a message?
+            return null;
         }
     }
 
@@ -135,6 +137,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
 
                     }
                 });
+
         finish();
 
     }
