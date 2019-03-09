@@ -14,39 +14,36 @@ import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.common.SignInButton;
 import android.view.View.OnClickListener;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.signin.SignIn;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import android.widget.TextView;
 import java.util.concurrent.TimeUnit ;
+import android.support.annotation.NonNull;
 
-public class GoogleAuthentication  implements View.OnClickListener {
-    GoogleSignInClient mGoogleSignInClient;
+public class GoogleAuthentication extends AppCompatActivity implements View.OnClickListener {
+    static GoogleSignInClient m_GoogleSignInClient;
+    GoogleSignInAccount m_account;
     final int RC_SIGN_ON = 9001;
     public String Name;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        setContentView(R.layout.sign_in_page);
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_in_page);//set to our sign in page, our existing user check method has some logic that will either hide or make visible buttons depending on the case
-      //  Thread workerThread = new Thread(new Runnable()
-     //   {
-     //       public void run()
-     //       {
-                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-                CheckForExistingSignIn(null);
-      //      }
-    //    });
-
-      //  workerThread.start();
-
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestProfile()
+                .build();
+        m_GoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        m_account = GoogleSignIn.getLastSignedInAccount(this);
     }
 
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_ON);
-        onActivityResult(RC_SIGN_ON, RC_SIGN_ON, signInIntent);
-        //finish();
-    }
+
 
 
     // sign_in_button is default name for google sign in button in our log in page's xml file
@@ -56,54 +53,19 @@ public class GoogleAuthentication  implements View.OnClickListener {
             case R.id.sign_in_button:
                 signIn();
                 break;
+
+            case R.id.sign_out_button:
+                signOut();
+                break;
+
         }
     }
-
-
-  //If there's no signed in user, the login button will appear. if there's a signed in user already, then there will be a prompt that offers such information
-    //as welcome back user email / user name
-
-    protected void CheckForExistingSignIn(GoogleSignInAccount acct)
-    {
-
-        if(acct == null) {
-            //GoogleSignInOptions are where we add requests for different types of permissions. As per the google sign in docs, i've used
-            //minimal permission requests, only the requestEmIail(). However, if necesarry, this is where we would add them. more information here:
-            //https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInOptions#DEFAULT_SIGN_IN
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .requestProfile()
-                    .build();
-            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-            findViewById(R.id.sign_in_button).setOnClickListener(this);
-            View Button = findViewById(R.id.continue_button);
-            Button.setVisibility(View.INVISIBLE);//if user account is null, make our continue button invisible
-        }
-        else
-        {
-            View LoginButton = findViewById(R.id.sign_in_button);
-            LoginButton.setVisibility(View.INVISIBLE);//if we have a user already, hide the google login button and
-            View ContinueButton = findViewById(R.id.continue_button);
-            ContinueButton.setVisibility(View.VISIBLE);//make the continue button visible and
-            TextView welcomeBanner = (TextView) findViewById(R.id.welcome);
-            welcomeBanner.setVisibility(View.VISIBLE);//make our TextView visible so that we can fill it with a warm, friendly, pay us all your money welcome message for the user.
-            welcomeBanner.setText("Welcome back " +" " + acct.getEmail() + System.lineSeparator() + acct.getGivenName() + " " + acct.getFamilyName() + System.lineSeparator());
-            ContinueButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    GoogleAuthentication.this.finish();
-                   
-                }
-            });
-        }
+    private void signIn() {
+        Intent signInIntent = m_GoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_ON);
+        onActivityResult(RC_SIGN_ON, RC_SIGN_ON, signInIntent);
+        //finish();
     }
-
-    @Override protected void onStart()
-    {
-        super.onStart();
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -114,24 +76,73 @@ public class GoogleAuthentication  implements View.OnClickListener {
         {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
-          //  Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-           // handleSignInResult(task);
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
         }
     }
-
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Name = account.getEmail();
+            m_account = completedTask.getResult(ApiException.class);
+            Name = m_account.getEmail();
             // Signed in successfully, show authenticated UI.
-            CheckForExistingSignIn(account);
+            updateAuth(m_account);
         } catch (ApiException e) {
 
-            CheckForExistingSignIn(null);
+            updateAuth(null);
         }
     }
-    private void signOut() {
-        mGoogleSignInClient.signOut();
+    private void updateAuth(GoogleSignInAccount acct)
+    {
+        if(acct == null)
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+
+
+    protected GoogleSignInAccount getUser()//returns true only if m_account is null
+    {
+        return m_account;
+    }
+
+
+
+    @Override protected void onStart()
+    {
+        super.onStart();
+        setContentView(R.layout.sign_in_page);//set to our sign in page, our existing user check method has some logic that will either hide or make visible buttons depending on the case
+
+        //  findViewById(R.id.sign_in_button).setOnClickListener(this);
+      //  View ContinueButton = findViewById(R.id.continue_button);
+      //  ContinueButton.setVisibility(View.INVISIBLE);//make the continue button visible and
+        //CheckForExistingSignIn(m_account);
+      //  if(m_account == null)
+     //   {
+      //      Intent ii = m_GoogleSignInClient.getSignInIntent();
+      //      startActivityForResult(ii, RC_SIGN_ON);
+      //  }
+      //  else
+      //  {
+       //     finish();
+      //  }
+    }
+
+
+    protected void signOut()
+    {
+        m_GoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        //finish();
+                        setContentView(R.layout.sign_in_page);
+                    }
+                });
+
     }
     @Override protected void onStop()
     {

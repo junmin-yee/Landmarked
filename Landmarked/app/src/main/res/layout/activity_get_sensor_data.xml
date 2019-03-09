@@ -100,5 +100,14 @@
         app:layout_constraintTop_toTopOf="@+id/buttonCustom"
         app:layout_constraintVertical_bias="0.0" />
 
+    <Button
+        android:id="@+id/sign_out_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="GoogleSignOut"
+        android:text="Sign out"
+        tools:layout_editor_absoluteX="296dp"
+        tools:layout_editor_absoluteY="635dp" />
+
 
 </android.support.constraint.ConstraintLayout>

@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 
 import java.util.ArrayList;
@@ -46,6 +48,8 @@ public class LandmarkedMain extends AppCompatActivity {
     //Thread pool instance
     private ExecutorService m_thread;
     public LocalLandmarkPass landmarkGet;
+    GoogleSignInAccount m_user;
+    GoogleAuthentication m_authVar;
 
 
 
@@ -56,7 +60,17 @@ public class LandmarkedMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         m_thread = Executors.newSingleThreadExecutor();
+        //m_authVar = new GoogleAuthentication();
+        m_user = null;//GoogleSignIn.getLastSignedInAccount(this);
+      //  m_authVar.signOut();
 
+            Intent ii = new Intent(this, GoogleAuthentication.class);
+            startActivity(ii);
+
+      //  else
+      //  {
+
+     //   }
 
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
@@ -250,6 +264,12 @@ public class LandmarkedMain extends AppCompatActivity {
         }
     }
     @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+
+    }
+    @Override
     public void onResume()
     {
         super.onResume();
@@ -336,6 +356,11 @@ public class LandmarkedMain extends AppCompatActivity {
 
         startActivity(i);
         //finish();
+    }
+    public void GoogleSignOut(View v)
+    {
+       GoogleAuthentication auth = new GoogleAuthentication();
+       auth.signOut();
     }
 
     public void seeCustomLandmarks(View v)

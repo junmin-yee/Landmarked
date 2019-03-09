@@ -33,11 +33,5 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/continue_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Continue"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="531dp" />
+
 </android.support.constraint.ConstraintLayout>
