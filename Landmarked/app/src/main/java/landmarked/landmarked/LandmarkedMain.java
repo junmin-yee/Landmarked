@@ -50,7 +50,7 @@ public class LandmarkedMain extends AppCompatActivity {
     private ExecutorService m_thread;
     public LocalLandmarkPass landmarkGet;
     GoogleSignInAccount m_user;
-    GoogleAuthentication m_authVar;
+    
 
 
 
@@ -344,11 +344,7 @@ public class LandmarkedMain extends AppCompatActivity {
         startActivity(i);
         //finish();
     }
-    public void GoogleSignOut(View v)
-    {
-       GoogleAuthentication auth = new GoogleAuthentication();
-       auth.signOut();
-    }
+
 
     public void seeCustomLandmarks(View v)
     {
