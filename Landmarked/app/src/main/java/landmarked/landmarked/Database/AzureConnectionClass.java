@@ -20,11 +20,17 @@ public class AzureConnectionClass {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         mConnection = null;
+
+        String ConnectionURL = null;
         // Connect to database
-        String ConnectionURL = String.format("jdbc:jtds:sqlserver://landmarks.database.windows.net:1433;databaseName=Landmarked;" +
-                "user=landmarked.admin@landmarks;password=ReallyIntricatePassword18.;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
+
+
+
+
         try
         {
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            ConnectionURL = String.format("jdbc:jtds:sqlserver://landmarks.database.windows.net:1433;databaseName=Landmarked;user=landmarked.admin@landmarks;password=ReallyIntricatePassword18.;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
             mConnection = DriverManager.getConnection(ConnectionURL);
         }
         catch (SQLException se)

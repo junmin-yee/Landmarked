@@ -51,7 +51,7 @@ public class LandmarkedMain extends AppCompatActivity {
     public LocalLandmarkPass landmarkGet;
     GoogleSignInAccount m_user;
     public AzureConnectionClass mConn;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +62,8 @@ public class LandmarkedMain extends AppCompatActivity {
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
 
-
+        AzureConnectionClass conn = new AzureConnectionClass();
+        conn.Connect();
         setContentView(R.layout.activity_get_sensor_data);
 
         //Instantiate with this context
