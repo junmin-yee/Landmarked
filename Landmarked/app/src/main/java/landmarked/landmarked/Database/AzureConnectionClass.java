@@ -26,9 +26,10 @@ public class AzureConnectionClass {
 
         try
         {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");//Load the JDBC driver, this was one of the things that was missing. Without loading the driver, Android does not know where to find it.
             ConnectionURL = String.format("jdbc:jtds:sqlserver://landmarks.database.windows.net:1433;databaseName=Landmarked;user=landmarked.admin@landmarks;password=ReallyIntricatePassword18.;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
-            mConnection = DriverManager.getConnection(ConnectionURL);
+            mConnection = DriverManager.getConnection(ConnectionURL);//connect
         }
         catch (SQLException se)
         {
