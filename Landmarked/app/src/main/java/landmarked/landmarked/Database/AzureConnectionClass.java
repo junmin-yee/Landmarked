@@ -24,9 +24,6 @@ public class AzureConnectionClass {
         String ConnectionURL = null;
         // Connect to database
 
-
-
-
         try
         {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
