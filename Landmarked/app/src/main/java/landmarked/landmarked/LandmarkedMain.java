@@ -291,7 +291,7 @@ public class LandmarkedMain extends AppCompatActivity {
                     currLocation.getLongitude() + "\nElevation: " + currLocation.getAltitude());
 
             // Test Geocode Searching
-            mLandmarkRetrieval.LandmarkSearch(currLocation, null);
+            mLandmarkRetrieval.LandmarkProximitySearch(currLocation, null);
 
             List<CarmenFeature> test1 = mLandmarkRetrieval.getCarmenFeatureFwdResults();
             CarmenFeatureHelper test2 = new CarmenFeatureHelper(test1.get(0));

@@ -9,6 +9,7 @@ import com.mapbox.geojson.Point;
 import com.mapbox.api.geocoding.v5.GeocodingCriteria;
 import com.mapbox.api.geocoding.v5.MapboxGeocoding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -31,13 +32,15 @@ public class LandmarkRetrieval {
 
     // These categories limit the search results (or, at least, heavily bias them)
     // Need more categories or perhaps have the user define the search???
-    public final String mLandmarkCategories = "lake, water, natural, historic site, historic, forest, woods, mountain, hill, stadium, arena, field";
+    //public final String mLandmarkCategories = "lake, water, natural, historic site, historic, forest, woods, mountain, hill, stadium, arena, field"; // expanded list - perhaps unnecessary?
+    public final String mLandmarkCategories[] = {"natural", "historic", "tourism", "arena"}; // some basic categories... I've found that nearly all lakes, rivers, etc have the keyword "natural" and basically all else includes "historic" or "tourism"
 
     public LandmarkRetrieval() {
 
     }
 
     public LandmarkRetrieval(SensorData sensorData) {
+
         mSensorData = sensorData;
     }
     
@@ -192,8 +195,6 @@ public class LandmarkRetrieval {
     private void ProximityForwardGeocodeSearch(Location location){
         mCurrLocation = location;
 
-        ReverseGeocodeSearch(mCurrLocation);
-
         Location proximity_search = CalculateMaxLineofSight(); // NEEDS TO GET CHANGED TO USE BOUNDARY BOX
         // USE mGeoCodeSWLocation and mGeoCodeNELocation points to create
 
@@ -240,9 +241,9 @@ public class LandmarkRetrieval {
     }
 
     // Collect nearby Features from Reverse Geocode Search
-    public void LandmarkSearch(Location location, List<String> categories) {
+    public void LandmarkProximitySearch(Location location, List<String> categories) {
 
-        //ReverseGeocodeSearch(location);
+        ReverseGeocodeSearch(location);
         ProximityForwardGeocodeSearch(location);
 
         // Use mResults and a set of defined-properties for the user to display. Filter GeoJSON if necessary.
