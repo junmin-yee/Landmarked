@@ -194,6 +194,7 @@ public class LandmarkRetrieval {
         });
     }
 
+    // Proximity based forward geocode search on point generated in front of location.
     private void ProximityForwardGeocodeSearch(Location location, String category){
         mCurrLocation = location;
 
@@ -242,29 +243,107 @@ public class LandmarkRetrieval {
         });
     }
 
-    // Collect nearby Features from Reverse Geocode Search
+    // Boundary Box Forward Geocode search based on BB in front of user.
+    private void BoundaryBoxForwardGeocodeSearch(Location location, String category){
+        mCurrLocation = location;
+
+        CalculateBoundaryBox(); // NEEDS TO GET CHANGED TO USE BOUNDARY BOX
+        // USE mGeoCodeSWLocation and mGeoCodeNELocation points to create
+        Point SWPoint = Point.fromLngLat(mGeoCodeSWLocation.getLongitude(), mGeoCodeSWLocation.getLatitude());
+        Point NEPoint = Point.fromLngLat(mGeoCodeNELocation.getLongitude(), mGeoCodeNELocation.getLatitude());
+
+        // Hardcoded "lake" for testing purposes - must set up a better way. One potential solution (but very inefficient) would be to have separate queries for each type of landmark.
+        String query_string = category + " near " + mRevResults.get(0).placeName(); //+ mCurrLocation.getLongitude() + ", " + mCurrLocation.getLatitude();
+
+        // Sets Access Token
+        // Constructs query based on search criteria defined in "query_string".
+        // Proximity to point - currently at current user location.
+        // Maximum limit of results for forward geocoding is 10.
+        // Build simply constructs the query, must be at end.
+        MapboxGeocoding forwardGeocode = MapboxGeocoding.builder()
+                .accessToken("pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g")
+                .query(query_string)
+                .bbox(SWPoint, NEPoint)
+                .limit(10)
+                .build();
+
+        forwardGeocode.enqueueCall(new Callback<GeocodingResponse>() {
+            @Override
+            public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) {
+
+                mFwdResults = response.body().features();
+
+                if (mFwdResults.size() > 0) {
+
+                    // Log the location of response.
+                    Log.d(TAG, "onResponse: " + mFwdResults.size() + " results at " + location.toString());
+
+                } else {
+
+                    // No results were found.
+                    Log.d(TAG, "onResponse: No result found");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
+                // Failed to send request
+                throwable.printStackTrace();
+            }
+        });
+    }
+
+    // Collect nearby Features from Proximity Geocode Search
     public void LandmarkProximitySearch(Location location) {
 
         ReverseGeocodeSearch(location);
         if(mRevResults != null) {
             for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
                 ProximityForwardGeocodeSearch(location, mLandmarkCategories[iterator]);
-                if (mFwdResults != null) {
-                    if (mRetResults == null) {
-                        mRetResults = mFwdResults;
+                if (mFwdResults != null || mFwdResults.size() > 0) {
+                    if (mProximityResults == null) {
+                        mProximityResults = mFwdResults;
                     }
-                    mRetResults.removeAll(mFwdResults); // remove any objects existing in mFwdResults from mRetResults.
-                    mRetResults.addAll(mFwdResults); // add all objects in mFwdResults to mRetResults.
+                    mProximityResults.removeAll(mFwdResults); // remove any objects existing in mFwdResults from mRetResults.
+                    mProximityResults.addAll(mFwdResults); // add all objects in mFwdResults to mRetResults.
                 }
             }
         }
     }
 
-    public List<CarmenFeature> getLandmarkSearchResults() {
+    // Collect nearby Features from Boundary Box Geocode Search
+    public void LandmarkBoundaryBoxSearch(Location location) {
+
+        ReverseGeocodeSearch(location);
+        if(mRevResults != null) {
+            for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
+                BoundaryBoxForwardGeocodeSearch(location, mLandmarkCategories[iterator]);
+                if (mFwdResults != null || mFwdResults.size() > 0) {
+                    if (mBoundaryBoxResults == null) {
+                        mBoundaryBoxResults = mFwdResults;
+                    }
+                    mBoundaryBoxResults.removeAll(mFwdResults); // remove any objects existing in mFwdResults from mRetResults.
+                    mBoundaryBoxResults.addAll(mFwdResults); // add all objects in mFwdResults to mRetResults.
+                }
+            }
+        }
+    }
+
+    public List<CarmenFeature> getLandmarkProximitySearchResults() {
 
         // Return list of Carmen Features.
-        List<CarmenFeature> retResults = this.mRetResults;
+        List<CarmenFeature> retResults = this.mProximityResults;
         return retResults;
     }
+
+    public List<CarmenFeature> getLandmarkBoundaryBoxSearchResults() {
+
+        // Return list of Carmen Features.
+        List<CarmenFeature> retResults = this.mBoundaryBoxResults;
+        return retResults;
+    }
+
+
 
 }

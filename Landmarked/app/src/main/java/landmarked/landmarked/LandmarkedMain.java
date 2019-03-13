@@ -291,15 +291,17 @@ public class LandmarkedMain extends AppCompatActivity {
                     currLocation.getLongitude() + "\nElevation: " + currLocation.getAltitude());
 
             // Test Geocode Searching
-            mLandmarkRetrieval.LandmarkBoundaryBoxSearch(currLocation);
+            mLandmarkRetrieval.LandmarkProximitySearch(currLocation);
+            //mLandmarkRetrieval.LandmarkBoundaryBoxSearch(currLocation);
 
-            List<CarmenFeature> test1 = mLandmarkRetrieval.getLandmarkBoundaryBoxSearchResults();
+            List<CarmenFeature> test1 = mLandmarkRetrieval.getLandmarkProximitySearchResults();
+            //List<CarmenFeature> test1 = mLandmarkRetrieval.getLandmarkBoundaryBoxSearchResults();
             CarmenFeatureHelper test2;
             if (test1 != null && test1.size() > 0) {
                 test2 = new CarmenFeatureHelper(test1.get(0));
 
                 boolean test_elev = test2.checkElevationExists();
-                double elev_result = 0;
+                double elev_result;
                 if (test_elev)
                     elev_result = test2.getLandmarkElevation();
                 else {
