@@ -15,9 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoadingPage"
-            android:label="@string/title_activity_loading_page"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".LoadingPage"/>
         <activity android:name=".LandmarkSelected" />
         <activity android:name=".LandmarkedMain">
             <intent-filter>
