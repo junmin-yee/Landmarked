@@ -355,4 +355,11 @@ public class LandmarkedMain extends AppCompatActivity {
         return m_instance;
     }
 
+    public void GoogleSignOut()
+    {
+        GoogleAuthentication m_auth = new GoogleAuthentication();
+        m_auth.signOut();
+
+    }
+
 }

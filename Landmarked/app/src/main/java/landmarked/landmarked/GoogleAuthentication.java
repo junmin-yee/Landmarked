@@ -39,6 +39,8 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                 .requestProfile()
                 .build();
         m_GoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
     }
 
     //onStart looks for an account already signed in. The flow goes like this:
