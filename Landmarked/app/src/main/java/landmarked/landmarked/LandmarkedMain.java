@@ -291,9 +291,9 @@ public class LandmarkedMain extends AppCompatActivity {
                     currLocation.getLongitude() + "\nElevation: " + currLocation.getAltitude());
 
             // Test Geocode Searching
-            mLandmarkRetrieval.LandmarkProximitySearch(currLocation);
+            mLandmarkRetrieval.LandmarkBoundaryBoxSearch(currLocation);
 
-            List<CarmenFeature> test1 = mLandmarkRetrieval.getLandmarkSearchResults();
+            List<CarmenFeature> test1 = mLandmarkRetrieval.getLandmarkBoundaryBoxSearchResults();
             CarmenFeatureHelper test2;
             if (test1 != null && test1.size() > 0) {
                 test2 = new CarmenFeatureHelper(test1.get(0));
@@ -321,6 +321,8 @@ public class LandmarkedMain extends AppCompatActivity {
                 //CarmenFeatureHelper test2;
                 //test2 = new CarmenFeatureHelper(mFwdResults.get(0)); // gets only the first feature in the List object. Must iterate through for every CarmenFeature returned by getCarmenFeatureFwdResults.
             }
+            else
+                throw new NullPointerException("Landmark search test failed."); // temporary so the UI seems to be a bit more fluid. Otherwise it will display data but not have any landmarks.
 
         }
         catch (SecurityException | NullPointerException e){

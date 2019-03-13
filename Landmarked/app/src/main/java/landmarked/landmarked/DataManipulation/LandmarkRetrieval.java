@@ -29,7 +29,8 @@ public class LandmarkRetrieval {
     private Location mGeoCodeNELocation;
     public List<CarmenFeature> mRevResults;
     public List<CarmenFeature> mFwdResults;
-    public List<CarmenFeature> mRetResults;
+    public List<CarmenFeature> mProximityResults;
+    public List<CarmenFeature> mBoundaryBoxResults;
 
     // These categories limit the search results (or, at least, heavily bias them)
     // Need more categories or perhaps have the user define the search???
