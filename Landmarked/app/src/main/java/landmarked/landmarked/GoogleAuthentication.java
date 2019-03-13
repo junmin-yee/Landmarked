@@ -73,7 +73,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         Intent signInIntent = m_GoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_ON);
         onActivityResult(RC_SIGN_ON, RC_SIGN_ON, signInIntent);
-        //finish();
+        finish();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)

@@ -19,7 +19,12 @@ public class CarmenFeatureHelper {
         mLandmarkLongitude = carmenFeature.center().longitude();
 
         // Returns null if there is no wikidata entry within "properties"
-        mLandmarkWikiData = carmenFeature.properties().get("wikidata").getAsString();
+        if(carmenFeature.properties().has("wikidata")){
+            mLandmarkWikiData = carmenFeature.properties().get("wikidata").getAsString();
+        }
+        else {
+            mLandmarkWikiData = "";
+        }
 
         // Checks if landmark has an associated altitude
         if ( carmenFeature.center().hasAltitude() ) {
@@ -39,26 +44,26 @@ public class CarmenFeatureHelper {
         mLandmarkPlaceName = carmenFeature.placeName();
     }
 
-    public double getmLandmarkLatitude() {
+    public double getLandmarkLatitude() {
         return mLandmarkLatitude;
     }
 
-    public double getmLandmarkLongitude() {
+    public double getLandmarkLongitude() {
         return mLandmarkLongitude;
     }
 
-    public String getmLandmarkName() {
+    public String getLandmarkName() {
         return mLandmarkName;
     }
 
-    public String getmLandmarkPlaceName() {
+    public String getLandmarkPlaceName() {
         return mLandmarkPlaceName;
     }
 
-    public String getmLandmarkWikiData() { return mLandmarkWikiData; }
+    public String getLandmarkWikiData() { return mLandmarkWikiData; }
 
     // Call checkElevationExists before trusting this value.
-    public double getmLandmarkElevation() {
+    public double getLandmarkElevation() {
         return mLandmarkElevation;
     }
 

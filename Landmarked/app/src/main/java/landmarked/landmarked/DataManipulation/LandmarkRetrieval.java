@@ -9,6 +9,7 @@ import com.mapbox.geojson.Point;
 import com.mapbox.api.geocoding.v5.GeocodingCriteria;
 import com.mapbox.api.geocoding.v5.MapboxGeocoding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,16 +29,19 @@ public class LandmarkRetrieval {
     private Location mGeoCodeNELocation;
     public List<CarmenFeature> mRevResults;
     public List<CarmenFeature> mFwdResults;
+    public List<CarmenFeature> mRetResults;
 
     // These categories limit the search results (or, at least, heavily bias them)
     // Need more categories or perhaps have the user define the search???
-    public final String mLandmarkCategories = "lake, water, natural, historic site, historic, forest, woods, mountain, hill, stadium, arena, field";
+    //public final String mLandmarkCategories = "lake, water, natural, historic site, historic, forest, woods, mountain, hill, stadium, arena, field"; // expanded list - perhaps unnecessary?
+    public final String mLandmarkCategories[] = {"natural", "historic", "tourism", "arena"}; // some basic categories... I've found that nearly all lakes, rivers, etc have the keyword "natural" and basically all else includes "historic" or "tourism"
 
     public LandmarkRetrieval() {
 
     }
 
     public LandmarkRetrieval(SensorData sensorData) {
+
         mSensorData = sensorData;
     }
     
@@ -189,16 +193,14 @@ public class LandmarkRetrieval {
         });
     }
 
-    private void ForwardGeocodeSearch(Location location){
+    private void ProximityForwardGeocodeSearch(Location location, String category){
         mCurrLocation = location;
-
-        ReverseGeocodeSearch(mCurrLocation);
 
         Location proximity_search = CalculateMaxLineofSight(); // NEEDS TO GET CHANGED TO USE BOUNDARY BOX
         // USE mGeoCodeSWLocation and mGeoCodeNELocation points to create
 
         // Hardcoded "lake" for testing purposes - must set up a better way. One potential solution (but very inefficient) would be to have separate queries for each type of landmark.
-        String query_string = "lake near " + mRevResults.get(0).placeName();//+ mCurrLocation.getLongitude() + ", " + mCurrLocation.getLatitude();
+        String query_string = category + " near " + mRevResults.get(0).placeName(); //+ mCurrLocation.getLongitude() + ", " + mCurrLocation.getLatitude();
 
         // Sets Access Token
         // Constructs query based on search criteria defined in "query_string".
@@ -240,26 +242,28 @@ public class LandmarkRetrieval {
     }
 
     // Collect nearby Features from Reverse Geocode Search
-    public void LandmarkSearch(Location location, List<String> categories) {
+    public void LandmarkProximitySearch(Location location) {
 
-        //ReverseGeocodeSearch(location);
-        ForwardGeocodeSearch(location);
-
-        // Use mResults and a set of defined-properties for the user to display. Filter GeoJSON if necessary.
-        // mResults
-
-
-        // A non-exhaustive list of categories is: lake, water, natural, historic site, historic, forest, woods
-        //mResults.get(0).properties().get("category");
-
-
+        ReverseGeocodeSearch(location);
+        if(mRevResults != null) {
+            for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
+                ProximityForwardGeocodeSearch(location, mLandmarkCategories[iterator]);
+                if (mFwdResults != null) {
+                    if (mRetResults == null) {
+                        mRetResults = mFwdResults;
+                    }
+                    mRetResults.removeAll(mFwdResults); // remove any objects existing in mFwdResults from mRetResults.
+                    mRetResults.addAll(mFwdResults); // add all objects in mFwdResults to mRetResults.
+                }
+            }
+        }
     }
 
-    public List<CarmenFeature> getCarmenFeatureFwdResults() {
+    public List<CarmenFeature> getLandmarkSearchResults() {
 
         // Return list of Carmen Features.
-        List<CarmenFeature> fwdResults = this.mFwdResults;
-        return fwdResults;
+        List<CarmenFeature> retResults = this.mRetResults;
+        return retResults;
     }
 
 }
