@@ -4,6 +4,8 @@ package landmarked.landmarked.Database;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.Date;
 
@@ -19,7 +21,7 @@ import java.util.Date;
 
 
 @Entity
-public class LocalLandmark  {
+public class LocalLandmark implements Parcelable {
 
 
 
@@ -103,5 +105,38 @@ public class LocalLandmark  {
         return m_wiki_info;
     }
 
+    public int describeContents()
+    {return 0;}
 
+    public  void writeToParcel(Parcel output, int flags)
+    {
+        output.writeString(m_name);
+        output.writeString(m_latitude);
+        output.writeString(m_longitude);
+        output.writeFloat(m_elevation);
+        output.writeString(m_wiki_info);
+        output.writeLong(m_date_saved.getTime());
+    }
+
+    public static final Creator<LocalLandmark> CREATOR = new Creator<LocalLandmark>() {
+        @Override
+        public LocalLandmark createFromParcel(Parcel input) {
+            return new LocalLandmark(input);
+        }
+
+        @Override
+        public LocalLandmark[] newArray(int size) {
+            return new LocalLandmark[size];
+        }
+    };
+
+    private LocalLandmark(Parcel input)
+    {
+        m_name = input.readString();
+        m_latitude = input.readString();
+        m_longitude = input.readString();
+        m_elevation = input.readFloat();
+        m_wiki_info = input.readString();
+        m_date_saved = new Date(input.readLong());
+    }
 }

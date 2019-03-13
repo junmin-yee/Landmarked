@@ -48,7 +48,7 @@ public class LandmarkedMain extends AppCompatActivity {
     AppDatabase db;
     //Thread pool instance
     private ExecutorService m_thread;
-    public LocalLandmarkPass landmarkGet;
+    public ArrayList<LocalLandmark> landmarkGet = new ArrayList<>();
     GoogleSignInAccount m_user;
     public AzureConnectionClass mConn;
 
@@ -57,7 +57,7 @@ public class LandmarkedMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         m_thread = Executors.newSingleThreadExecutor();
         Intent ii = new Intent(this, GoogleAuthentication.class);
-        startActivity(ii);
+        //startActivity(ii);
         m_instance = this;
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
@@ -315,7 +315,20 @@ public class LandmarkedMain extends AppCompatActivity {
 
                 //elev_result = 0; // throwaway
 
-                landmarkGet = new LocalLandmarkPass(lan_placename, Double.toString(lat_result), Double.toString(lon_result), (float) elev_result);
+                landmarkGet.clear();
+                for(int i = 0; i < test1.size(); i++)
+                {
+                    CarmenFeatureHelper retriever = new CarmenFeatureHelper(test1.get(i));
+
+                    double lat = retriever.getLandmarkLatitude();
+                    double lon = retriever.getLandmarkLongitude();
+                    String name = retriever.getLandmarkName();
+                    String placename = retriever.getLandmarkName();
+                    String wikidata = retriever.getLandmarkWikiData();
+                    Date lan_date = new Date();
+
+                    landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
+                }
 
                 // Example Usage of getCarmenFeatureFwdResults:
                 //List<CarmenFeature> test1;
@@ -353,7 +366,7 @@ public class LandmarkedMain extends AppCompatActivity {
     {
         Intent customLand = new Intent(this, CustomLandmark.class);
 
-        customLand.putExtra("sending_landmark", landmarkGet);
+        customLand.putParcelableArrayListExtra("sending_landmark", landmarkGet);
 
         startActivity(customLand);
     }

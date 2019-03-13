@@ -2,6 +2,7 @@ package landmarked.landmarked.Database;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,11 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import java.util.ArrayList;
 import landmarked.landmarked.R;
 
 import landmarked.landmarked.LandmarkSelected;
 
-class LandmarkLayout extends LinearLayout
+class LandmarkLayout extends LinearLayout //Needs to be updated to take LocalLandmarks instead
 {
     private LocalLandmarkPass m_landmark;
 
@@ -34,6 +36,10 @@ public class CustomLandmark extends AppCompatActivity {
     public TextView tempView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*SharedPreferences themePref = this.getSharedPreferences("LandmarkedPreferences", MODE_PRIVATE);
+        int myTheme = themePref.getInt("themePreferences", R.style.AppTheme);
+        setTheme(myTheme);*/
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_landmark);
 
@@ -46,11 +52,11 @@ public class CustomLandmark extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        LocalLandmarkPass recievedLandmark = (LocalLandmarkPass)i.getParcelableExtra("sending_landmark");
+        ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_landmark");
 
-        if(recievedLandmark != null)
+        for(int v = 0; v < recievedLandmark.size(); v++)
         {
-            AddElement(recievedLandmark.getName(), recievedLandmark.getLatitiude(), recievedLandmark.getLongitude(), recievedLandmark.getElevation());
+            AddElement(recievedLandmark.get(v).getName(), recievedLandmark.get(v).getLatitude(), recievedLandmark.get(v).getLongitude(), recievedLandmark.get(v).getElevation());
         }
 
             /*for (CarmenFeature feat : landmarkList) {
@@ -64,8 +70,8 @@ public class CustomLandmark extends AppCompatActivity {
             }*/
 
 
-        AddElement("temp", "34.5634", "-54.4464", (float)1000.65);
-        AddElement("Shasta(fake)", "23.565", "-46.54", (float)2365.76784);
+        //AddElement("temp", "34.5634", "-54.4464", (float)1000.65);
+        //AddElement("Shasta(fake)", "23.565", "-46.54", (float)2365.76784);
     }
 
     void AddElement(String name, String latitude, String longitude, float elevation)
