@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class AzureConnectionClass {
-    private Connection mConnection;
+    private static Connection mConnection;
 
     public AzureConnectionClass()
     {
