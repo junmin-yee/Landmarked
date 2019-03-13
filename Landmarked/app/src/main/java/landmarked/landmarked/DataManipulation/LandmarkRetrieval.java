@@ -189,7 +189,7 @@ public class LandmarkRetrieval {
         });
     }
 
-    private void ForwardGeocodeSearch(Location location){
+    private void ProximityForwardGeocodeSearch(Location location){
         mCurrLocation = location;
 
         ReverseGeocodeSearch(mCurrLocation);
@@ -243,7 +243,7 @@ public class LandmarkRetrieval {
     public void LandmarkSearch(Location location, List<String> categories) {
 
         //ReverseGeocodeSearch(location);
-        ForwardGeocodeSearch(location);
+        ProximityForwardGeocodeSearch(location);
 
         // Use mResults and a set of defined-properties for the user to display. Filter GeoJSON if necessary.
         // mResults
