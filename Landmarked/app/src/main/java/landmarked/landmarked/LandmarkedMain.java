@@ -291,33 +291,36 @@ public class LandmarkedMain extends AppCompatActivity {
                     currLocation.getLongitude() + "\nElevation: " + currLocation.getAltitude());
 
             // Test Geocode Searching
-            mLandmarkRetrieval.LandmarkProximitySearch(currLocation, null);
+            mLandmarkRetrieval.LandmarkProximitySearch(currLocation);
 
-            List<CarmenFeature> test1 = mLandmarkRetrieval.getCarmenFeatureFwdResults();
-            CarmenFeatureHelper test2 = new CarmenFeatureHelper(test1.get(0));
+            List<CarmenFeature> test1 = mLandmarkRetrieval.getLandmarkSearchResults();
+            CarmenFeatureHelper test2;
+            if (test1 != null && test1.size() > 0) {
+                test2 = new CarmenFeatureHelper(test1.get(0));
 
-            boolean test_elev = test2.checkElevationExists();
-            double elev_result = 0;
-            if (test_elev)
-                elev_result = test2.getLandmarkElevation();
-            else {
-                elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
+                boolean test_elev = test2.checkElevationExists();
+                double elev_result = 0;
+                if (test_elev)
+                    elev_result = test2.getLandmarkElevation();
+                else {
+                    elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
+                }
+                double lat_result = test2.getLandmarkLatitude();
+                double lon_result = test2.getLandmarkLongitude();
+                String lan_name = test2.getLandmarkName();
+                String lan_placename = test2.getLandmarkPlaceName();
+                String lan_wikidata = test2.getLandmarkWikiData();
+
+                //elev_result = 0; // throwaway
+
+                landmarkGet = new LocalLandmarkPass(lan_placename, Double.toString(lat_result), Double.toString(lon_result), (float) elev_result);
+
+                // Example Usage of getCarmenFeatureFwdResults:
+                //List<CarmenFeature> test1;
+                //test1 =mLandmarkRetrieval.getCarmenFeatureFwdResults(); // returns a List<CarmenFeature> of variable size.
+                //CarmenFeatureHelper test2;
+                //test2 = new CarmenFeatureHelper(mFwdResults.get(0)); // gets only the first feature in the List object. Must iterate through for every CarmenFeature returned by getCarmenFeatureFwdResults.
             }
-            double lat_result = test2.getLandmarkLatitude();
-            double lon_result = test2.getLandmarkLongitude();
-            String lan_name = test2.getLandmarkName();
-            String lan_placename = test2.getLandmarkPlaceName();
-            String lan_wikidata = test2.getLandmarkWikiData();
-
-            //elev_result = 0; // throwaway
-
-            landmarkGet = new LocalLandmarkPass(lan_placename, Double.toString(lat_result), Double.toString(lon_result), (float) elev_result);
-
-            // Example Usage of getCarmenFeatureFwdResults: 
-            //List<CarmenFeature> test1;
-            //test1 =mLandmarkRetrieval.getCarmenFeatureFwdResults(); // returns a List<CarmenFeature> of variable size.
-            //CarmenFeatureHelper test2;
-            //test2 = new CarmenFeatureHelper(mFwdResults.get(0)); // gets only the first feature in the List object. Must iterate through for every CarmenFeature returned by getCarmenFeatureFwdResults.
 
         }
         catch (SecurityException | NullPointerException e){
