@@ -299,15 +299,15 @@ public class LandmarkedMain extends AppCompatActivity {
             boolean test_elev = test2.checkElevationExists();
             double elev_result = 0;
             if (test_elev)
-                elev_result = test2.getmLandmarkElevation();
+                elev_result = test2.getLandmarkElevation();
             else {
                 elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
             }
-            double lat_result = test2.getmLandmarkLatitude();
-            double lon_result = test2.getmLandmarkLongitude();
-            String lan_name = test2.getmLandmarkName();
-            String lan_placename = test2.getmLandmarkPlaceName();
-            String lan_wikidata = test2.getmLandmarkWikiData();
+            double lat_result = test2.getLandmarkLatitude();
+            double lon_result = test2.getLandmarkLongitude();
+            String lan_name = test2.getLandmarkName();
+            String lan_placename = test2.getLandmarkPlaceName();
+            String lan_wikidata = test2.getLandmarkWikiData();
 
             //elev_result = 0; // throwaway
 
