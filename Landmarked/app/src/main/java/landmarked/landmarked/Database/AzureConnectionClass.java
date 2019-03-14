@@ -23,6 +23,11 @@ public class AzureConnectionClass {
         mConnection = null;
     }
 
+    public Connection ConnectionGetInstance()
+    {
+        return mConnection;
+    }
+
     public Connection Connect()
     {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
