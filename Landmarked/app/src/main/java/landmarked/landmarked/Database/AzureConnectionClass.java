@@ -114,7 +114,11 @@ public class AzureConnectionClass {
         ArrayList lst = new ArrayList();
         try
         {
-            String query = "SELECT * FROM dbo.Landmark";
+            String query = "SELECT *" +
+                    "FROM Landmark" +
+                    "JOIN UserLandmark ON Landmark.LandmarkID=UserLandmark.LandmarkID" +
+                    "JOIN AppUser ON AppUser.UserID=UserLandmark.UserID" +
+                    "WHERE AppUser.UserID = UserLandmark.UserID;";
             Statement m_query = mConnection.createStatement();
             ResultSet Landmarks = m_query.executeQuery(query);
             while (Landmarks.next())
