@@ -20,13 +20,17 @@ import com.google.android.gms.tasks.Task;
 import android.widget.TextView;
 import java.util.concurrent.TimeUnit ;
 import android.support.annotation.NonNull;
+import java.sql.Connection;
+
+import landmarked.landmarked.Database.AzureConnectionClass;
 
 public class GoogleAuthentication extends AppCompatActivity implements View.OnClickListener {
     static GoogleSignInClient m_GoogleSignInClient;
     GoogleSignInAccount m_account;
     final int RC_SIGN_ON = 9001;
     public String Name;
-
+    Connection m_conn_instance;
+    AzureConnectionClass m_azure;
 
 
 
@@ -39,7 +43,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                 .requestProfile()
                 .build();
         m_GoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
+        m_conn_instance = m_azure.ConnectionGetInstance();
 
     }
 

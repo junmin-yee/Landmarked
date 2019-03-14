@@ -23,7 +23,7 @@ public class AzureConnectionClass {
         mConnection = null;
     }
 
-    public Connection ConnectionGetInstance()
+    public static Connection ConnectionGetInstance()
     {
         return mConnection;
     }
