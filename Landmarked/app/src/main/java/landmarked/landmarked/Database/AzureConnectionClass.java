@@ -95,27 +95,40 @@ public class AzureConnectionClass {
             }
 
         }
-
-        public ArrayList<LocalLandmark> getUserSpecificLandmarksByEmail()
+        catch (SQLException se)
         {
-            ArrayList lst = new ArrayList();
-            try
-            {
-                String query = "SELECT * FROM dbo.Landmark";
-                Statement m_query = mConnection.createStatement();
-                ResultSet Landmarks = m_query.executeQuery(query);
-                while (Landmarks.next())
-                {
-                    String name = Landmarks.getString("LandmarkName");
-                    String latitude = Landmarks.getString("LandmarkLat");
-                    String longitude = Landmarks.getString("LandmarkLong");
-                    float elevation = Landmarks.getFloat("LandmarkEle");
-                    String wiki = Landmarks.getString("LandmarkWikiInfo");
-                    LocalLandmark temp = new LocalLandmark(name, latitude,longitude,elevation,wiki,new Date());
-                    lst.add(temp);
-                }
+            Log.e("Error 1","Failed to connect to SQL Database");
+        }
+        catch (Exception e)
+        {
+            Log.e("Error 2","Something went wrong");
+        }
 
+
+
+        return lst;
+    }
+
+    public ArrayList<LocalLandmark> getLandmarksByEmail()
+    {
+        ArrayList lst = new ArrayList();
+        try
+        {
+            String query = "SELECT * FROM dbo.Landmark";
+            Statement m_query = mConnection.createStatement();
+            ResultSet Landmarks = m_query.executeQuery(query);
+            while (Landmarks.next())
+            {
+                String name = Landmarks.getString("LandmarkName");
+                String latitude = Landmarks.getString("LandmarkLat");
+                String longitude = Landmarks.getString("LandmarkLong");
+                float elevation = Landmarks.getFloat("LandmarkEle");
+                String wiki = Landmarks.getString("LandmarkWikiInfo");
+                LocalLandmark temp = new LocalLandmark(name, latitude,longitude,elevation,wiki,new Date());
+                lst.add(temp);
             }
+
+        }
         catch (SQLException se)
         {
             Log.e("Error 1","Failed to connect to SQL Database");
