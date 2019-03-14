@@ -103,7 +103,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
 
-    public void InsertAzure()
+    public void InsertAzure(String name, String latitude, String longitude, float elevation, String wiki)
     {
         Runnable runCommand = new Runnable() {
             @Override
