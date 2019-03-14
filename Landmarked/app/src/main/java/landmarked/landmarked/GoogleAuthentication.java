@@ -79,12 +79,12 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void GetUserLandmarksFromAzure()
+    private void GetUserLandmarksFromAzure(String email)
     {
         Runnable runCommand = new Runnable() {
             @Override
             public void run() {
-                m_conn_instance.
+                m_azure.getLandmarksByEmail(email);
             }
         };
         m_thread.execute(runCommand);
