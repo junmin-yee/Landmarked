@@ -50,7 +50,7 @@ public class LandmarkedMain extends AppCompatActivity {
     //DB instance
     AppDatabase db;
     //Thread pool instance
-    private ExecutorService m_thread;
+    private static ExecutorService m_thread;
     public ArrayList<LocalLandmark> landmarkGet = new ArrayList<>();
     GoogleSignInAccount m_user;
     public static AzureConnectionClass m_conn;
@@ -106,7 +106,10 @@ public class LandmarkedMain extends AppCompatActivity {
         mSensorData.unregisterLocationSensor();
     }
 
-
+    public ExecutorService getThreadPoolInstance()
+    {
+        return m_thread;
+    }
     public ArrayList<LocalLandmark> getLandmarksAzure()
     {
         ArrayList<LocalLandmark>lst = new ArrayList<LocalLandmark>();

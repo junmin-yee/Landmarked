@@ -112,6 +112,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     {
         if(acct == null)
         {
+
             setContentView(R.layout.sign_in_page);
             findViewById(R.id.sign_in_button).setOnClickListener(this);
         }
