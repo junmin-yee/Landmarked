@@ -406,6 +406,14 @@ public class LandmarkedMain extends AppCompatActivity {
 
         startActivity(customLand);
     }
+
+    public void seeHistoryPage(View v)
+    {
+        Intent hist = new Intent(this, LandmarkHistory.class);
+        hist.putParcelableArrayListExtra("sending_history", landmarkGet);
+        startActivity(hist);
+    }
+
     public static LandmarkedMain getInstance()//return instance of main activity
     {
         return m_instance;

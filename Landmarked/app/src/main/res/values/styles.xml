@@ -14,6 +14,28 @@
 
     <style name="ListElemImg">
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content"</style>
+
+    <style name="DarkTheme" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="colorPrimary">#1e2756</item>
+        <item name="colorPrimaryDark">#141831</item>
+        <item name="android:colorAccent">#2aac4b</item>
+    </style>
+
+    <style name="BlackTheme">
+        <item name="android:background">#3f3f3f</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="newTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:colorPrimary">#777777</item>
+        <item name="android:colorPrimaryDark">#555555</item>
+        <item name="android:colorAccent">#457067</item>
+        <item name="android:background">#efebe9</item>
     </style>
 </resources>

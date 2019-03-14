@@ -21,7 +21,7 @@ import static android.support.constraint.Constraints.TAG;
 public class LandmarkRetrieval {
     final int EARTH_RADIUS = 6378137;
     final double BEARING_ERROR = 0.01;
-    final double DIRECTION_SHIFT = 0.05;
+    final double DIRECTION_SHIFT = 0.15;
 
     private SensorData mSensorData;
     private Location mCurrLocation;
@@ -35,7 +35,7 @@ public class LandmarkRetrieval {
     // These categories limit the search results (or, at least, heavily bias them)
     // Need more categories or perhaps have the user define the search???
     //public final String mLandmarkCategories = "lake, water, natural, historic site, historic, forest, woods, mountain, hill, stadium, arena, field"; // expanded list - perhaps unnecessary?
-    public final String mLandmarkCategories[] = {"natural", "historic", "tourism", "arena"}; // some basic categories... I've found that nearly all lakes, rivers, etc have the keyword "natural" and basically all else includes "historic" or "tourism"
+    public final String mLandmarkCategories[] = {"lake", "river", "natural", "historic", "tourism", "arena"}; // some basic categories... I've found that nearly all lakes, rivers, etc have the keyword "natural" and basically all else includes "historic" or "tourism"
 
     public LandmarkRetrieval() {
 
@@ -57,9 +57,9 @@ public class LandmarkRetrieval {
 
         // Check phone pitch
         if (pitch < -Math.PI/4)
+            losdistance = 10000;
+        else if (pitch > -Math.PI/4)// && pitch < 0)
             losdistance = 5000;
-        else if (pitch > -Math.PI/4 && pitch < 0)
-            losdistance = 2000;
 
         // Calculate change in distance in Cartesian
         double x = losdistance*Math.sin(pitch)*Math.cos(roll);
@@ -212,7 +212,7 @@ public class LandmarkRetrieval {
         MapboxGeocoding forwardGeocode = MapboxGeocoding.builder()
                 .accessToken("pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g")
                 .query(query_string)
-                .proximity(Point.fromLngLat(proximity_search.getLongitude(), proximity_search.getLatitude()))      // Useful for setting a bias of results toward a specific point - Calculate point in front of user?
+                .proximity(Point.fromLngLat(proximity_search.getLongitude(), proximity_search.getLatitude()))
                 .limit(10)
                 .build();
 
@@ -247,7 +247,7 @@ public class LandmarkRetrieval {
     private void BoundaryBoxForwardGeocodeSearch(Location location, String category){
         mCurrLocation = location;
 
-        CalculateBoundaryBox(); // NEEDS TO GET CHANGED TO USE BOUNDARY BOX
+        CalculateBoundaryBox();
         // USE mGeoCodeSWLocation and mGeoCodeNELocation points to create
         Point SWPoint = Point.fromLngLat(mGeoCodeSWLocation.getLongitude(), mGeoCodeSWLocation.getLatitude());
         Point NEPoint = Point.fromLngLat(mGeoCodeNELocation.getLongitude(), mGeoCodeNELocation.getLatitude());
@@ -264,6 +264,7 @@ public class LandmarkRetrieval {
                 .accessToken("pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g")
                 .query(query_string)
                 .bbox(SWPoint, NEPoint)
+                .proximity(Point.fromLngLat(mCurrLocation.getLongitude(), mCurrLocation.getLatitude()))
                 .limit(10)
                 .build();
 
@@ -301,12 +302,14 @@ public class LandmarkRetrieval {
         if(mRevResults != null) {
             for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
                 ProximityForwardGeocodeSearch(location, mLandmarkCategories[iterator]);
-                if (mFwdResults != null || mFwdResults.size() > 0) {
+                if (mFwdResults != null) {
                     if (mProximityResults == null) {
                         mProximityResults = mFwdResults;
                     }
-                    mProximityResults.removeAll(mFwdResults); // remove any objects existing in mFwdResults from mRetResults.
-                    mProximityResults.addAll(mFwdResults); // add all objects in mFwdResults to mRetResults.
+                    else if(mFwdResults.size() > 0){
+                        mProximityResults.removeAll(mFwdResults); // remove any objects existing in mFwdResults from mRetResults.
+                        mProximityResults.addAll(mFwdResults); // add all objects in mFwdResults to mRetResults.
+                    }
                 }
             }
         }
@@ -319,16 +322,18 @@ public class LandmarkRetrieval {
         if(mRevResults != null) {
             for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
                 BoundaryBoxForwardGeocodeSearch(location, mLandmarkCategories[iterator]);
-                if (mFwdResults != null || mFwdResults.size() > 0) {
+                if (mFwdResults != null) {
                     if (mBoundaryBoxResults == null) {
                         mBoundaryBoxResults = mFwdResults;
                     }
-                    mBoundaryBoxResults.removeAll(mFwdResults); // remove any objects existing in mFwdResults from mRetResults.
-                    mBoundaryBoxResults.addAll(mFwdResults); // add all objects in mFwdResults to mRetResults.
+                    else if(mFwdResults.size() > 0) {
+                        mBoundaryBoxResults.removeAll(mFwdResults); // remove any objects existing in mFwdResults from mRetResults.
+                        mBoundaryBoxResults.addAll(mFwdResults); // add all objects in mFwdResults to mRetResults.
+                    }
                 }
             }
         }
-    }
+    } 
 
     public List<CarmenFeature> getLandmarkProximitySearchResults() {
 

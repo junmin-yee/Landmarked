@@ -1,8 +1,6 @@
-package landmarked.landmarked.Database;
+package landmarked.landmarked;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,12 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import java.util.ArrayList;
-import landmarked.landmarked.R;
 
-import landmarked.landmarked.LandmarkSelected;
+import landmarked.landmarked.Database.LandmarkLayout;
+import landmarked.landmarked.Database.LocalLandmark;
+import landmarked.landmarked.Database.LocalLandmarkPass;
 
-public class CustomLandmark extends AppCompatActivity {
+public class LandmarkHistory extends AppCompatActivity {
 
     public TextView landmarkInfo;
     public LinearLayout LandmarkList;
@@ -28,37 +28,22 @@ public class CustomLandmark extends AppCompatActivity {
         setTheme(myTheme);*/
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_landmark);
+        setContentView(R.layout.activity_landmark_history);
 
         //get user ID that correlates to the database
         landmarkInfo = findViewById(R.id.LandmarkAttributes);
 
-        landmarkInfo.setText("Custom Landmarks");
+        landmarkInfo.setText("Landmark History");
 
         LandmarkList = findViewById(R.id.landmarkList);
 
         Intent i = getIntent();
 
-        ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_landmark");
+        ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
 
-        for(int v = 0; v < recievedLandmark.size(); v++)
-        {
+        for (int v = 0; v < recievedLandmark.size(); v++) {
             AddElement(recievedLandmark.get(v).getName(), recievedLandmark.get(v).getLatitude(), recievedLandmark.get(v).getLongitude(), recievedLandmark.get(v).getElevation());
         }
-
-            /*for (CarmenFeature feat : landmarkList) {
-                CarmenFeatureHelper landmarkHelper = new CarmenFeatureHelper(feat);
-                String name = landmarkHelper.getmLandmarkName();
-                String latitude = Double.toString(landmarkHelper.getmLandmarkLatitude());
-                String longitude = Double.toString(landmarkHelper.getmLandmarkLongitude());
-                float elevation = (float) landmarkHelper.getmLandmarkElevation();
-
-                AddElement(name, latitude, longitude, elevation);
-            }*/
-
-
-        //AddElement("temp", "34.5634", "-54.4464", (float)1000.65);
-        //AddElement("Shasta(fake)", "23.565", "-46.54", (float)2365.76784);
     }
 
     void AddElement(String name, String latitude, String longitude, float elevation)
@@ -69,7 +54,7 @@ public class CustomLandmark extends AppCompatActivity {
          *
          * Will add MediaWiki info and other attributes as we need them
          * (Will likely still not affect the UI but needs to be passed through)
-        ************************************************/
+         ************************************************/
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(landmarkInfo.getLayoutParams());
 
         LandmarkLayout vert = new LandmarkLayout(this, name, latitude, longitude, elevation);
@@ -113,7 +98,7 @@ public class CustomLandmark extends AppCompatActivity {
         /*******************************************************
          * Sends info to another page which changes depending on the data recieved
          * Will not change as elements are addeed
-        *******************************************************/
+         *******************************************************/
         LandmarkLayout pushed = (LandmarkLayout) v; //gets LandmarkLayout element
         //Should not have any other object using this listener
         LocalLandmarkPass passing = pushed.GetLandmark(); //gets the landmark
@@ -123,6 +108,4 @@ public class CustomLandmark extends AppCompatActivity {
 
         startActivity(i);
     }
-
-
 }
