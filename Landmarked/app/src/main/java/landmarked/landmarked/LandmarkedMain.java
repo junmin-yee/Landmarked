@@ -49,16 +49,19 @@ public class LandmarkedMain extends AppCompatActivity {
     public LandmarkRetrieval mLandmarkRetrieval;
     //DB instance
     AppDatabase db;
+    public static LandmarkedMain main_instance;
     //Thread pool instance
-    private static ExecutorService m_thread;
+    public static ExecutorService m_thread;
     public ArrayList<LocalLandmark> landmarkGet = new ArrayList<>();
-    GoogleSignInAccount m_user;
+    GoogleAuthentication m_user;
 
     public static AzureConnectionClass m_conn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        m_user = new GoogleAuthentication();
+
         m_thread = Executors.newSingleThreadExecutor();
         m_conn = new AzureConnectionClass();
         Intent ii = new Intent(this, GoogleAuthentication.class);
@@ -66,6 +69,7 @@ public class LandmarkedMain extends AppCompatActivity {
         m_instance = this;
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
+        main_instance = this;
 
 
         m_conn.Connect();
@@ -73,7 +77,15 @@ public class LandmarkedMain extends AppCompatActivity {
 
         //call this function to select from azure cloud landmark table
 
-        ArrayList<LocalLandmark> LocalLMS = getLandmarksAzure();
+       // ArrayList<LocalLandmark> LocalLMS = getLandmarksAzure();
+
+        //call this methods to get landmarks by user email
+        //arg function returns string from google auth containing user email
+        //ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure(m_user.getUserEmailName());
+
+        //Calling method with dummy data:
+        ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure("someemail@gmail.com");
+
         setContentView(R.layout.activity_get_sensor_data);
 
         //Instantiate with this context
@@ -107,8 +119,13 @@ public class LandmarkedMain extends AppCompatActivity {
         mSensorData.unregisterLocationSensor();
     }
 
-    public ExecutorService getThreadPoolInstance()
+
+    public static ExecutorService getThreadPoolInstance()
     {
+        if(m_thread == null)
+        {
+            m_thread = Executors.newSingleThreadExecutor();
+        }
         return m_thread;
     }
     public ArrayList<LocalLandmark> getLandmarksAzure()
@@ -127,6 +144,26 @@ public class LandmarkedMain extends AppCompatActivity {
         m_thread.execute(runCommand);
         return lst;
 
+    }
+    private ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
+    {
+       ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
+
+        Runnable runCommand = new Runnable() {
+
+            @Override
+            public void run() {
+                ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(email);
+                for(int x = 0; x < temp.size(); x++)
+                {
+                    lst.add(temp.get(x));
+                }
+            }
+
+        };
+
+        m_thread.execute(runCommand);
+        return lst;
     }
 
     public void InsertAzure(String name, String latitude, String longitude, float elevation, String wiki)

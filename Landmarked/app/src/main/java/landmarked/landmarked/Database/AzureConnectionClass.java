@@ -17,10 +17,12 @@ import java.lang.Runnable;
 
 public class AzureConnectionClass {
     private static Connection mConnection;
+    private static AzureConnectionClass m_instance;
 
     public AzureConnectionClass()
     {
         mConnection = null;
+        m_instance = this;
     }
 
     public static Connection ConnectionGetInstance()
@@ -28,6 +30,10 @@ public class AzureConnectionClass {
         return mConnection;
     }
 
+    public static AzureConnectionClass getAzureInstance()
+    {
+        return m_instance;
+    }
     public Connection Connect()
     {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -109,16 +115,16 @@ public class AzureConnectionClass {
         return lst;
     }
 
-    public ArrayList<LocalLandmark> getLandmarksByEmail()
+    public ArrayList<LocalLandmark> getLandmarksByEmail(String Email)
     {
         ArrayList lst = new ArrayList();
         try
         {
-            String query = "SELECT *" +
-                    "FROM Landmark" +
-                    "JOIN UserLandmark ON Landmark.LandmarkID=UserLandmark.LandmarkID" +
-                    "JOIN AppUser ON AppUser.UserID=UserLandmark.UserID" +
-                    "WHERE AppUser.UserID = UserLandmark.UserID;";
+            String query = "SELECT * " +
+                    "FROM dbo.Landmark " +
+                    "JOIN dbo.UserLandmark ON dbo.Landmark.LandmarkID = UserLandmark.LandmarkID " +
+                    "JOIN AppUser ON AppUser.UserID=UserLandmark.UserID " +
+                    "WHERE dbo.AppUser.UserID = dbo.UserLandmark.UserID AND dbo.AppUser.Email = '"+Email+"';";
             Statement m_query = mConnection.createStatement();
             ResultSet Landmarks = m_query.executeQuery(query);
             while (Landmarks.next())
