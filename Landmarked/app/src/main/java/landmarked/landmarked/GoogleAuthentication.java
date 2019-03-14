@@ -82,16 +82,6 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         }
     }
 
-  //  private void GetUserLandmarksFromAzure(String email)
-  //  {
-     //   Runnable runCommand = new Runnable() {
-    //        @Override
-    //        public void run() {
-     //           m_azure.getLandmarksByEmail(email);
-      //      }
-     //   };
-     //   m_thread.execute(runCommand);
-    //}
     private void signIn() {
         Intent signInIntent = m_GoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_ON);
@@ -142,14 +132,6 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         }
         else
         {
-         //   Runnable runCommand = new Runnable() {
-         //       @Override
-           //     public void run() {
-         //           m_azure.getLandmarksByEmail("someemail@gmail.com");
-          //      }
-         //   };
-           // m_thread.execute(runCommand);
-
             finish();
         }
     }
