@@ -47,7 +47,6 @@
                 android:layout_height="match_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="15dp"
-                android:text="TextView"
                 android:textAlignment="center"
                 android:textSize="32dp"
                 tools:layout_editor_absoluteX="13dp" />

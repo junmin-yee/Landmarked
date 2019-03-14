@@ -363,13 +363,17 @@ public class LandmarkedMain extends AppCompatActivity {
     public void testSensors(View v)
     {
         currOrientation = mSensorData.getCurrentOrientation();
-        directionTV.setText("Azimuth (z): " + currOrientation[0] + "\nPitch (x): " +
-                currOrientation[1] + "\nRoll (y): " + currOrientation[2]);
+        String[] tempArr = getResources().getStringArray(R.array.sensData);
+        String conCatStr = tempArr[0] + ": " +currOrientation[0] + "\n" + tempArr[1] + ": " +
+                currOrientation[1] + "\n" + tempArr[2] + ": " + currOrientation[2];
+        directionTV.setText(conCatStr);
 
         try{
             currLocation = mSensorData.getCurrentLocation();//gets called in showMap as well, consider changing?
-            locationTV.setText("Latitude: " + currLocation.getLatitude() + "\nLongitude: " +
-                    currLocation.getLongitude() + "\nElevation: " + currLocation.getAltitude());
+            tempArr = getResources().getStringArray(R.array.locationData);
+            conCatStr = tempArr[0] + ": " + currLocation.getLatitude() + "\n" + tempArr[1] + ": " +
+                    currLocation.getLongitude() + "\n" + tempArr[2] + ": " + currLocation.getAltitude();
+            locationTV.setText(conCatStr);
 
             // Test Geocode Searching
             mLandmarkRetrieval.LandmarkProximitySearch(currLocation);
@@ -418,7 +422,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
         }
         catch (SecurityException | NullPointerException e){
-            locationTV.setText("Location not found");
+            locationTV.setText(getString(R.string.locationFail));
         }
     }
 

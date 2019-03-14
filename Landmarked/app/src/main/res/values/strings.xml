@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Landmarked Demo</string>
+    <string-array name="sensData">
+        <item>Azimuth (z)</item>
+        <item>Pitch (x)</item>
+        <item>Roll (y)</item>
+    </string-array>
+    <string name="locationFail">Location not found</string>
+    <string-array name="locationData">
+        <item>Latitude</item>
+        <item>Longitude</item>
+        <item>Elevation</item>
+    </string-array>
+    <string name="title_activity_loading_page">LoadingPage</string>
+    <string name="LocationGet">Get Location</string>
+    <string name="LandmarksButtonText">Landmarks</string>
+    <string name="GetDataButtonText">Get Data</string>
+    <string name="HistoryButtonText">History</string>
+    <string name="SignOutButtonText">Sign Out</string>
+    <string name="LandmarHistoryHeader">Landmark History</string>
+    <string-array name="ShortenedLocData">
+        <item>Name</item>
+        <item>Lat</item>
+        <item>Long</item>
+        <item>Elv</item>
+    </string-array>
+    <string name="LandmarkSelect">Landmark Selected:</string>
+    <string name="LandmarksFoundHeader">Landmarks Found</string>
 </resources>

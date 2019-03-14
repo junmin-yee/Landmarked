@@ -22,6 +22,11 @@ public class LandmarkSelected extends AppCompatActivity {
 
         LandmarkInfo.setTextSize(32);
         LandmarkInfo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        LandmarkInfo.setText("Name: " + my_land.getName() +"\nLat: " + my_land.getLatitiude() +"\nLong: " + my_land.getLongitude() + "\nElv: " + my_land.getElevation());
+
+        String[] attributesArr = getResources().getStringArray(R.array.ShortenedLocData);
+        String conCatStr = attributesArr[0] + ": " + my_land.getName() + "\n" + attributesArr[1] + ": " + my_land.getLatitiude() +
+                "\n" + attributesArr[2] + ": " + my_land.getLongitude() + "\n" + attributesArr[3] + ": " + my_land.getElevation();
+
+        LandmarkInfo.setText(conCatStr);
     }
 }
