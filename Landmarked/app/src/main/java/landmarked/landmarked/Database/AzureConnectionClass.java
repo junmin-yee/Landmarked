@@ -48,7 +48,7 @@ public class AzureConnectionClass {
         try
         {
 
-            String query = "INSERT INTO dbo.Landmark (LandmarkName, LandmarkLat, LandmarkLong, LandmarkEle, LandmarkWikiInfo) VALUES ('AZURETEST2', 'TESTLAT2', 'TESTLONG2', '0.00', 'TESTWIKI2')";
+            String query = "INSERT INTO dbo.Landmark (LandmarkName, LandmarkLat, LandmarkLong, LandmarkEle, LandmarkWikiInfo) VALUES ('"+name+"', '"+latitude+"', '"+longitude+"', '"+0.00+"', '"+wiki+"')";
             Statement m_query = mConnection.createStatement();
             m_query.executeUpdate(query);
 

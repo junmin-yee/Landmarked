@@ -66,7 +66,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
         m_conn.Connect();
-        InsertAzure();
+        InsertAzure("sometest", "someTest", "SomeTest", 0.1F, "Sometest");
         setContentView(R.layout.activity_get_sensor_data);
 
         //Instantiate with this context
