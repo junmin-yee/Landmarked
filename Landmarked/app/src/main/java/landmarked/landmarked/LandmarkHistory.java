@@ -33,7 +33,7 @@ public class LandmarkHistory extends AppCompatActivity {
         //get user ID that correlates to the database
         landmarkInfo = findViewById(R.id.LandmarkAttributes);
 
-        landmarkInfo.setText("Landmark History");
+        //landmarkInfo.setText("Landmark History");
 
         LandmarkList = findViewById(R.id.landmarkList);
 
@@ -75,7 +75,12 @@ public class LandmarkHistory extends AppCompatActivity {
         vert.addView(img);
 
         tempView = new TextView(this);
-        tempView.setText("Name: " + name  +"\nLat: " + latitude +"\nLong: " + longitude + "\nElv: " + elevation); //concats strings together ¯\_(ツ)_/¯ Will probably fix later
+
+        String[] attributesArr = getResources().getStringArray(R.array.ShortenedLocData);
+        String conCatStr = attributesArr[0] + ": " + name + "\n" + attributesArr[1] + ": " + latitude +
+                "\n" + attributesArr[2] + ": " + longitude + "\n" + attributesArr[3] + ": " + elevation;
+
+        tempView.setText(conCatStr); //concats strings together ¯\_(ツ)_/¯ Will probably fix later
         //Addendum: Also, should add multiple textboxes in the future
         tempView.setTextColor(Color.BLACK);
         tempView.setPadding(10,0,0,0);

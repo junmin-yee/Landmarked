@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:id="@+id/simple_layout"
-        android:layout_width="280dp"
+        android:layout_width="313dp"
         android:layout_height="198dp"
         android:orientation="vertical"
         android:paddingTop="10dp"
@@ -45,22 +45,22 @@
         tools:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/locationButton"
         android:layout_width="130dp"
         android:layout_height="65dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/importantbuttondesign"
         android:onClick="showMap"
-        android:text="Get Location"
+        android:text="@string/LocationGet"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/simple_layout"
         app:layout_constraintVertical_bias="0.728"
-        tools:layout_constraintTop_toBottomOf="@+id/simple_layout" />
+        tools:layout_constraintTop_toBottomOf="@+id/simple_layout"/>
 
     <Button
         android:id="@+id/buttonCustom"
@@ -69,11 +69,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:onClick="seeCustomLandmarks"
-        android:text="Custom"
+        android:text="@string/LandmarksButtonText"
         app:layout_constraintBottom_toTopOf="@+id/simple_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.462" />
+        app:layout_constraintVertical_bias="0.462"
+        android:background="@drawable/buttondesign"/>
 
     <Button
         android:id="@+id/button2"
@@ -83,12 +84,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="testSensors"
-        android:text="GetData"
+        android:text="@string/GetDataButtonText"
         app:layout_constraintBottom_toTopOf="@+id/simple_layout"
         app:layout_constraintEnd_toStartOf="@+id/buttonCustom"
         app:layout_constraintStart_toEndOf="@+id/buttonHistory"
         app:layout_constraintTop_toTopOf="@+id/buttonCustom"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:background="@drawable/buttondesign"/>
 
     <Button
         android:id="@+id/buttonHistory"
@@ -96,12 +98,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
-        android:text="History"
+        android:text="@string/HistoryButtonText"
         android:onClick="seeHistoryPage"
         app:layout_constraintBottom_toTopOf="@+id/simple_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/buttonCustom"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:background="@drawable/buttondesign"/>
 
     <Button
         android:id="@+id/sign_out_button"
@@ -111,11 +114,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="36dp"
         android:onClick="GoogleSignOut"
-        android:text="Sign out"
+        android:text="@string/SignOutButtonText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.272"
-        app:layout_constraintStart_toEndOf="@+id/button" />
+        app:layout_constraintStart_toEndOf="@+id/locationButton"
+        android:background="@drawable/buttondesign"/>
 
     <TextView
         android:id="@+id/WelcomeText"
@@ -126,7 +130,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:alpha="0"
-        android:text="TextView"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
