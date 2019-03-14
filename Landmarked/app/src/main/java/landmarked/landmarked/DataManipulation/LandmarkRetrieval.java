@@ -10,7 +10,9 @@ import com.mapbox.api.geocoding.v5.GeocodingCriteria;
 import com.mapbox.api.geocoding.v5.MapboxGeocoding;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,8 +31,8 @@ public class LandmarkRetrieval {
     private Location mGeoCodeNELocation;
     public List<CarmenFeature> mRevResults;
     public List<CarmenFeature> mFwdResults;
-    public List<CarmenFeature> mProximityResults;
-    public List<CarmenFeature> mBoundaryBoxResults;
+    public Set<CarmenFeature> mProximityResults;
+    public Set<CarmenFeature> mBoundaryBoxResults;
 
     // These categories limit the search results (or, at least, heavily bias them)
     // Need more categories or perhaps have the user define the search???
@@ -44,6 +46,9 @@ public class LandmarkRetrieval {
     public LandmarkRetrieval(SensorData sensorData) {
 
         mSensorData = sensorData;
+
+        mProximityResults = new HashSet<>();
+        mBoundaryBoxResults = new HashSet<>();
     }
     
     // Calculate line of sight based on sensor data
@@ -302,14 +307,9 @@ public class LandmarkRetrieval {
         if(mRevResults != null) {
             for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
                 ProximityForwardGeocodeSearch(location, mLandmarkCategories[iterator]);
+
                 if (mFwdResults != null) {
-                    if (mProximityResults == null) {
-                        mProximityResults = mFwdResults;
-                    }
-                    else if(mFwdResults.size() > 0){
-                        mProximityResults.removeAll(mFwdResults); // remove any objects existing in mFwdResults from mRetResults.
-                        mProximityResults.addAll(mFwdResults); // add all objects in mFwdResults to mRetResults.
-                    }
+                    mProximityResults.addAll(mFwdResults);
                 }
             }
         }
@@ -322,30 +322,25 @@ public class LandmarkRetrieval {
         if(mRevResults != null) {
             for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
                 BoundaryBoxForwardGeocodeSearch(location, mLandmarkCategories[iterator]);
+
                 if (mFwdResults != null) {
-                    if (mBoundaryBoxResults == null) {
-                        mBoundaryBoxResults = mFwdResults;
-                    }
-                    else if(mFwdResults.size() > 0) {
-                        mBoundaryBoxResults.removeAll(mFwdResults); // remove any objects existing in mFwdResults from mRetResults.
-                        mBoundaryBoxResults.addAll(mFwdResults); // add all objects in mFwdResults to mRetResults.
-                    }
+                    mBoundaryBoxResults.addAll(mFwdResults);
                 }
             }
         }
     } 
 
-    public List<CarmenFeature> getLandmarkProximitySearchResults() {
+    public Set<CarmenFeature> getLandmarkProximitySearchResults() {
 
         // Return list of Carmen Features.
-        List<CarmenFeature> retResults = this.mProximityResults;
+        Set<CarmenFeature> retResults = this.mProximityResults;
         return retResults;
     }
 
-    public List<CarmenFeature> getLandmarkBoundaryBoxSearchResults() {
+    public Set<CarmenFeature> getLandmarkBoundaryBoxSearchResults() {
 
         // Return list of Carmen Features.
-        List<CarmenFeature> retResults = this.mBoundaryBoxResults;
+        Set<CarmenFeature> retResults = this.mBoundaryBoxResults;
         return retResults;
     }
 

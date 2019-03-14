@@ -19,7 +19,9 @@ import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -332,31 +334,18 @@ public class LandmarkedMain extends AppCompatActivity {
             mLandmarkRetrieval.LandmarkProximitySearch(currLocation);
             //mLandmarkRetrieval.LandmarkBoundaryBoxSearch(currLocation);
 
-            List<CarmenFeature> test1 = mLandmarkRetrieval.getLandmarkProximitySearchResults();
-            //List<CarmenFeature> test1 = mLandmarkRetrieval.getLandmarkBoundaryBoxSearchResults();
-            CarmenFeatureHelper test2;
-            if (test1 != null && test1.size() > 0) {
-                test2 = new CarmenFeatureHelper(test1.get(0));
+            Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
+            //List<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkBoundaryBoxSearchResults();
+            CarmenFeatureHelper easyLandmark;
 
-                boolean test_elev = test2.checkElevationExists();
-                double elev_result;
-                if (test_elev)
-                    elev_result = test2.getLandmarkElevation();
-                else {
-                    elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
-                }
-                double lat_result = test2.getLandmarkLatitude();
-                double lon_result = test2.getLandmarkLongitude();
-                String lan_name = test2.getLandmarkName();
-                String lan_placename = test2.getLandmarkPlaceName();
-                String lan_wikidata = test2.getLandmarkWikiData();
+            Iterator<CarmenFeature> retLanIterator = retrievedLandmarks.iterator();
 
-                //elev_result = 0; // throwaway
+            if (retrievedLandmarks.size() > 0) {
 
                 landmarkGet.clear();
-                for(int i = 0; i < test1.size(); i++)
+                while(retLanIterator.hasNext())
                 {
-                    CarmenFeatureHelper retriever = new CarmenFeatureHelper(test1.get(i));
+                    CarmenFeatureHelper retriever = new CarmenFeatureHelper(retLanIterator.next());
 
                     double lat = retriever.getLandmarkLatitude();
                     double lon = retriever.getLandmarkLongitude();
@@ -365,14 +354,23 @@ public class LandmarkedMain extends AppCompatActivity {
                     String wikidata = retriever.getLandmarkWikiData();
                     Date lan_date = new Date();
 
+                    boolean test_elev = retriever.checkElevationExists();
+                    double elev_result;
+
+                    if (test_elev)
+                        elev_result = retriever.getLandmarkElevation();
+                    else {
+                        elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
+                    }
+
                     landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
                 }
 
                 // Example Usage of getCarmenFeatureFwdResults:
-                //List<CarmenFeature> test1;
-                //test1 =mLandmarkRetrieval.getCarmenFeatureFwdResults(); // returns a List<CarmenFeature> of variable size.
-                //CarmenFeatureHelper test2;
-                //test2 = new CarmenFeatureHelper(mFwdResults.get(0)); // gets only the first feature in the List object. Must iterate through for every CarmenFeature returned by getCarmenFeatureFwdResults.
+                //List<CarmenFeature> retrievedLandmarks;
+                //retrievedLandmarks =mLandmarkRetrieval.getCarmenFeatureFwdResults(); // returns a List<CarmenFeature> of variable size.
+                //CarmenFeatureHelper easyLandmark;
+                //easyLandmark = new CarmenFeatureHelper(mFwdResults.get(0)); // gets only the first feature in the List object. Must iterate through for every CarmenFeature returned by getCarmenFeatureFwdResults.
             }
             else
                 throw new NullPointerException("Landmark search test failed."); // temporary so the UI seems to be a bit more fluid. Otherwise it will display data but not have any landmarks.
