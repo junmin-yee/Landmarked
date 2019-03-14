@@ -13,9 +13,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/landmarked_icon_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".LoadingPage"/>
+        android:theme="@style/newTheme">
+        <activity android:name=".LandmarkHistory"></activity>
+        <activity android:name=".LoadingPage" />
         <activity android:name=".LandmarkSelected" />
         <activity android:name=".LandmarkedMain">
             <intent-filter>
@@ -29,7 +29,7 @@
         <activity
             android:name=".Database.CustomLandmark"
             android:exported="true" />
-        <activity android:name=".GoogleAuthentication"></activity>
+        <activity android:name=".GoogleAuthentication" />
     </application>
 
 </manifest>
