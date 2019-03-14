@@ -1,6 +1,7 @@
 package landmarked.landmarked;
 
 import android.Manifest;
+import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -50,20 +51,22 @@ public class LandmarkedMain extends AppCompatActivity {
     private ExecutorService m_thread;
     public ArrayList<LocalLandmark> landmarkGet = new ArrayList<>();
     GoogleSignInAccount m_user;
-    public AzureConnectionClass mConn;
+    public static AzureConnectionClass m_conn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         m_thread = Executors.newSingleThreadExecutor();
+        m_conn = new AzureConnectionClass();
         Intent ii = new Intent(this, GoogleAuthentication.class);
-        //startActivity(ii);
+        startActivity(ii);
         m_instance = this;
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
 
-        AzureConnectionClass conn = new AzureConnectionClass();
-        conn.Connect();
+
+        m_conn.Connect();
+        InsertAzure();
         setContentView(R.layout.activity_get_sensor_data);
 
         //Instantiate with this context
@@ -95,6 +98,20 @@ public class LandmarkedMain extends AppCompatActivity {
         //Unregister listeners
         mSensorData.unregisterOrientationSensors();
         mSensorData.unregisterLocationSensor();
+    }
+
+
+
+
+    public void InsertAzure()
+    {
+        Runnable runCommand = new Runnable() {
+            @Override
+            public void run() {
+               m_conn.Insert();
+            }
+        };
+        m_thread.execute(runCommand);
     }
 
     //Insert local data by primitive type

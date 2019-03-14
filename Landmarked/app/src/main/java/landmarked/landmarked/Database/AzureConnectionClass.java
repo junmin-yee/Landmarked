@@ -6,6 +6,8 @@ import android.util.Log;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 public class AzureConnectionClass {
     private static Connection mConnection;
@@ -40,6 +42,25 @@ public class AzureConnectionClass {
             Log.e("Error 2","Something went wrong");
         }
         return mConnection;
+    }
+    public void Insert()
+    {
+        try
+        {
+
+            String query = "INSERT INTO dbo.Landmark (LandmarkName, LandmarkLat, LandmarkLong, LandmarkEle, LandmarkWikiInfo) VALUES ('AZURETEST2', 'TESTLAT2', 'TESTLONG2', '0.00', 'TESTWIKI2')";
+            Statement m_query = mConnection.createStatement();
+            m_query.executeUpdate(query);
+
+        }
+        catch (SQLException se)
+        {
+            Log.e("Error 1","Failed to connect to SQL Database");
+        }
+        catch (Exception e)
+        {
+            Log.e("Error 2","Something went wrong");
+        }
     }
 
     public void Disconnect()
