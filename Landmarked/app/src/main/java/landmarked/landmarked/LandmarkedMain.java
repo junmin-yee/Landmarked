@@ -145,7 +145,7 @@ public class LandmarkedMain extends AppCompatActivity {
         return lst;
 
     }
-    private ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
+    private  synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
     {
        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
 
