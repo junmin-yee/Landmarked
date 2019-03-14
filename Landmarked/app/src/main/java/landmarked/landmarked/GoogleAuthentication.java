@@ -81,7 +81,13 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
 
     private void GetUserLandmarksFromAzure()
     {
-
+        Runnable runCommand = new Runnable() {
+            @Override
+            public void run() {
+                m_conn_instance.
+            }
+        };
+        m_thread.execute(runCommand);
     }
     private void signIn() {
         Intent signInIntent = m_GoogleSignInClient.getSignInIntent();
