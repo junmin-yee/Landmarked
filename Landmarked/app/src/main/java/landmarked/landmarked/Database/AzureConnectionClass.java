@@ -3,11 +3,17 @@ package landmarked.landmarked.Database;
 import android.os.StrictMode;
 import android.util.Log;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.sql.ResultSet;
+import java.util.Date;
+import java.lang.Thread;
+import java.lang.Runnable;
+
 
 public class AzureConnectionClass {
     private static Connection mConnection;
@@ -63,6 +69,40 @@ public class AzureConnectionClass {
         }
     }
 
+
+    public ArrayList<LocalLandmark> getLandmarks()
+    {
+        ArrayList lst = new ArrayList();
+        try
+        {
+            String query = "SELECT * FROM dbo.Landmark";
+            Statement m_query = mConnection.createStatement();
+            ResultSet Landmarks = m_query.executeQuery(query);
+            while (Landmarks.next())
+            {
+                String name = Landmarks.getString("LandmarkName");
+                String latitude = Landmarks.getString("LandmarkLat");
+                String longitude = Landmarks.getString("LandmarkLong");
+                float elevation = Landmarks.getFloat("LandmarkEle");
+                String wiki = Landmarks.getString("LandmarkWikiInfo");
+                LocalLandmark temp = new LocalLandmark(name, latitude,longitude,elevation,wiki,new Date());
+                lst.add(temp);
+            }
+
+        }
+        catch (SQLException se)
+        {
+            Log.e("Error 1","Failed to connect to SQL Database");
+        }
+        catch (Exception e)
+        {
+            Log.e("Error 2","Something went wrong");
+        }
+
+
+
+        return lst;
+    }
     public void Disconnect()
     {
         try {

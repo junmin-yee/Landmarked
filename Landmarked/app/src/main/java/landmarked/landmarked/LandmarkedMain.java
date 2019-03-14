@@ -66,7 +66,10 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
         m_conn.Connect();
-        InsertAzure("sometest", "someTest", "SomeTest", 0.1F, "Sometest");
+        //InsertAzure("sometest", "someTest", "SomeTest", 0.1F, "Sometest"); //INSERTAZURE IS A FUNCTION WITHIN LANDMARKEDMAIN
+
+
+       // ArrayList<LocalLandmark> LocalLMS = getLandmarksAzure();
         setContentView(R.layout.activity_get_sensor_data);
 
         //Instantiate with this context
@@ -101,7 +104,23 @@ public class LandmarkedMain extends AppCompatActivity {
     }
 
 
+    public ArrayList<LocalLandmark> getLandmarksAzure()
+    {
+        ArrayList<LocalLandmark>lst = new ArrayList<LocalLandmark>();
+        Runnable runCommand = new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<LocalLandmark> temp = m_conn.getLandmarks();
+                for(int x = 0; x < temp.size(); x++)
+                {
+                    lst.add(x, temp.get(x));
+                }
+            }
+        };
+        m_thread.execute(runCommand);
+        return lst;
 
+    }
 
     public void InsertAzure(String name, String latitude, String longitude, float elevation, String wiki)
     {
