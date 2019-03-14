@@ -108,7 +108,7 @@ public class LandmarkedMain extends AppCompatActivity {
         Runnable runCommand = new Runnable() {
             @Override
             public void run() {
-               m_conn.Insert();
+               m_conn.Insert(name, latitude, longitude, elevation, wiki);
             }
         };
         m_thread.execute(runCommand);
