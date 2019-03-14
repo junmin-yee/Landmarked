@@ -18,6 +18,8 @@ import com.google.android.gms.signin.SignIn;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import android.widget.TextView;
+
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit ;
 import android.support.annotation.NonNull;
 import java.sql.Connection;
@@ -31,6 +33,8 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     public String Name;
     Connection m_conn_instance;
     AzureConnectionClass m_azure;
+    LandmarkedMain main_instance;
+    ExecutorService m_thread;
 
 
 
@@ -44,6 +48,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                 .build();
         m_GoogleSignInClient = GoogleSignIn.getClient(this, gso);
         m_conn_instance = m_azure.ConnectionGetInstance();
+        m_thread = main_instance.getThreadPoolInstance();
 
     }
 
@@ -72,6 +77,11 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                 break;
 
         }
+    }
+
+    private void GetUserLandmarksFromAzure()
+    {
+
     }
     private void signIn() {
         Intent signInIntent = m_GoogleSignInClient.getSignInIntent();

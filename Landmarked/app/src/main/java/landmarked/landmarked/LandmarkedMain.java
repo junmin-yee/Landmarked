@@ -53,6 +53,7 @@ public class LandmarkedMain extends AppCompatActivity {
     private static ExecutorService m_thread;
     public ArrayList<LocalLandmark> landmarkGet = new ArrayList<>();
     GoogleSignInAccount m_user;
+
     public static AzureConnectionClass m_conn;
 
     @Override
@@ -72,7 +73,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
         //call this function to select from azure cloud landmark table
 
-        // ArrayList<LocalLandmark> LocalLMS = getLandmarksAzure();
+        ArrayList<LocalLandmark> LocalLMS = getLandmarksAzure();
         setContentView(R.layout.activity_get_sensor_data);
 
         //Instantiate with this context
