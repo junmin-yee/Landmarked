@@ -68,7 +68,7 @@ public class LandmarkedMain extends AppCompatActivity {
         m_conn.Connect();
         //InsertAzure("sometest", "someTest", "SomeTest", 0.1F, "Sometest"); //INSERTAZURE IS A FUNCTION WITHIN LANDMARKEDMAIN
 
-
+    //call this function to select from azure cloud landmark table
        // ArrayList<LocalLandmark> LocalLMS = getLandmarksAzure();
         setContentView(R.layout.activity_get_sensor_data);
 
