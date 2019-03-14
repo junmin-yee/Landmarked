@@ -43,7 +43,7 @@ public class AzureConnectionClass {
         }
         return mConnection;
     }
-    public void Insert()
+    public void Insert(String name, String latitude, String longitude, float elevation, String wiki)
     {
         try
         {
