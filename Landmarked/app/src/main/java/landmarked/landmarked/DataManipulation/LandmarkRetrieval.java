@@ -24,6 +24,7 @@ public class LandmarkRetrieval {
     final int EARTH_RADIUS = 6378137;
     final double BEARING_ERROR = 0.01;
     final double DIRECTION_SHIFT = 0.15;
+    final int FIELD_OF_VIEW_DEGREE = 3;
 
     private SensorData mSensorData;
     private Location mCurrLocation;
@@ -151,6 +152,27 @@ public class LandmarkRetrieval {
             mGeoCodeSWLocation = temp;
         }
         // Otherwise facing Northeast and values are good
+    }
+
+    private boolean CheckFieldofView(Location location)
+    {
+        float leftField;
+        float rightField;
+        float testBearing;
+        boolean isWithinField = false;
+        Location search = CalculateMaxLineofSight();
+
+        // Set current bearing
+        mCurrLocation.setBearing(mCurrLocation.bearingTo(search));
+
+        leftField = mCurrLocation.getBearing() - FIELD_OF_VIEW_DEGREE;
+        rightField = mCurrLocation.getBearing() + FIELD_OF_VIEW_DEGREE;
+        testBearing = mCurrLocation.bearingTo(location);
+
+        if (testBearing >= leftField && testBearing <= rightField)
+            isWithinField = true;
+
+        return isWithinField;
     }
 
     private void ReverseGeocodeSearch(final Location location) {
