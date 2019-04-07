@@ -121,7 +121,8 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             updateAuth(acct);
         } catch (ApiException e) {
             int msg = e.getStatusCode();
-            updateAuth(null);
+            finish();
+            //updateAuth(null);
         }
     }
     public String getUserEmailName()
