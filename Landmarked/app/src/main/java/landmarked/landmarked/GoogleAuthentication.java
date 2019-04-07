@@ -19,13 +19,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit ;
 import android.support.annotation.NonNull;
 import java.sql.Connection;
+import java.util.concurrent.locks.ReentrantLock;
 
 import landmarked.landmarked.Database.AzureConnectionClass;
+import landmarked.landmarked.Database.LocalLandmark;
 
 public class GoogleAuthentication extends AppCompatActivity implements View.OnClickListener {
     static GoogleSignInClient m_GoogleSignInClient;
@@ -43,6 +46,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestProfile()
@@ -50,7 +54,6 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         m_GoogleSignInClient = GoogleSignIn.getClient(this, gso);
         m_thread = main_instance.getThreadPoolInstance();
         m_azure = m_azure.getAzureInstance();
-
 
 
     }
@@ -64,6 +67,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     {
         super.onStart();
         m_account = GoogleSignIn.getLastSignedInAccount(this);
+
         updateAuth(m_account);
     }
 
@@ -78,15 +82,20 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             case R.id.sign_out_button:
                 signOut();
                 break;
-
         }
     }
 
     private void signIn() {
-        Intent signInIntent = m_GoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_ON);
-        onActivityResult(RC_SIGN_ON, RC_SIGN_ON, signInIntent);
-        finish();
+
+                Intent signInIntent = m_GoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_ON);
+            //    onActivityResult(RC_SIGN_ON, RC_SIGN_ON, signInIntent);
+
+
+       // Intent signInIntent = m_GoogleSignInClient.getSignInIntent();
+       // startActivityForResult(signInIntent, RC_SIGN_ON);
+       // onActivityResult(RC_SIGN_ON, RC_SIGN_ON, signInIntent);
+       // finish();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -104,14 +113,14 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     }
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-            m_account = completedTask.getResult(ApiException.class);
-            Name = m_account.getEmail();
+            GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
+            //Name = acct.getEmail();
 
             //HERE IS WHERE WE NEED TO PUT GETTERS THAT WILL GET ALL OUR USER INFORMATION
             // Signed in successfully, show authenticated UI.
-            updateAuth(m_account);
+            updateAuth(acct);
         } catch (ApiException e) {
-
+            int msg = e.getStatusCode();
             updateAuth(null);
         }
     }
@@ -126,7 +135,6 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     {
         if(acct == null)
         {
-
             setContentView(R.layout.sign_in_page);
             findViewById(R.id.sign_in_button).setOnClickListener(this);
         }
@@ -135,7 +143,6 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             finish();
         }
     }
-
 
     protected GoogleSignInAccount getUser() {
         try {

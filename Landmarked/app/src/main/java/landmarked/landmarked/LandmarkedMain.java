@@ -6,12 +6,14 @@ import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReentrantLock;
 
 import landmarked.landmarked.DataManipulation.CarmenFeatureHelper;
 import landmarked.landmarked.DataManipulation.LandmarkRetrieval;
@@ -36,7 +39,7 @@ import landmarked.landmarked.Database.LocalLandmark;
 import landmarked.landmarked.Database.LocalLandmarkPass;
 
 public class LandmarkedMain extends AppCompatActivity {
-
+    private static ReentrantLock m_thread_lock;
     public static final String ACTIVITY_MESSAGE = "Sending to Map";
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static LandmarkedMain m_instance;//instance of the main activity that can be accessed through getter getInstance(), handy for things such as closing the app from another instance
@@ -61,11 +64,12 @@ public class LandmarkedMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         m_user = new GoogleAuthentication();
-
+        m_thread_lock = new ReentrantLock();
         m_thread = Executors.newSingleThreadExecutor();
         m_conn = new AzureConnectionClass();
         Intent ii = new Intent(this, GoogleAuthentication.class);
         startActivity(ii);
+
         m_instance = this;
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
@@ -86,6 +90,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //Calling method with dummy data:
         ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure("someemail@gmail.com");
 
+
         setContentView(R.layout.activity_get_sensor_data);
 
         //Instantiate with this context
@@ -96,6 +101,10 @@ public class LandmarkedMain extends AppCompatActivity {
 
         directionTV = findViewById(R.id.current_direction_text);
         locationTV = findViewById(R.id.current_location_text);
+    }
+
+    public static ReentrantLock get_thread_lock() {
+        return m_thread_lock;
     }
 
     @Override
