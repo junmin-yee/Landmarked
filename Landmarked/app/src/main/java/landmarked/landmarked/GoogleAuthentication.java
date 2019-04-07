@@ -37,7 +37,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     public static String Name;
     Connection m_conn_instance;
     AzureConnectionClass m_azure;
-    LandmarkedMain main_instance;
+    static LandmarkedMain  main_instance;
     ExecutorService m_thread;
 
 
@@ -51,6 +51,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                 .requestEmail()
                 .requestProfile()
                 .build();
+        main_instance = LandmarkedMain.getInstance();
         m_GoogleSignInClient = GoogleSignIn.getClient(this, gso);
         m_thread = main_instance.getThreadPoolInstance();
         m_azure = m_azure.getAzureInstance();
@@ -115,6 +116,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         try {
             GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
             Name = acct.getEmail();
+            main_instance.setUserName(acct.getEmail());
 
             //HERE IS WHERE WE NEED TO PUT GETTERS THAT WILL GET ALL OUR USER INFORMATION
             // Signed in successfully, show authenticated UI.
@@ -125,7 +127,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             //updateAuth(null);
         }
     }
-    public String getUserEmailName()
+    public static String getUserEmailName()
     {
         return Name;
     }

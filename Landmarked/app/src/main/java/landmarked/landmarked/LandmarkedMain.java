@@ -57,12 +57,13 @@ public class LandmarkedMain extends AppCompatActivity {
     public static ExecutorService m_thread;
     public ArrayList<LocalLandmark> landmarkGet = new ArrayList<>();
     GoogleAuthentication m_user;
+    public static String m_username;
 
     public static AzureConnectionClass m_conn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        TextView text = (TextView) findViewById(R.id.WelcomeText);
+
         super.onCreate(savedInstanceState);
         m_user = new GoogleAuthentication();
         m_thread_lock = new ReentrantLock();
@@ -75,7 +76,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
         main_instance = this;
-        String acct_name = m_user.getUserEmailName();
+       // String acct_name = m_user.getUserEmailName();
 
         m_conn.Connect();
         //InsertAzure("sometest", "someTest", "SomeTest", 0.1F, "Sometest"); //INSERTAZURE IS A FUNCTION WITHIN LANDMARKEDMAIN
@@ -93,7 +94,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_get_sensor_data);
-
+        String str = m_username;
        // text.setText("test");
 
 
@@ -106,7 +107,10 @@ public class LandmarkedMain extends AppCompatActivity {
         directionTV = findViewById(R.id.current_direction_text);
         locationTV = findViewById(R.id.current_location_text);
     }
-
+    public void setUserName(String name)
+    {
+        m_username = name;
+    }
     public static ReentrantLock get_thread_lock() {
         return m_thread_lock;
     }
@@ -114,6 +118,16 @@ public class LandmarkedMain extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        TextView text = (TextView) findViewById(R.id.WelcomeText);
+        if(m_user.getUserEmailName() == null)
+        {
+            text.setText("Not connected: sign out button -> close and restart app to sign in");
+        }
+        else
+        {
+            text.setText("Welcome back " + m_user.getUserEmailName());
+        }
+
 
 
         checkLocationPermission();
