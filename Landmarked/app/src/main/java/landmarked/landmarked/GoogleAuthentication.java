@@ -32,9 +32,9 @@ import landmarked.landmarked.Database.LocalLandmark;
 
 public class GoogleAuthentication extends AppCompatActivity implements View.OnClickListener {
     static GoogleSignInClient m_GoogleSignInClient;
-    GoogleSignInAccount m_account;
+    static GoogleSignInAccount m_account;
     final int RC_SIGN_ON = 9001;
-    public String Name;
+    public static String Name;
     Connection m_conn_instance;
     AzureConnectionClass m_azure;
     LandmarkedMain main_instance;
@@ -114,7 +114,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
-            //Name = acct.getEmail();
+            Name = acct.getEmail();
 
             //HERE IS WHERE WE NEED TO PUT GETTERS THAT WILL GET ALL OUR USER INFORMATION
             // Signed in successfully, show authenticated UI.
@@ -145,7 +145,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         }
     }
 
-    protected GoogleSignInAccount getUser() {
+    protected static GoogleSignInAccount getUser() {
         try {
             return m_account;
         } catch (NullPointerException e) {

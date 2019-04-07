@@ -62,6 +62,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        TextView text = (TextView) findViewById(R.id.WelcomeText);
         super.onCreate(savedInstanceState);
         m_user = new GoogleAuthentication();
         m_thread_lock = new ReentrantLock();
@@ -74,7 +75,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //This method will use a singleton pattern to either return the already existing instance
         db = db.getM_DB_instance(getApplicationContext());
         main_instance = this;
-
+        String acct_name = m_user.getUserEmailName();
 
         m_conn.Connect();
         //InsertAzure("sometest", "someTest", "SomeTest", 0.1F, "Sometest"); //INSERTAZURE IS A FUNCTION WITHIN LANDMARKEDMAIN
@@ -92,6 +93,9 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_get_sensor_data);
+
+       // text.setText("test");
+
 
         //Instantiate with this context
         mSensorData = new SensorData(this);
