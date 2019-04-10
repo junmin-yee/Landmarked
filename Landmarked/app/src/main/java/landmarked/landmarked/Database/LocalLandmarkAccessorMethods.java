@@ -25,7 +25,7 @@ public interface LocalLandmarkAccessorMethods {
 
 
     @Query("SELECT * FROM LocalLandmark")
-    public LocalLandmark[] getAll();
+    LocalLandmark[] getAll();
 
 
     @Query("SELECT Name FROM LocalLandmark")
@@ -46,7 +46,7 @@ public interface LocalLandmarkAccessorMethods {
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insertLocalLandmarkStructure(LocalLandmark LandmarkArg);
+    void insertLocalLandmarkStructure(LocalLandmark LandmarkArg);
 
 
 

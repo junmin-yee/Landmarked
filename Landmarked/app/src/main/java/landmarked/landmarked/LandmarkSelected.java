@@ -16,7 +16,7 @@ public class LandmarkSelected extends AppCompatActivity {
         setContentView(R.layout.activity_landmark_selected);
 
         Intent i = getIntent();
-        LocalLandmarkPass my_land = (LocalLandmarkPass)i.getParcelableExtra("passing_landmark");
+        LocalLandmarkPass my_land = i.getParcelableExtra("passing_landmark");
 
         TextView LandmarkInfo = findViewById(R.id.LandmarkInfo);
 

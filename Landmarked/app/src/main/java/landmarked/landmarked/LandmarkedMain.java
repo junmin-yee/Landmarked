@@ -3,10 +3,13 @@ package landmarked.landmarked;
 import android.Manifest;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -58,7 +61,7 @@ public class LandmarkedMain extends AppCompatActivity {
     public ArrayList<LocalLandmark> landmarkGet = new ArrayList<>();
     GoogleAuthentication m_user;
     public static String m_username;
-
+    public String m_conn_msg;
     public static AzureConnectionClass m_conn;
 
     @Override
@@ -67,6 +70,28 @@ public class LandmarkedMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         m_user = new GoogleAuthentication();
         m_thread_lock = new ReentrantLock();
+        ConnectivityManager conn = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = conn.getActiveNetworkInfo();
+        Boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if(isConnected)
+        {
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI)
+            {
+                m_conn_msg = "connected to WIFI";
+            }
+            else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
+            {
+                m_conn_msg = "connected to mobile data";
+            }
+            else
+            {
+                m_conn_msg = "Not connected to either mobile or WIFI";
+            }
+
+
+
+        }
         m_thread = Executors.newSingleThreadExecutor();
         m_conn = new AzureConnectionClass();
         Intent ii = new Intent(this, GoogleAuthentication.class);
@@ -74,7 +99,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
         m_instance = this;
         //This method will use a singleton pattern to either return the already existing instance
-        db = db.getM_DB_instance(getApplicationContext());
+        db = AppDatabase.getM_DB_instance(getApplicationContext());
         main_instance = this;
        // String acct_name = m_user.getUserEmailName();
 
@@ -118,14 +143,15 @@ public class LandmarkedMain extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        TextView text = (TextView) findViewById(R.id.WelcomeText);
-        if(m_user.getUserEmailName() == null)
+
+        TextView text = findViewById(R.id.WelcomeText);
+        if(GoogleAuthentication.getUserEmailName() == null)
         {
             text.setText("Not connected: sign out button -> close and restart app to sign in");
         }
         else
         {
-            text.setText("Welcome back " + m_user.getUserEmailName());
+            text.setText("Welcome back " + GoogleAuthentication.getUserEmailName());
         }
 
 
