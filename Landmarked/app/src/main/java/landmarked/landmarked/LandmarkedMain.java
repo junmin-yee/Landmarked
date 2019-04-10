@@ -80,23 +80,23 @@ public class LandmarkedMain extends AppCompatActivity {
             {
                 m_conn_msg = "connected to WIFI";
             }
-            else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
             {
                 m_conn_msg = "connected to mobile data";
             }
-            else
-            {
-                m_conn_msg = "Not connected to either mobile or WIFI";
-            }
-
-
-
         }
+        else
+        {
+            m_conn_msg = "Not connected to either mobile or WIFI";
+        }
+
         m_thread = Executors.newSingleThreadExecutor();
         m_conn = new AzureConnectionClass();
-        Intent ii = new Intent(this, GoogleAuthentication.class);
-        startActivity(ii);
-
+        if(isConnected)
+        {
+            Intent ii = new Intent(this, GoogleAuthentication.class);
+            startActivity(ii);
+        }
         m_instance = this;
         //This method will use a singleton pattern to either return the already existing instance
         db = AppDatabase.getM_DB_instance(getApplicationContext());
