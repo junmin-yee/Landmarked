@@ -30,6 +30,8 @@ public class LandmarkRetrieval {
     private Location mCurrLocation;
     private Location mGeoCodeSWLocation;
     private Location mGeoCodeNELocation;
+    private float mLeftField;
+    private float mRightField;
     public List<CarmenFeature> mRevResults;
     public List<CarmenFeature> mFwdResults;
     public Set<CarmenFeature> mProximityResults;
@@ -154,22 +156,25 @@ public class LandmarkRetrieval {
         // Otherwise facing Northeast and values are good
     }
 
-    private boolean CheckFieldofView(Location location)
+    private void CalculateFieldofView()
     {
-        float leftField;
-        float rightField;
-        float testBearing;
-        boolean isWithinField = false;
         Location search = CalculateMaxLineofSight();
 
         // Set current bearing
         mCurrLocation.setBearing(mCurrLocation.bearingTo(search));
 
-        leftField = mCurrLocation.getBearing() - FIELD_OF_VIEW_DEGREE;
-        rightField = mCurrLocation.getBearing() + FIELD_OF_VIEW_DEGREE;
+        mLeftField = mCurrLocation.getBearing() - FIELD_OF_VIEW_DEGREE;
+        mRightField = mCurrLocation.getBearing() + FIELD_OF_VIEW_DEGREE;
+    }
+
+    private boolean CheckFieldofView(Location location)
+    {
+        float testBearing;
+        boolean isWithinField = false;
+
         testBearing = mCurrLocation.bearingTo(location);
 
-        if (testBearing >= leftField && testBearing <= rightField)
+        if (testBearing >= mLeftField && testBearing <= mRightField)
             isWithinField = true;
 
         return isWithinField;
