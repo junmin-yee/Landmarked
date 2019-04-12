@@ -1,39 +1,99 @@
 package landmarked.landmarked;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.constants.Style;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
 
 public class DisplayMap extends AppCompatActivity {
-    private MapView demoView;
+    private MapView mapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_map);
-
-
-        Intent obtained = getIntent();
-        double[] arr = obtained.getDoubleArrayExtra(LandmarkedMain.ACTIVITY_MESSAGE);
-
         Mapbox.getInstance(this, "pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g");
+        setContentView(R.layout.activity_display_map);
+        mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+                mapboxMap.setStyle(Style.OUTDOORS, new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
 
-        MapboxMapOptions options = new MapboxMapOptions()
-                .styleUrl(Style.OUTDOORS)
-                .camera(new CameraPosition.Builder()
-                        .target(new LatLng(arr[0], arr[1]))
+// Map is set up and the style has loaded. Now you can add data or make other map adjustments
+                        CameraPosition camera = new CameraPosition.Builder()
+                                .target(new LatLng(42.2587, -121.7836))
                                 .zoom(17)
-                                .build());
+                                .build();
 
-        demoView = new MapView(this, options);
-        setContentView(demoView);
+                        mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
+
+                    }
+                });
+            }
+        });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
+
+        /*MapboxMapOptions options = new MapboxMapOptions()
+                .styleUrl(Style.SATELLITE)
+                .camera(new CameraPosition.Builder()
+                        .target(new LatLng(arr[0], arr[1]))
+                                .zoom(1)
+                                .build());*/
+
+    //demoView = new MapView(this, options);
+    //setContentView(demoView);
 }
