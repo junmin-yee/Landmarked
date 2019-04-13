@@ -201,7 +201,6 @@ public class LandmarkRetrieval {
                 .accessToken("pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g")
                 //.query(Point.fromLngLat(-122.139053, 41.021809))
                 .query(Point.fromLngLat(mCurrLocation.getLongitude(), mCurrLocation.getLatitude()))
-                //.proximity(Point)      // Useful for setting a bias of results toward a specific point - Calculate point in front of user?
                 .limit(5)
                 .geocodingTypes(GeocodingCriteria.TYPE_PLACE)
                 .build();
@@ -234,12 +233,12 @@ public class LandmarkRetrieval {
     }
 
     // Proximity based forward geocode search on point generated in front of location.
-    private void ProximityForwardGeocodeSearch(Location location, String category){
+    private void ProximityForwardGeocodeSearch(Location proximity_point, String category){
 
-        Location proximity_search = CalculateMaxLineofSight(); // NEEDS TO GET CHANGED TO USE BOUNDARY BOX
+        Location proximity_search = CalculateMaxLineofSight();
         // USE mGeoCodeSWLocation and mGeoCodeNELocation points to create
 
-        // Hardcoded "lake" for testing purposes - must set up a better way. One potential solution (but very inefficient) would be to have separate queries for each type of landmark.
+        // Searches for a basic type of landmark - only works because we base results around a proximity point.
         String query_string = category + " near " + mRevResults.get(0).placeName(); //+ mCurrLocation.getLongitude() + ", " + mCurrLocation.getLatitude();
 
         // Sets Access Token
@@ -263,7 +262,7 @@ public class LandmarkRetrieval {
                 if (mFwdResults.size() > 0) {
 
                     // Log the location of response.
-                    Log.d(TAG, "ProximityForwardGeocodeSearch: " + mFwdResults.size() + " results at " + location.toString());
+                    Log.d(TAG, "ProximityForwardGeocodeSearch: " + mFwdResults.size() + " results at " + mCurrLocation.toString());
 
                 } else {
 
@@ -337,8 +336,10 @@ public class LandmarkRetrieval {
 
         ReverseGeocodeSearch();
         if(mRevResults != null) {
+            Location proximityPoint = CalculateMaxLineofSight();
+
             for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
-                ProximityForwardGeocodeSearch(mCurrLocation, mLandmarkCategories[iterator]);
+                ProximityForwardGeocodeSearch(proximityPoint, mLandmarkCategories[iterator]);
 
                 if (mFwdResults != null) {
                     mProximityResults.addAll(mFwdResults);
