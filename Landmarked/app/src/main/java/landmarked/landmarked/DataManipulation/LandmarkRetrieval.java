@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import landmarked.landmarked.LandmarkedMain;
+import landmarked.landmarked.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -183,6 +185,7 @@ public class LandmarkRetrieval {
         //      This MAY not be exactly what we want - I'm unsure of everything this entails.
         //      Delete the "_LANDMARK" to get all POI.
         // Build simply constructs the query, must be at end.
+
         MapboxGeocoding reverseGeocode = MapboxGeocoding.builder()
                 .accessToken("pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g")
                 //.query(Point.fromLngLat(-122.139053, 41.021809))

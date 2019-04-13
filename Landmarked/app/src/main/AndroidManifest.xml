@@ -14,22 +14,19 @@
         android:roundIcon="@mipmap/landmarked_icon_round"
         android:supportsRtl="true"
         android:theme="@style/newTheme">
-        <activity android:name=".LandmarkHistory"></activity>
-        <activity android:name=".LoadingPage" />
-        <activity android:name=".LandmarkSelected" />
-        <activity android:name=".LandmarkedMain">
+        <activity android:name=".LandmarkHistory" android:screenOrientation="portrait"/>
+        <activity android:name=".LoadingPage" android:screenOrientation="portrait"/>
+        <activity android:name=".LandmarkSelected" android:screenOrientation="portrait"/>
+        <activity android:name=".LandmarkedMain" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DisplayMap" />
+        <activity android:name=".DisplayMap" android:screenOrientation="portrait"/>
         <activity android:name=".test" />
-        <activity
-            android:name=".Database.CustomLandmark"
-            android:exported="true" />
-        <activity android:name=".GoogleAuthentication" />
+        <activity android:name=".Database.CustomLandmark" android:exported="true" android:screenOrientation="portrait"/>
+        <activity android:name=".GoogleAuthentication" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
