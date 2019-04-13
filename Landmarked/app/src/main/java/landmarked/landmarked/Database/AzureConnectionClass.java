@@ -3,7 +3,6 @@ package landmarked.landmarked.Database;
 import android.os.StrictMode;
 import android.util.Log;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,8 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.util.Date;
-import java.lang.Thread;
-import java.lang.Runnable;
 
 
 public class AzureConnectionClass {
