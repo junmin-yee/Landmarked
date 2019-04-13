@@ -47,7 +47,7 @@ public class LoadingPage extends AppCompatActivity {
         mSensorData = new SensorData(this);
 
         //Instantiate with existing SensorData object
-        mLandmarkRetrieval = new LandmarkRetrieval(mSensorData);
+        mLandmarkRetrieval = new LandmarkRetrieval();
 
         //Register listeners
         mSensorData.registerOrientationSensors();
@@ -58,7 +58,7 @@ public class LoadingPage extends AppCompatActivity {
         try
         {
             currLocation = mSensorData.getCurrentLocation();
-            mLandmarkRetrieval.LandmarkProximitySearch(currLocation);
+            mLandmarkRetrieval.LandmarkProximitySearch(currLocation, mSensorData);
 
             Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
 

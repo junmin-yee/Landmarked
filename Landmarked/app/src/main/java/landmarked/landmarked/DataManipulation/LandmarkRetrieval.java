@@ -43,12 +43,6 @@ public class LandmarkRetrieval {
 
     public LandmarkRetrieval() {
 
-    }
-
-    public LandmarkRetrieval(SensorData sensorData) {
-
-        mSensorData = sensorData;
-
         mProximityResults = new HashSet<>();
         mBoundaryBoxResults = new HashSet<>();
     }
@@ -322,7 +316,9 @@ public class LandmarkRetrieval {
     }
 
     // Collect nearby Features from Proximity Geocode Search
-    public void LandmarkProximitySearch(Location location) {
+    public void LandmarkProximitySearch(Location location, SensorData sensors) {
+
+        mSensorData = sensors;
 
         ReverseGeocodeSearch(location);
         if(mRevResults != null) {
