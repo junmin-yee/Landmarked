@@ -59,7 +59,9 @@ public class LoadingPage extends AppCompatActivity {
         try
         {
             currLocation = mSensorData.getCurrentLocation();
-            mLandmarkRetrieval.LandmarkProximitySearch(currLocation, mSensorData);
+
+            mLandmarkRetrieval.SetSensorInformation(mSensorData);
+            mLandmarkRetrieval.LandmarkProximitySearch();
 
             Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
 
