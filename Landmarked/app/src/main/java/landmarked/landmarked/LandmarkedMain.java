@@ -74,7 +74,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
         m_instance = this;
         //This method will use a singleton pattern to either return the already existing instance
-        db = db.getM_DB_instance(getApplicationContext());
+        db = AppDatabase.getM_DB_instance(getApplicationContext());
         main_instance = this;
        // String acct_name = m_user.getUserEmailName();
 
@@ -118,14 +118,14 @@ public class LandmarkedMain extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        TextView text = (TextView) findViewById(R.id.WelcomeText);
-        if(m_user.getUserEmailName() == null)
+        TextView text = findViewById(R.id.WelcomeText);
+        if(GoogleAuthentication.getUserEmailName() == null)
         {
             text.setText("Not connected: sign out button -> close and restart app to sign in");
         }
         else
         {
-            text.setText("Welcome back " + m_user.getUserEmailName());
+            text.setText("Welcome back " + GoogleAuthentication.getUserEmailName());
         }
 
 
@@ -146,7 +146,6 @@ public class LandmarkedMain extends AppCompatActivity {
         mSensorData.unregisterLocationSensor();
     }
 
-
     public static ExecutorService getThreadPoolInstance()
     {
         if(m_thread == null)
@@ -155,6 +154,7 @@ public class LandmarkedMain extends AppCompatActivity {
         }
         return m_thread;
     }
+
     public ArrayList<LocalLandmark> getLandmarksAzure()
     {
         ArrayList<LocalLandmark>lst = new ArrayList<LocalLandmark>();

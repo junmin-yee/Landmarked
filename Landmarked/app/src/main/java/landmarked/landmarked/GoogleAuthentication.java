@@ -14,7 +14,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.common.SignInButton;
 import android.view.View.OnClickListener;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.signin.SignIn;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import android.widget.TextView;
@@ -53,8 +52,8 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                 .build();
         main_instance = LandmarkedMain.getInstance();
         m_GoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        m_thread = main_instance.getThreadPoolInstance();
-        m_azure = m_azure.getAzureInstance();
+        m_thread = LandmarkedMain.getThreadPoolInstance();
+        m_azure = AzureConnectionClass.getAzureInstance();
 
 
     }

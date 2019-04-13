@@ -32,8 +32,8 @@ public class SensorData {
     public SensorData(Context context){
         this.mContext = context;
         //Set up manager services
-        mLocationManager = (LocationManager)mContext.getSystemService(mContext.LOCATION_SERVICE);
-        mSensorManager = (SensorManager)mContext.getSystemService(mContext.SENSOR_SERVICE);
+        mLocationManager = (LocationManager)mContext.getSystemService(Context.LOCATION_SERVICE);
+        mSensorManager = (SensorManager)mContext.getSystemService(Context.SENSOR_SERVICE);
 
         //Find sensors
         accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);

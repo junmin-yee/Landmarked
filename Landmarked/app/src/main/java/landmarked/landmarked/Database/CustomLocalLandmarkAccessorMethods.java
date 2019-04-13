@@ -13,7 +13,7 @@ public interface CustomLocalLandmarkAccessorMethods {
     //Query
     //Function prototype for the function that will call the query
     @Query("Select * From CustomLocalLandmark")
-    public CustomLocalLandmark[] getAll();
+    CustomLocalLandmark[] getAll();
 
     @Query("SELECT Latitude FROM CustomLocalLandmark")
     String CustomLM_getLatitude();
@@ -28,7 +28,7 @@ public interface CustomLocalLandmarkAccessorMethods {
     long CustomLM_getDateSaved();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertCustomLandmarkStructure(CustomLocalLandmark LandmarkArg);
+    void insertCustomLandmarkStructure(CustomLocalLandmark LandmarkArg);
 
 
 }
