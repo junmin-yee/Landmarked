@@ -1,9 +1,12 @@
 package landmarked.landmarked;
 
 import android.Manifest;
+<<<<<<< HEAD
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+=======
+>>>>>>> aabc38a5784a349988424869d1c84781b79e1369
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -17,9 +20,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 
 import java.util.ArrayList;
@@ -39,26 +39,20 @@ import landmarked.landmarked.Database.AzureConnectionClass;
 import landmarked.landmarked.Database.CustomLandmark;
 import landmarked.landmarked.Database.CustomLocalLandmark;
 import landmarked.landmarked.Database.LocalLandmark;
-import landmarked.landmarked.Database.LocalLandmarkPass;
 
 public class LandmarkedMain extends AppCompatActivity {
     private static ReentrantLock m_thread_lock;
     public static final String ACTIVITY_MESSAGE = "Sending to Map";
-    public static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static LandmarkedMain m_instance;//instance of the main activity that can be accessed through getter getInstance(), handy for things such as closing the app from another instance
 
     public TextView directionTV;
     public TextView locationTV;
-    public Location currLocation;
-    public float[] currOrientation = new float[3];
-    public SensorData mSensorData;
-    public LandmarkRetrieval mLandmarkRetrieval;
+
     //DB instance
     AppDatabase db;
     public static LandmarkedMain main_instance;
     //Thread pool instance
     public static ExecutorService m_thread;
-    public ArrayList<LocalLandmark> landmarkGet = new ArrayList<>();
     GoogleAuthentication m_user;
     public static String m_username;
     public String m_conn_msg;
@@ -122,13 +116,6 @@ public class LandmarkedMain extends AppCompatActivity {
         String str = m_username;
        // text.setText("test");
 
-
-        //Instantiate with this context
-        mSensorData = new SensorData(this);
-
-        //Instantiate with existing SensorData object
-        mLandmarkRetrieval = new LandmarkRetrieval(mSensorData);
-
         directionTV = findViewById(R.id.current_direction_text);
         locationTV = findViewById(R.id.current_location_text);
     }
@@ -143,7 +130,10 @@ public class LandmarkedMain extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+<<<<<<< HEAD
 
+=======
+>>>>>>> aabc38a5784a349988424869d1c84781b79e1369
         TextView text = findViewById(R.id.WelcomeText);
         if(GoogleAuthentication.getUserEmailName() == null)
         {
@@ -153,25 +143,12 @@ public class LandmarkedMain extends AppCompatActivity {
         {
             text.setText("Welcome back " + GoogleAuthentication.getUserEmailName());
         }
-
-
-
-        checkLocationPermission();
-
-        //Register listeners
-        mSensorData.registerOrientationSensors();
-        mSensorData.registerLocationSensor();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-        //Unregister listeners
-        mSensorData.unregisterOrientationSensors();
-        mSensorData.unregisterLocationSensor();
     }
-
 
     public static ExecutorService getThreadPoolInstance()
     {
@@ -181,6 +158,7 @@ public class LandmarkedMain extends AppCompatActivity {
         }
         return m_thread;
     }
+
     public ArrayList<LocalLandmark> getLandmarksAzure()
     {
         ArrayList<LocalLandmark>lst = new ArrayList<LocalLandmark>();
@@ -198,7 +176,7 @@ public class LandmarkedMain extends AppCompatActivity {
         return lst;
 
     }
-    private  synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
+    private synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
     {
        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
 
@@ -361,25 +339,6 @@ public class LandmarkedMain extends AppCompatActivity {
 
     }
 
-
-    public void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-            } else {
-                // No explanation needed; request the permission
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-
-            }
-        } else {
-            // Permission has already been granted
-        }
-    }
     @Override
     public void onDestroy()
     {
@@ -391,95 +350,8 @@ public class LandmarkedMain extends AppCompatActivity {
     {
         super.onResume();
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
 
-            // other 'case' lines to check for other
-            // permissions this app might request.
-        }
-    }
-
-    public void testSensors(View v)
-    {
-        currOrientation = mSensorData.getCurrentOrientation();
-        String[] tempArr = getResources().getStringArray(R.array.sensData);
-        String conCatStr = tempArr[0] + ": " +currOrientation[0] + "\n" + tempArr[1] + ": " +
-                currOrientation[1] + "\n" + tempArr[2] + ": " + currOrientation[2];
-        directionTV.setText(conCatStr);
-
-        try{
-            currLocation = mSensorData.getCurrentLocation();//gets called in showMap as well, consider changing?
-            tempArr = getResources().getStringArray(R.array.locationData);
-            conCatStr = tempArr[0] + ": " + currLocation.getLatitude() + "\n" + tempArr[1] + ": " +
-                    currLocation.getLongitude() + "\n" + tempArr[2] + ": " + currLocation.getAltitude();
-            locationTV.setText(conCatStr);
-
-            // Test Geocode Searching
-            mLandmarkRetrieval.LandmarkProximitySearch(currLocation);
-            //mLandmarkRetrieval.LandmarkBoundaryBoxSearch(currLocation);
-
-            Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
-            //List<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkBoundaryBoxSearchResults();
-            CarmenFeatureHelper easyLandmark;
-
-            Iterator<CarmenFeature> retLanIterator = retrievedLandmarks.iterator();
-
-            if (retrievedLandmarks.size() > 0) {
-
-                landmarkGet.clear();
-                while(retLanIterator.hasNext())
-                {
-                    CarmenFeatureHelper retriever = new CarmenFeatureHelper(retLanIterator.next());
-
-                    double lat = retriever.getLandmarkLatitude();
-                    double lon = retriever.getLandmarkLongitude();
-                    String name = retriever.getLandmarkName();
-                    String placename = retriever.getLandmarkName();
-                    String wikidata = retriever.getLandmarkWikiData();
-                    Date lan_date = new Date();
-
-                    boolean test_elev = retriever.checkElevationExists();
-                    double elev_result;
-
-                    if (test_elev)
-                        elev_result = retriever.getLandmarkElevation();
-                    else {
-                        elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
-                    }
-
-                    landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
-                }
-
-                // Example Usage of getCarmenFeatureFwdResults:
-                //List<CarmenFeature> retrievedLandmarks;
-                //retrievedLandmarks =mLandmarkRetrieval.getCarmenFeatureFwdResults(); // returns a List<CarmenFeature> of variable size.
-                //CarmenFeatureHelper easyLandmark;
-                //easyLandmark = new CarmenFeatureHelper(mFwdResults.get(0)); // gets only the first feature in the List object. Must iterate through for every CarmenFeature returned by getCarmenFeatureFwdResults.
-            }
-            else
-                throw new NullPointerException("Landmark search test failed."); // temporary so the UI seems to be a bit more fluid. Otherwise it will display data but not have any landmarks.
-
-        }
-        catch (SecurityException | NullPointerException e){
-            locationTV.setText(getString(R.string.locationFail));
-        }
-    }
-
-    public void showMap(View v)
+    /*public void showMap(View v)
     {
         currLocation = mSensorData.getCurrentLocation();//gets called in testSensors as well, consider changing?
         Intent i = new Intent(this, DisplayMap.class);
@@ -493,10 +365,10 @@ public class LandmarkedMain extends AppCompatActivity {
 
         startActivity(i);
         //finish();
-    }
+    }*/
 
 
-    public void seeCustomLandmarks(View v)
+    /*public void seeCustomLandmarks(View v)
     {
         Intent customLand = new Intent(this, CustomLandmark.class);
 
@@ -510,7 +382,7 @@ public class LandmarkedMain extends AppCompatActivity {
         Intent hist = new Intent(this, LandmarkHistory.class);
         hist.putParcelableArrayListExtra("sending_history", landmarkGet);
         startActivity(hist);
-    }
+    }*/
 
     public static LandmarkedMain getInstance()//return instance of main activity
     {
@@ -524,4 +396,9 @@ public class LandmarkedMain extends AppCompatActivity {
 
     }
 
+    public void loadingScreen(View v)
+    {
+        Intent load = new Intent(this, LoadingPage.class);
+        startActivity(load);
+    }
 }

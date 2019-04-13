@@ -26,4 +26,5 @@
     </string-array>
     <string name="LandmarkSelect">Landmark Selected:</string>
     <string name="LandmarksFoundHeader">Landmarks Found</string>
+    <string name="MapboxToken">pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g</string>
 </resources>

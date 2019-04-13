@@ -9,7 +9,6 @@ import com.mapbox.geojson.Point;
 import com.mapbox.api.geocoding.v5.GeocodingCriteria;
 import com.mapbox.api.geocoding.v5.MapboxGeocoding;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,12 +42,6 @@ public class LandmarkRetrieval {
     public final String mLandmarkCategories[] = {"lake", "river", "natural", "historic", "tourism", "arena"}; // some basic categories... I've found that nearly all lakes, rivers, etc have the keyword "natural" and basically all else includes "historic" or "tourism"
 
     public LandmarkRetrieval() {
-
-    }
-
-    public LandmarkRetrieval(SensorData sensorData) {
-
-        mSensorData = sensorData;
 
         mProximityResults = new HashSet<>();
         mBoundaryBoxResults = new HashSet<>();
@@ -208,12 +201,12 @@ public class LandmarkRetrieval {
                 if (mRevResults.size() > 0) {
 
                     // Log the location of response.
-                    Log.d(TAG, "onResponse: " + mRevResults.size() + " results at " + location.toString());
+                    Log.d(TAG, "ReverseGeocodeSearch: " + mRevResults.size() + " results at " + location.toString());
 
                 } else {
 
                     // No results were found.
-                    Log.d(TAG, "onResponse: No result found");
+                    Log.d(TAG, "ReverseGeocodeSearch: No result found");
 
                 }
             }
@@ -257,12 +250,12 @@ public class LandmarkRetrieval {
                 if (mFwdResults.size() > 0) {
 
                     // Log the location of response.
-                    Log.d(TAG, "onResponse: " + mFwdResults.size() + " results at " + location.toString());
+                    Log.d(TAG, "ProximityForwardGeocodeSearch: " + mFwdResults.size() + " results at " + location.toString());
 
                 } else {
 
                     // No results were found.
-                    Log.d(TAG, "onResponse: No result found");
+                    Log.d(TAG, "ProximityForwardGeocodeSearch: No result found");
 
                 }
             }
@@ -276,13 +269,8 @@ public class LandmarkRetrieval {
     }
 
     // Boundary Box Forward Geocode search based on BB in front of user.
-    private void BoundaryBoxForwardGeocodeSearch(Location location, String category){
+    private void BoundaryBoxForwardGeocodeSearch(Location location, String category, Point Southwest, Point Northeast){
         mCurrLocation = location;
-
-        CalculateBoundaryBox();
-        // USE mGeoCodeSWLocation and mGeoCodeNELocation points to create
-        Point SWPoint = Point.fromLngLat(mGeoCodeSWLocation.getLongitude(), mGeoCodeSWLocation.getLatitude());
-        Point NEPoint = Point.fromLngLat(mGeoCodeNELocation.getLongitude(), mGeoCodeNELocation.getLatitude());
 
         // Hardcoded "lake" for testing purposes - must set up a better way. One potential solution (but very inefficient) would be to have separate queries for each type of landmark.
         String query_string = category + " near " + mRevResults.get(0).placeName(); //+ mCurrLocation.getLongitude() + ", " + mCurrLocation.getLatitude();
@@ -295,7 +283,7 @@ public class LandmarkRetrieval {
         MapboxGeocoding forwardGeocode = MapboxGeocoding.builder()
                 .accessToken("pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g")
                 .query(query_string)
-                .bbox(SWPoint, NEPoint)
+                .bbox(Southwest, Northeast)
                 .proximity(Point.fromLngLat(mCurrLocation.getLongitude(), mCurrLocation.getLatitude()))
                 .limit(10)
                 .build();
@@ -309,12 +297,12 @@ public class LandmarkRetrieval {
                 if (mFwdResults.size() > 0) {
 
                     // Log the location of response.
-                    Log.d(TAG, "onResponse: " + mFwdResults.size() + " results at " + location.toString());
+                    Log.d(TAG, "BoundaryBoxForwardGeocodeSearch: " + mFwdResults.size() + " results at " + location.toString());
 
                 } else {
 
                     // No results were found.
-                    Log.d(TAG, "onResponse: No result found");
+                    Log.d(TAG, "BoundaryBoxForwardGeocodeSearch: No result found");
 
                 }
             }
@@ -328,7 +316,9 @@ public class LandmarkRetrieval {
     }
 
     // Collect nearby Features from Proximity Geocode Search
-    public void LandmarkProximitySearch(Location location) {
+    public void LandmarkProximitySearch(Location location, SensorData sensors) {
+
+        mSensorData = sensors;
 
         ReverseGeocodeSearch(location);
         if(mRevResults != null) {
@@ -345,10 +335,17 @@ public class LandmarkRetrieval {
     // Collect nearby Features from Boundary Box Geocode Search
     public void LandmarkBoundaryBoxSearch(Location location) {
 
+        // Calculate boundary box settings given current user location and
+        CalculateBoundaryBox();
+
+        // USE mGeoCodeSWLocation and mGeoCodeNELocation points to create the boundary box points for search
+        Point SWPoint = Point.fromLngLat(mGeoCodeSWLocation.getLongitude(), mGeoCodeSWLocation.getLatitude());
+        Point NEPoint = Point.fromLngLat(mGeoCodeNELocation.getLongitude(), mGeoCodeNELocation.getLatitude());
+
         ReverseGeocodeSearch(location);
         if(mRevResults != null) {
             for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
-                BoundaryBoxForwardGeocodeSearch(location, mLandmarkCategories[iterator]);
+                BoundaryBoxForwardGeocodeSearch(location, mLandmarkCategories[iterator], SWPoint, NEPoint);
 
                 if (mFwdResults != null) {
                     mBoundaryBoxResults.addAll(mFwdResults);

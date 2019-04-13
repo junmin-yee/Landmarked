@@ -2,33 +2,27 @@ package landmarked.landmarked;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.content.Intent;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
-import com.google.android.gms.common.SignInButton;
-import android.view.View.OnClickListener;
+
 import com.google.android.gms.common.api.ApiException;
+<<<<<<< HEAD
 //import com.google.android.gms.signin.SignIn;
+=======
+>>>>>>> aabc38a5784a349988424869d1c84781b79e1369
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit ;
+
 import android.support.annotation.NonNull;
 import java.sql.Connection;
-import java.util.concurrent.locks.ReentrantLock;
 
 import landmarked.landmarked.Database.AzureConnectionClass;
-import landmarked.landmarked.Database.LocalLandmark;
 
 public class GoogleAuthentication extends AppCompatActivity implements View.OnClickListener {
     static GoogleSignInClient m_GoogleSignInClient;
