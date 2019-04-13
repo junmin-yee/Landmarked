@@ -1,6 +1,5 @@
 package landmarked.landmarked.Database;
 
-//import retrofit2.http.Query;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;

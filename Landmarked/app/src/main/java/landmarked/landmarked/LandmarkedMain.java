@@ -1,8 +1,6 @@
 package landmarked.landmarked;
 
 import android.Manifest;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -14,9 +12,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 
 import java.util.ArrayList;
@@ -36,7 +31,6 @@ import landmarked.landmarked.Database.AzureConnectionClass;
 import landmarked.landmarked.Database.CustomLandmark;
 import landmarked.landmarked.Database.CustomLocalLandmark;
 import landmarked.landmarked.Database.LocalLandmark;
-import landmarked.landmarked.Database.LocalLandmarkPass;
 
 public class LandmarkedMain extends AppCompatActivity {
     private static ReentrantLock m_thread_lock;
