@@ -37,6 +37,7 @@ public class LandmarkRetrieval {
     public List<CarmenFeature> mFwdResults;
     public Set<CarmenFeature> mProximityResults;
     public Set<CarmenFeature> mBoundaryBoxResults;
+    boolean sensorInfoSet;
 
     // These categories limit the search results (or, at least, heavily bias them)
     // Need more categories or perhaps have the user define the search???
@@ -47,8 +48,19 @@ public class LandmarkRetrieval {
 
         mProximityResults = new HashSet<>();
         mBoundaryBoxResults = new HashSet<>();
+
+        sensorInfoSet = false;
     }
-    
+
+    // Set the sensor information
+    public void SetSensorInformation(SensorData sensorData) {
+
+        mSensorData = sensorData;
+        mCurrLocation = mSensorData.getCurrentLocation();
+
+        sensorInfoSet = true;
+    }
+
     // Calculate line of sight based on sensor data
     private Location CalculateMaxLineofSight()
     {
@@ -175,8 +187,7 @@ public class LandmarkRetrieval {
         return isWithinField;
     }
 
-    private void ReverseGeocodeSearch(final Location location) {
-        mCurrLocation = location;
+    private void ReverseGeocodeSearch() {
 
         // Sets Access Token
         // Constructs query based on current location.
@@ -204,7 +215,7 @@ public class LandmarkRetrieval {
                 if (mRevResults.size() > 0) {
 
                     // Log the location of response.
-                    Log.d(TAG, "ReverseGeocodeSearch: " + mRevResults.size() + " results at " + location.toString());
+                    Log.d(TAG, "ReverseGeocodeSearch: " + mRevResults.size() + " results at " + mCurrLocation.toString());
 
                 } else {
 
@@ -224,7 +235,6 @@ public class LandmarkRetrieval {
 
     // Proximity based forward geocode search on point generated in front of location.
     private void ProximityForwardGeocodeSearch(Location location, String category){
-        mCurrLocation = location;
 
         Location proximity_search = CalculateMaxLineofSight(); // NEEDS TO GET CHANGED TO USE BOUNDARY BOX
         // USE mGeoCodeSWLocation and mGeoCodeNELocation points to create
@@ -272,8 +282,7 @@ public class LandmarkRetrieval {
     }
 
     // Boundary Box Forward Geocode search based on BB in front of user.
-    private void BoundaryBoxForwardGeocodeSearch(Location location, String category, Point Southwest, Point Northeast){
-        mCurrLocation = location;
+    private void BoundaryBoxForwardGeocodeSearch(Point Southwest, Point Northeast, String category){
 
         // Hardcoded "lake" for testing purposes - must set up a better way. One potential solution (but very inefficient) would be to have separate queries for each type of landmark.
         String query_string = category + " near " + mRevResults.get(0).placeName(); //+ mCurrLocation.getLongitude() + ", " + mCurrLocation.getLatitude();
@@ -300,7 +309,7 @@ public class LandmarkRetrieval {
                 if (mFwdResults.size() > 0) {
 
                     // Log the location of response.
-                    Log.d(TAG, "BoundaryBoxForwardGeocodeSearch: " + mFwdResults.size() + " results at " + location.toString());
+                    Log.d(TAG, "BoundaryBoxForwardGeocodeSearch: " + mFwdResults.size() + " results at " + mCurrLocation.toString());
 
                 } else {
 
@@ -319,24 +328,35 @@ public class LandmarkRetrieval {
     }
 
     // Collect nearby Features from Proximity Geocode Search
-    public void LandmarkProximitySearch(Location location, SensorData sensors) {
+    public int LandmarkProximitySearch() {
 
-        mSensorData = sensors;
+        // If sensor info hasn't been set, return.
+        if (!sensorInfoSet) {
+            return -1;
+        }
 
-        ReverseGeocodeSearch(location);
+        ReverseGeocodeSearch();
         if(mRevResults != null) {
             for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
-                ProximityForwardGeocodeSearch(location, mLandmarkCategories[iterator]);
+                ProximityForwardGeocodeSearch(mCurrLocation, mLandmarkCategories[iterator]);
 
                 if (mFwdResults != null) {
                     mProximityResults.addAll(mFwdResults);
                 }
             }
         }
+
+        // number of results returned
+        return mProximityResults.size();
     }
 
     // Collect nearby Features from Boundary Box Geocode Search
-    public void LandmarkBoundaryBoxSearch(Location location) {
+    public int LandmarkBoundaryBoxSearch() {
+
+        // If sensor info hasn't been set, return.
+        if (!sensorInfoSet) {
+            return -1;
+        }
 
         // Calculate boundary box settings given current user location and
         CalculateBoundaryBox();
@@ -345,16 +365,19 @@ public class LandmarkRetrieval {
         Point SWPoint = Point.fromLngLat(mGeoCodeSWLocation.getLongitude(), mGeoCodeSWLocation.getLatitude());
         Point NEPoint = Point.fromLngLat(mGeoCodeNELocation.getLongitude(), mGeoCodeNELocation.getLatitude());
 
-        ReverseGeocodeSearch(location);
+        ReverseGeocodeSearch();
         if(mRevResults != null) {
             for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
-                BoundaryBoxForwardGeocodeSearch(location, mLandmarkCategories[iterator], SWPoint, NEPoint);
+                BoundaryBoxForwardGeocodeSearch(SWPoint, NEPoint, mLandmarkCategories[iterator]);
 
                 if (mFwdResults != null) {
                     mBoundaryBoxResults.addAll(mFwdResults);
                 }
             }
         }
+
+        // number of results returned
+        return mBoundaryBoxResults.size();
     } 
 
     public Set<CarmenFeature> getLandmarkProximitySearchResults() {
@@ -370,7 +393,5 @@ public class LandmarkRetrieval {
         Set<CarmenFeature> retResults = this.mBoundaryBoxResults;
         return retResults;
     }
-
-
 
 }
