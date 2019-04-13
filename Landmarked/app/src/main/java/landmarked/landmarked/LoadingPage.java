@@ -1,6 +1,7 @@
 package landmarked.landmarked;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
@@ -34,6 +35,12 @@ public class LoadingPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_page);
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
 
         checkLocationPermission();
 
@@ -43,22 +50,14 @@ public class LoadingPage extends AppCompatActivity {
         //Instantiate with existing SensorData object
         mLandmarkRetrieval = new LandmarkRetrieval();
 
-        //Register listeners
-        mSensorData.registerOrientationSensors();
-        mSensorData.registerLocationSensor();
-    }
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-
         currOrientation = mSensorData.getCurrentOrientation();
 
         try
         {
             currLocation = mSensorData.getCurrentLocation();
-            mLandmarkRetrieval.LandmarkProximitySearch(currLocation, mSensorData);
+
+            mLandmarkRetrieval.SetSensorInformation(mSensorData);
+            mLandmarkRetrieval.LandmarkProximitySearch();
 
             Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
 
@@ -106,6 +105,10 @@ public class LoadingPage extends AppCompatActivity {
         //Unregister listeners
         mSensorData.unregisterOrientationSensors();
         mSensorData.unregisterLocationSensor();
+
+        Intent result = new Intent(this, LandmarkHistory.class);
+        result.putParcelableArrayListExtra("sending_history", landmarkGet);
+        startActivity(result);
     }
 
     public void checkLocationPermission() {

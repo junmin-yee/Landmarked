@@ -8,7 +8,11 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class SensorData {
 
@@ -22,6 +26,8 @@ public class SensorData {
     private LocationManager mLocationManager;
     private Location mLocation;
     Context mContext;
+    private AsyncTask mOrientationTask;
+    private AsyncTask mLocationTask;
 
     public SensorData(){
 
@@ -36,6 +42,30 @@ public class SensorData {
         //Find sensors
         accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        // Set up sensors
+        registerLocationSensor();
+        registerOrientationSensors();
+
+        // Run async tasks
+        mOrientationTask = new GetOrientationTask().execute();
+        mLocationTask = new GetLocationTask().execute();
+        try
+        {
+            mOrientationTask.get();
+        }
+        catch (ExecutionException | InterruptedException e)
+        {}
+        try
+        {
+            mLocationTask.get();
+        }
+        catch (ExecutionException | InterruptedException e)
+        {}
+
+        // Stop sensors
+        unregisterLocationSensor();
+        unregisterOrientationSensors();
     }
 
     public void registerOrientationSensors() {
@@ -129,4 +159,36 @@ public class SensorData {
 
         }
     };
+
+    private class GetOrientationTask extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... voids)
+        {
+            while (mOrientation[0] == 0 && mOrientation[1] == 0 && mOrientation[2] == 0)
+            {}
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class GetLocationTask extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... voids)
+        {
+            while (mLocation.getLatitude() == 0 && mLocation.getLongitude() == 0)
+            {}
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
 }

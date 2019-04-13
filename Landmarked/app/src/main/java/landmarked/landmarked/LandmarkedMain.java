@@ -115,8 +115,8 @@ public class LandmarkedMain extends AppCompatActivity {
         String str = m_username;
        // text.setText("test");
 
-        directionTV = findViewById(R.id.current_direction_text);
-        locationTV = findViewById(R.id.current_location_text);
+        //directionTV = findViewById(R.id.current_direction_text);
+        //locationTV = findViewById(R.id.current_location_text);
     }
     public void setUserName(String name)
     {

@@ -6,31 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".LandmarkedMain">
 
-    <LinearLayout
-        android:id="@+id/simple_layout"
-        android:layout_width="313dp"
-        android:layout_height="198dp"
-        android:orientation="vertical"
-        android:paddingTop="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.751">
-
-        <TextView
-            android:id="@+id/current_location_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/current_direction_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp" />
-    </LinearLayout>
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="384dp"
@@ -52,15 +27,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/importantbuttondesign"
-        android:onClick="showMap"
         android:text="@string/LocationGet"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/simple_layout"
-        app:layout_constraintVertical_bias="0.728"
-        tools:layout_constraintTop_toBottomOf="@+id/simple_layout"/>
+        tools:layout_constraintTop_toBottomOf="@+id/simple_layout" />
 
     <Button
         android:id="@+id/buttonCustom"
@@ -68,13 +40,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:onClick="seeCustomLandmarks"
+        android:background="@drawable/buttondesign"
         android:text="@string/LandmarksButtonText"
-        app:layout_constraintBottom_toTopOf="@+id/simple_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.462"
-        android:background="@drawable/buttondesign"/>
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
         android:id="@+id/button2"
@@ -82,29 +51,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:background="@drawable/buttondesign"
         android:onClick="loadingScreen"
         android:text="@string/GetDataButtonText"
-        app:layout_constraintBottom_toTopOf="@+id/simple_layout"
         app:layout_constraintEnd_toStartOf="@+id/buttonCustom"
         app:layout_constraintStart_toEndOf="@+id/buttonHistory"
-        app:layout_constraintTop_toTopOf="@+id/buttonCustom"
-        app:layout_constraintVertical_bias="0.0"
-        android:background="@drawable/buttondesign"/>
+        app:layout_constraintTop_toTopOf="@+id/buttonCustom" />
 
     <Button
         android:id="@+id/buttonHistory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
+        android:background="@drawable/buttondesign"
         android:text="@string/HistoryButtonText"
-        android:onClick="seeHistoryPage"
-        app:layout_constraintBottom_toTopOf="@+id/simple_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonCustom"
-        app:layout_constraintVertical_bias="0.0"
-        android:background="@drawable/buttondesign"/>
+        app:layout_constraintTop_toTopOf="@+id/buttonCustom" />
 
     <Button
         android:id="@+id/sign_out_button"
@@ -135,6 +97,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="138dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
 
 </android.support.constraint.ConstraintLayout>

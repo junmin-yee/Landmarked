@@ -6,5 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".LoadingPage">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:text="@string/LoadingText"
+        app:layout_anchor="@+id/progressBar"
+        app:layout_anchorGravity="bottom|center"
+        android:textSize="55sp"
+        android:textAlignment="center"/>
+
 
 </android.support.design.widget.CoordinatorLayout>
