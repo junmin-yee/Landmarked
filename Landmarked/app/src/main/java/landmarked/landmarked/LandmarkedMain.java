@@ -172,7 +172,7 @@ public class LandmarkedMain extends AppCompatActivity {
         return lst;
 
     }
-    private  synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
+    private synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
     {
        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
 
@@ -498,4 +498,9 @@ public class LandmarkedMain extends AppCompatActivity {
 
     }
 
+    public void loadingScreen(View v)
+    {
+        Intent load = new Intent(this, LoadingPage.class);
+        startActivity(load);
+    }
 }

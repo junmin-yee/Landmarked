@@ -20,9 +20,13 @@ public class DisplayMap extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Mapbox.getInstance(this, "pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g");
+        Mapbox.getInstance(this, getString(R.string.MapboxToken));
         setContentView(R.layout.activity_display_map);
         mapView = findViewById(R.id.mapView);
+
+        Intent obtained = getIntent();
+        double[] arr = obtained.getDoubleArrayExtra(LandmarkedMain.ACTIVITY_MESSAGE);
+
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -34,11 +38,10 @@ public class DisplayMap extends AppCompatActivity {
 // Map is set up and the style has loaded. Now you can add data or make other map adjustments
                         CameraPosition camera = new CameraPosition.Builder()
                                 .target(new LatLng(42.2587, -121.7836))
-                                .zoom(17)
+                                .zoom(8)
                                 .build();
 
                         mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
-
                     }
                 });
             }
