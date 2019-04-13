@@ -1,12 +1,11 @@
 package landmarked.landmarked;
 
 import android.Manifest;
-<<<<<<< HEAD
+
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Room;
 import android.content.Context;
-=======
->>>>>>> aabc38a5784a349988424869d1c84781b79e1369
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -130,10 +129,7 @@ public class LandmarkedMain extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-<<<<<<< HEAD
 
-=======
->>>>>>> aabc38a5784a349988424869d1c84781b79e1369
         TextView text = findViewById(R.id.WelcomeText);
         if(GoogleAuthentication.getUserEmailName() == null)
         {

@@ -10,10 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import com.google.android.gms.common.api.ApiException;
-<<<<<<< HEAD
-//import com.google.android.gms.signin.SignIn;
-=======
->>>>>>> aabc38a5784a349988424869d1c84781b79e1369
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
