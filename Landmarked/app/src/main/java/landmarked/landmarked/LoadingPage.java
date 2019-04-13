@@ -34,12 +34,6 @@ public class LoadingPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_page);
-    }
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
 
         checkLocationPermission();
 
@@ -52,6 +46,12 @@ public class LoadingPage extends AppCompatActivity {
         //Register listeners
         mSensorData.registerOrientationSensors();
         mSensorData.registerLocationSensor();
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
 
         currOrientation = mSensorData.getCurrentOrientation();
 
