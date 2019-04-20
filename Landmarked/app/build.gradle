@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -30,7 +32,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
@@ -39,27 +41,23 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.7.1'      // Mapbox Android Maps
-    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:7.3.0'){
+    implementation('com.mapbox.mapboxsdk:mapbox-android-sdk:7.3.0') {
         exclude group: 'group_name', module: 'module_name'
     }
-    implementation 'com.mapbox.mapboxsdk:mapbox-sdk-services:4.5.0'     // Mapbox Java
+    implementation 'com.mapbox.mapboxsdk:mapbox-sdk-services:4.5.0'
+    // Mapbox Java
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation project(':jtds-1.3.1')
-
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //BEGIN Room DEPENDENCIES
     def room_version = "1.1.1"
-
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     // use kapt for Kotlin
-
     // optional - RxJava support for Room
     implementation "android.arch.persistence.room:rxjava2:$room_version"
-
     // optional - Guava support for Room, including Optional and ListenableFuture
     implementation "android.arch.persistence.room:guava:$room_version"
-
     // Test helpers
     testImplementation "android.arch.persistence.room:testing:$room_version"
     //END ROOM DEPENDENCIES

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "972078135653",
+    "firebase_url": "https://landmarked-109ab.firebaseio.com",
+    "project_id": "landmarked-109ab",
+    "storage_bucket": "landmarked-109ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972078135653:android:107de2b464513a0d",
+        "android_client_info": {
+          "package_name": "landmarked.landmarked"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972078135653-me6cdss8smf6soa00qts59k1sgb9s19h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "landmarked.landmarked",
+            "certificate_hash": "a8701448e86f0e3134bd826f75cceda936cacf5d"
+          }
+        },
+        {
+          "client_id": "972078135653-uh91ntocg88e538cflo4kij9g7b78v56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArXmylsMUVZsnrSfYeINeQWwcCMqdtsgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "972078135653-uh91ntocg88e538cflo4kij9g7b78v56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

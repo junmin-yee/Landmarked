@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 
 import java.util.ArrayList;
@@ -85,7 +86,11 @@ public class LandmarkedMain extends AppCompatActivity {
 
         m_thread = Executors.newSingleThreadExecutor();
         m_conn = new AzureConnectionClass();
+        GoogleSignInAccount acct = GoogleAuthentication.getUser();
+        //don't think this will work
         if(isConnected)
+
+        //Change this check to make sure that not only is there an internet connection, but that the user isn't logged in
         {
             Intent ii = new Intent(this, GoogleAuthentication.class);
             startActivity(ii);
@@ -131,13 +136,15 @@ public class LandmarkedMain extends AppCompatActivity {
         super.onStart();
 
         TextView text = findViewById(R.id.WelcomeText);
-        if(GoogleAuthentication.getUserEmailName() == null)
+        GoogleSignInAccount acct = GoogleAuthentication.getUser();
+        if(acct == null)
+        //if(GoogleAuthentication.getUserEmailName() == null)
         {
             text.setText("Not connected: sign out button -> close and restart app to sign in");
         }
         else
         {
-            text.setText("Welcome back " + GoogleAuthentication.getUserEmailName());
+            text.setText("Welcome back " + acct.getEmail());
         }
     }
 

@@ -81,13 +81,12 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
 
                 Intent signInIntent = m_GoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_ON);
-            //    onActivityResult(RC_SIGN_ON, RC_SIGN_ON, signInIntent);
 
-
-       // Intent signInIntent = m_GoogleSignInClient.getSignInIntent();
-       // startActivityForResult(signInIntent, RC_SIGN_ON);
-       // onActivityResult(RC_SIGN_ON, RC_SIGN_ON, signInIntent);
-       // finish();
+    }
+    private GoogleSignInAccount getLastAccount()
+    {
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        return acct;
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -105,13 +104,14 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     }
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-            GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
-            Name = acct.getEmail();
-            main_instance.setUserName(acct.getEmail());
+            //GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
+            m_account = completedTask.getResult(ApiException.class);
+            Name = m_account.getEmail();
+
 
             //HERE IS WHERE WE NEED TO PUT GETTERS THAT WILL GET ALL OUR USER INFORMATION
             // Signed in successfully, show authenticated UI.
-            updateAuth(acct);
+            updateAuth(m_account);
         } catch (ApiException e) {
             int msg = e.getStatusCode();
             finish();
@@ -140,6 +140,10 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
 
     protected static GoogleSignInAccount getUser() {
         try {
+           if(m_account == null)
+           {
+             //  m_account = getLastAccount();
+           }
             return m_account;
         } catch (NullPointerException e) {
 
