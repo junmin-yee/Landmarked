@@ -50,6 +50,10 @@ public class LoadingPage extends AppCompatActivity {
         //Instantiate with existing SensorData object
         mLandmarkRetrieval = new LandmarkRetrieval();
 
+        //Register listeners
+        mSensorData.registerOrientationSensors();
+        mSensorData.registerLocationSensor();
+
         currOrientation = mSensorData.getCurrentOrientation();
 
         try
