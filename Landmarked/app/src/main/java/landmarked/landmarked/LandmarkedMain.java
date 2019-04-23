@@ -1,10 +1,17 @@
 package landmarked.landmarked;
 
 import android.Manifest;
+
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Room;
+import android.content.Context;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +19,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 
 import java.util.ArrayList;
@@ -46,8 +54,8 @@ public class LandmarkedMain extends AppCompatActivity {
     //Thread pool instance
     public static ExecutorService m_thread;
     GoogleAuthentication m_user;
-    public static String m_username;
-
+    public static  String m_username;
+    public String m_conn_msg;
     public static AzureConnectionClass m_conn;
 
     @Override
@@ -56,11 +64,37 @@ public class LandmarkedMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         m_user = new GoogleAuthentication();
         m_thread_lock = new ReentrantLock();
+        ConnectivityManager conn = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = conn.getActiveNetworkInfo();
+        Boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if(isConnected)
+        {
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI)
+            {
+                m_conn_msg = "connected to WIFI";
+            }
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
+            {
+                m_conn_msg = "connected to mobile data";
+            }
+        }
+        else
+        {
+            m_conn_msg = "Not connected to either mobile or WIFI";
+        }
+
         m_thread = Executors.newSingleThreadExecutor();
         m_conn = new AzureConnectionClass();
-        Intent ii = new Intent(this, GoogleAuthentication.class);
-        startActivity(ii);
+        GoogleSignInAccount acct = GoogleAuthentication.getUser();
+        //don't think this will work
+        if(isConnected)
 
+        //Change this check to make sure that not only is there an internet connection, but that the user isn't logged in
+        {
+            Intent ii = new Intent(this, GoogleAuthentication.class);
+            startActivity(ii);
+        }
         m_instance = this;
         //This method will use a singleton pattern to either return the already existing instance
         db = AppDatabase.getM_DB_instance(getApplicationContext());
@@ -88,32 +122,44 @@ public class LandmarkedMain extends AppCompatActivity {
 
         //directionTV = findViewById(R.id.current_direction_text);
         //locationTV = findViewById(R.id.current_location_text);
+
     }
     public void setUserName(String name)
     {
         m_username = name;
     }
-    public static ReentrantLock get_thread_lock() {
-        return m_thread_lock;
-    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
+
         TextView text = findViewById(R.id.WelcomeText);
-        if(GoogleAuthentication.getUserEmailName() == null)
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+        GoogleSignInAccount acct = GoogleAuthentication.getUser();
+        //m_username = acct.getEmail();
+
+        if(m_username == null)
+        //if(GoogleAuthentication.getUserEmailName() == null)
         {
             text.setText("Not connected: sign out button -> close and restart app to sign in");
         }
         else
         {
-            text.setText("Welcome back " + GoogleAuthentication.getUserEmailName());
+            text.setText("Welcome back " + acct.getEmail());
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+
     }
 
     public static ExecutorService getThreadPoolInstance()
