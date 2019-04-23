@@ -177,6 +177,8 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         signOut();
 
     }
+
+
     @Override
     public void onBackPressed()
     {

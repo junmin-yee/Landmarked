@@ -134,7 +134,7 @@ public class LandmarkedMain extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        TextView text = findViewById(R.id.WelcomeText);
+      //  TextView text = findViewById(R.id.WelcomeText);
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,18 +142,18 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
 
-        GoogleSignInAccount acct = GoogleAuthentication.getUser();
+     //   GoogleSignInAccount acct = GoogleAuthentication.getUser();
         //m_username = acct.getEmail();
 
-        if(m_username == null)
+    //    if(m_username == null)
         //if(GoogleAuthentication.getUserEmailName() == null)
         {
-            text.setText("Not connected: sign out button -> close and restart app to sign in");
+            //text.setText("Not connected: sign out button -> close and restart app to sign in");
         }
-        else
-        {
-            text.setText("Welcome back " + acct.getEmail());
-        }
+    //    else
+  //   {
+    //        text.setText("Welcome back " + acct.getEmail());
+   //     }
     }
 
     @Override
@@ -357,11 +357,7 @@ public class LandmarkedMain extends AppCompatActivity {
         super.onDestroy();
 
     }
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-    }
+
 
     /*public void showMap(View v)
     {
@@ -412,5 +408,38 @@ public class LandmarkedMain extends AppCompatActivity {
     {
         Intent load = new Intent(this, LoadingPage.class);
         startActivity(load);
+    }
+    @Override protected void onPause()
+    {
+        super.onPause();
+    }
+
+    @Override protected void onResume()
+    {
+        super.onResume();
+          TextView text = findViewById(R.id.WelcomeText);
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+           GoogleSignInAccount acct = GoogleAuthentication.getUser();
+
+           if(acct != null)
+               m_username = acct.getEmail();
+
+
+        if(m_username == null)
+        {
+            //text.setText("Not connected: sign out button -> close and restart app to sign in");
+        }
+           else
+          {
+               text.setText("Welcome back " + acct.getEmail());
+            }
+
+
     }
 }
