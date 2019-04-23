@@ -31,7 +31,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     static LandmarkedMain  main_instance;
     ExecutorService m_thread;
 
-
+/////////////////////////////////////////make everything non static
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -59,7 +59,10 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     {
         super.onStart();
         m_account = GoogleSignIn.getLastSignedInAccount(this);
-
+        if(m_account != null)
+        {
+            main_instance.setUserName(m_account.getEmail());
+        }
         updateAuth(m_account);
     }
 
@@ -107,7 +110,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             //GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
             m_account = completedTask.getResult(ApiException.class);
             Name = m_account.getEmail();
-
+            main_instance.setUserName(Name);
 
             //HERE IS WHERE WE NEED TO PUT GETTERS THAT WILL GET ALL OUR USER INFORMATION
             // Signed in successfully, show authenticated UI.
@@ -125,7 +128,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
 
     //This function needs to remain very simple. The more logic we put here, the more "jank" we will get in our login screen.
     //If there's something else to be tested at startup, this probably isn't the place
-    private void updateAuth(GoogleSignInAccount acct)
+    protected void updateAuth(GoogleSignInAccount acct)
     {
         if(acct == null)
         {
@@ -134,6 +137,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         }
         else
         {
+            main_instance.setUserName(m_account.getEmail());
             finish();
         }
     }
@@ -142,7 +146,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         try {
            if(m_account == null)
            {
-             //  m_account = getLastAccount();
+
            }
             return m_account;
         } catch (NullPointerException e) {
@@ -170,6 +174,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     @Override protected void onStop()
     {
         super.onStop();
+        signOut();
 
     }
     @Override

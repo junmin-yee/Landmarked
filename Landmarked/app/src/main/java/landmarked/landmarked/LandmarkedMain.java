@@ -54,7 +54,7 @@ public class LandmarkedMain extends AppCompatActivity {
     //Thread pool instance
     public static ExecutorService m_thread;
     GoogleAuthentication m_user;
-    public static String m_username;
+    public static  String m_username;
     public String m_conn_msg;
     public static AzureConnectionClass m_conn;
 
@@ -122,22 +122,30 @@ public class LandmarkedMain extends AppCompatActivity {
 
         //directionTV = findViewById(R.id.current_direction_text);
         //locationTV = findViewById(R.id.current_location_text);
+
     }
     public void setUserName(String name)
     {
         m_username = name;
     }
-    public static ReentrantLock get_thread_lock() {
-        return m_thread_lock;
-    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
 
         TextView text = findViewById(R.id.WelcomeText);
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
         GoogleSignInAccount acct = GoogleAuthentication.getUser();
-        if(acct == null)
+        //m_username = acct.getEmail();
+
+        if(m_username == null)
         //if(GoogleAuthentication.getUserEmailName() == null)
         {
             text.setText("Not connected: sign out button -> close and restart app to sign in");
@@ -151,6 +159,7 @@ public class LandmarkedMain extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
     }
 
     public static ExecutorService getThreadPoolInstance()
