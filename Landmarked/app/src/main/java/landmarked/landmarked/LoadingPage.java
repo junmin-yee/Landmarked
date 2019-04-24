@@ -119,10 +119,14 @@ public class LoadingPage extends AppCompatActivity {
         mSensorData.unregisterOrientationSensors();
         mSensorData.unregisterLocationSensor();
 
-        // Show landmark history page (Shows the results returned from landmark search)
-        Intent result = new Intent(this, LandmarkHistory.class);
-        result.putParcelableArrayListExtra("sending_history", landmarkGet);
-        startActivity(result);
+        // if any results are within the GUI landmark list
+        if (landmarkGet.size() > 0) {
+
+            // Show landmark history page (Shows the results returned from landmark search)
+            Intent result = new Intent(this, LandmarkHistory.class);
+            result.putParcelableArrayListExtra("sending_history", landmarkGet);
+            startActivity(result);
+        }
     }
 
     public void checkLocationPermission() {
