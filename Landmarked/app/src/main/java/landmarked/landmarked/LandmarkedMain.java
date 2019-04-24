@@ -59,6 +59,16 @@ public class LandmarkedMain extends AppCompatActivity {
     public String m_conn_msg;
     public static AzureConnectionClass m_conn;
 
+    // getLandmarkData stuff. Needed for searching landmarks and sensor stuff.
+    public static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+
+    public SensorData mSensorData;
+    public LandmarkRetrieval mLandmarkRetrieval;
+    public Location currLocation;
+    public float[] currOrientation = new float[3];
+    public ArrayList<LocalLandmark> landmarkGet = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -135,6 +145,21 @@ public class LandmarkedMain extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        // Checks if app has permission to use location.
+        checkLocationPermission();
+
+        //Instantiate with this context
+        mSensorData = new SensorData(this);
+
+        //Instantiate with existing SensorData object
+        mLandmarkRetrieval = new LandmarkRetrieval();
+
+        //Register listeners
+        mSensorData.registerOrientationSensors();
+        mSensorData.registerLocationSensor();
+
+        currOrientation = mSensorData.getCurrentOrientation();
+
       //  TextView text = findViewById(R.id.WelcomeText);
 
 
@@ -161,6 +186,9 @@ public class LandmarkedMain extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
+        //Unregister listeners
+        mSensorData.unregisterOrientationSensors();
+        mSensorData.unregisterLocationSensor();
     }
 
     public static ExecutorService getThreadPoolInstance()
@@ -407,16 +435,106 @@ public class LandmarkedMain extends AppCompatActivity {
 
     public void loadingScreen(View v)
     {
+        Intent load = new Intent(this, LoadingPage.class);
+        startActivity(load);
+    }
+
+    public void getLandmarkData(){
+
+        // Create progress dialog box while app is searching for landmarks
         ProgressDialog dialog=new ProgressDialog(this);
         dialog.setMessage("Searching for Landmarks...");
         dialog.setCancelable(false);
         dialog.setInverseBackgroundForced(false);
         dialog.show();
 
-        
-        //Intent load = new Intent(this, LoadingPage.class);
-        //startActivity(load);
+        try
+        {
+            currLocation = mSensorData.getCurrentLocation();
+
+            mLandmarkRetrieval.SetSensorInformation(mSensorData);
+            mLandmarkRetrieval.LandmarkProximitySearch();
+
+            Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
+
+            if(retrievedLandmarks.size() > 0)
+            {
+                // Clear landmark results already within GUI.
+                landmarkGet.clear();
+
+                // Set iterator for list of landmarks.
+                Iterator<CarmenFeature> retLanIterator = retrievedLandmarks.iterator();
+
+                // Iterate through list of landmarks and add them to GUI.
+                while(retLanIterator.hasNext())
+                {
+                    CarmenFeatureHelper retriever = new CarmenFeatureHelper(retLanIterator.next());
+
+                    double lat = retriever.getLandmarkLatitude();
+                    double lon = retriever.getLandmarkLongitude();
+                    String name = retriever.getLandmarkName();
+                    String placename = retriever.getLandmarkName();
+                    String wikidata = retriever.getLandmarkWikiData();
+                    Date lan_date = new Date();
+
+                    boolean test_elev = retriever.checkElevationExists();
+                    double elev_result;
+
+                    if (test_elev)
+                        elev_result = retriever.getLandmarkElevation();
+                    else {
+                        elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
+                    }
+
+                    // Add landmarks to GUI
+                    landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
+                }
+
+                // Finish loading page activity
+                //finish(); // We don't want this in our main activity!!!
+            }
+            else
+                throw new NullPointerException("Landmark search test failed."); // temporary so the UI seems to be a bit more fluid. Otherwise it will display data but not have any landmarks.
+        }
+        catch (SecurityException | NullPointerException e)
+        {}
+
+
+        // if any results are within the GUI landmark list
+        if (landmarkGet.size() > 0) {
+            // Dismiss the... dialog. Refers to the progress dialog
+            dialog.dismiss();
+
+            // Show landmark history page (Shows the results returned from landmark search)
+            Intent result = new Intent(this, LandmarkHistory.class);
+            result.putParcelableArrayListExtra("sending_history", landmarkGet);
+            startActivity(result);
+        }
     }
+
+    public void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION))
+            {
+
+            }
+            else
+            {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            }
+        }
+        else
+        {
+            // Permission has already been granted
+        }
+    }
+
     @Override protected void onPause()
     {
         super.onPause();
