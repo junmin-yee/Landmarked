@@ -174,7 +174,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     @Override protected void onStop()
     {
         super.onStop();
-        signOut();
+        //signOut();
 
     }
 
