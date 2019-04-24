@@ -2,6 +2,7 @@ package landmarked.landmarked;
 
 import android.Manifest;
 
+import android.app.ProgressDialog;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Room;
 import android.content.Context;
@@ -406,8 +407,15 @@ public class LandmarkedMain extends AppCompatActivity {
 
     public void loadingScreen(View v)
     {
-        Intent load = new Intent(this, LoadingPage.class);
-        startActivity(load);
+        ProgressDialog dialog=new ProgressDialog(this);
+        dialog.setMessage("Searching for Landmarks...");
+        dialog.setCancelable(false);
+        dialog.setInverseBackgroundForced(false);
+        dialog.show();
+
+        
+        //Intent load = new Intent(this, LoadingPage.class);
+        //startActivity(load);
     }
     @Override protected void onPause()
     {
