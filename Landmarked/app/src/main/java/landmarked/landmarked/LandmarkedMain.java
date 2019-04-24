@@ -89,8 +89,6 @@ public class LandmarkedMain extends AppCompatActivity {
         GoogleSignInAccount acct = GoogleAuthentication.getUser();
         //don't think this will work
         if(isConnected)
-
-        //Change this check to make sure that not only is there an internet connection, but that the user isn't logged in
         {
             Intent ii = new Intent(this, GoogleAuthentication.class);
             startActivity(ii);
@@ -99,7 +97,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //This method will use a singleton pattern to either return the already existing instance
         db = AppDatabase.getM_DB_instance(getApplicationContext());
         main_instance = this;
-       // String acct_name = m_user.getUserEmailName();
+
 
         m_conn.Connect();
         //InsertAzure("sometest", "someTest", "SomeTest", 0.1F, "Sometest"); //INSERTAZURE IS A FUNCTION WITHIN LANDMARKEDMAIN
@@ -117,7 +115,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_get_sensor_data);
-        String str = m_username;
+        
        // text.setText("test");
 
         //directionTV = findViewById(R.id.current_direction_text);
@@ -129,31 +127,15 @@ public class LandmarkedMain extends AppCompatActivity {
         m_username = name;
     }
 
+    public static String get_m_username()
+    {
+        return m_username;
+    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
-
-      //  TextView text = findViewById(R.id.WelcomeText);
-
-
-        ////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-     //   GoogleSignInAccount acct = GoogleAuthentication.getUser();
-        //m_username = acct.getEmail();
-
-    //    if(m_username == null)
-        //if(GoogleAuthentication.getUserEmailName() == null)
-        {
-            //text.setText("Not connected: sign out button -> close and restart app to sign in");
-        }
-    //    else
-  //   {
-    //        text.setText("Welcome back " + acct.getEmail());
-   //     }
     }
 
     @Override
@@ -417,28 +399,21 @@ public class LandmarkedMain extends AppCompatActivity {
     @Override protected void onResume()
     {
         super.onResume();
-          TextView text = findViewById(R.id.WelcomeText);
+        TextView text = findViewById(R.id.WelcomeText);
+        GoogleSignInAccount acct = GoogleAuthentication.getUser();
 
-
-        ////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-           GoogleSignInAccount acct = GoogleAuthentication.getUser();
-
-           if(acct != null)
-               m_username = acct.getEmail();
+        if(acct != null)
+            m_username = acct.getEmail();
 
 
         if(m_username == null)
         {
-            //text.setText("Not connected: sign out button -> close and restart app to sign in");
+            text.setText("Not connected: sign in failed");
         }
-           else
-          {
-               text.setText("Welcome back " + acct.getEmail());
-            }
+        else
+        {
+            text.setText("Welcome back " + acct.getEmail());
+        }
 
 
     }

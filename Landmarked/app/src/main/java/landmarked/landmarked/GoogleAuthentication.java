@@ -80,6 +80,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         }
     }
 
+
     private void signIn() {
 
                 Intent signInIntent = m_GoogleSignInClient.getSignInIntent();
@@ -174,7 +175,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     @Override protected void onStop()
     {
         super.onStop();
-        signOut();
+        //signOut();
 
     }
 
