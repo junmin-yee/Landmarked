@@ -65,11 +65,15 @@ public class LoadingPage extends AppCompatActivity {
 
             Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
 
-            Iterator<CarmenFeature> retLanIterator = retrievedLandmarks.iterator();
-
             if(retrievedLandmarks.size() > 0)
             {
+                // Clear landmark results already within GUI.
                 landmarkGet.clear();
+
+                // Set iterator for list of landmarks.
+                Iterator<CarmenFeature> retLanIterator = retrievedLandmarks.iterator();
+
+                // Iterate through list of landmarks and add them to GUI.
                 while(retLanIterator.hasNext())
                 {
                     CarmenFeatureHelper retriever = new CarmenFeatureHelper(retLanIterator.next());
@@ -90,16 +94,21 @@ public class LoadingPage extends AppCompatActivity {
                         elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
                     }
 
+                    // Add landmarks to GUI
                     landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
                 }
+
+                // Finish loading page activity
+                finish();
             }
             else
                 throw new NullPointerException("Landmark search test failed."); // temporary so the UI seems to be a bit more fluid. Otherwise it will display data but not have any landmarks.
         }
         catch (SecurityException | NullPointerException e)
         {}
-        finish();
     }
+
+
 
     @Override
     protected void onStop()
@@ -110,6 +119,7 @@ public class LoadingPage extends AppCompatActivity {
         mSensorData.unregisterOrientationSensors();
         mSensorData.unregisterLocationSensor();
 
+        // Show landmark history page (Shows the results returned from landmark search)
         Intent result = new Intent(this, LandmarkHistory.class);
         result.putParcelableArrayListExtra("sending_history", landmarkGet);
         startActivity(result);
