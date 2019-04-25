@@ -33,11 +33,11 @@ public class LandmarkRetrieval {
     private Location mGeoCodeNELocation;
     private float mLeftField;
     private float mRightField;
-    public List<CarmenFeature> mRevResults;
-    public List<CarmenFeature> mFwdResults;
-    public Set<CarmenFeature> mProximityResults;
-    public Set<CarmenFeature> mBoundaryBoxResults;
-    boolean sensorInfoSet;
+    private List<CarmenFeature> mRevResults;
+    private List<CarmenFeature> mFwdResults;
+    private Set<CarmenFeature> mProximityResults;
+    private Set<CarmenFeature> mBoundaryBoxResults;
+    private boolean sensorInfoSet;
 
     // These categories limit the search results (or, at least, heavily bias them)
     // Need more categories or perhaps have the user define the search???
@@ -285,7 +285,7 @@ public class LandmarkRetrieval {
     private void BoundaryBoxForwardGeocodeSearch(Point Southwest, Point Northeast, String category){
 
         // Hardcoded "lake" for testing purposes - must set up a better way. One potential solution (but very inefficient) would be to have separate queries for each type of landmark.
-        String query_string = category + " near " + mRevResults.get(0).placeName(); //+ mCurrLocation.getLongitude() + ", " + mCurrLocation.getLatitude();
+        String query_string = category; // search by category. left as separate local variable for experimenting.
 
         // Sets Access Token
         // Constructs query based on search criteria defined in "query_string".
@@ -361,18 +361,18 @@ public class LandmarkRetrieval {
         // Calculate boundary box settings given current user location and
         CalculateBoundaryBox();
 
+        // Calculate the field of view that the user is looking for
+        //CalculateFieldofView();
+
         // USE mGeoCodeSWLocation and mGeoCodeNELocation points to create the boundary box points for search
         Point SWPoint = Point.fromLngLat(mGeoCodeSWLocation.getLongitude(), mGeoCodeSWLocation.getLatitude());
         Point NEPoint = Point.fromLngLat(mGeoCodeNELocation.getLongitude(), mGeoCodeNELocation.getLatitude());
 
-        ReverseGeocodeSearch();
-        if(mRevResults != null) {
-            for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
-                BoundaryBoxForwardGeocodeSearch(SWPoint, NEPoint, mLandmarkCategories[iterator]);
+        for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
+            BoundaryBoxForwardGeocodeSearch(SWPoint, NEPoint, mLandmarkCategories[iterator]);
 
-                if (mFwdResults != null) {
-                    mBoundaryBoxResults.addAll(mFwdResults);
-                }
+            if (mFwdResults != null) {
+                mBoundaryBoxResults.addAll(mFwdResults);
             }
         }
 
