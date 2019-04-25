@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:backgroundTint="#000000"
-                android:inputType="text"
+                android:inputType="none"
                 android:textColor="#000000"/>
 
             <CheckBox
@@ -98,7 +98,8 @@
                 android:buttonTint="#000000"
                 android:text="Current Elevation"
                 android:textColor="#000000"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:onClick="onCheckClicked"/>
 
             <TextView
                 android:id="@+id/elevationText"
@@ -147,7 +148,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="Save"/>
+                android:text="Save"
+                android:onClick="onSaveCustom"/>
         </LinearLayout>
     </ScrollView>
 

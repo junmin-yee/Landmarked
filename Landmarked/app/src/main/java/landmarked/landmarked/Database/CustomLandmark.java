@@ -39,7 +39,11 @@ public class CustomLandmark extends AppCompatActivity {
 
         Intent i = getIntent();
 
+
+
+
         /*ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_landmark");
+
 
         for(int v = 0; v < recievedLandmark.size(); v++)
         {
@@ -133,5 +137,18 @@ public class CustomLandmark extends AppCompatActivity {
     {
         Intent customAdd = new Intent(this, addCustomLandmark.class);
         startActivity(customAdd);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /*CustomLocalLandmarkAccessorMethods_Impl grab = new CustomLocalLandmarkAccessorMethods_Impl(AppDatabase.getM_DB_instance(this));
+        CustomLocalLandmark[] arr = grab.getAll();
+
+        for(int i = 0; i < arr.length; i++)
+        {
+            CustomLocalLandmark res = arr[i];
+            AddElement(res.getName(), res.m_latitude, res.m_longitude, res.m_elevation);
+        }*/
     }
 }
