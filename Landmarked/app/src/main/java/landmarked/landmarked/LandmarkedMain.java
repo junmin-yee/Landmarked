@@ -68,6 +68,8 @@ public class LandmarkedMain extends AppCompatActivity {
     public float[] currOrientation = new float[3];
     public ArrayList<LocalLandmark> landmarkGet = new ArrayList<>();
 
+    public ProgressDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +161,9 @@ public class LandmarkedMain extends AppCompatActivity {
         mSensorData.registerLocationSensor();
 
         currOrientation = mSensorData.getCurrentOrientation();
+
+        // Create ProgressDialog for landmark searching
+        dialog = new ProgressDialog(this);
 
       //  TextView text = findViewById(R.id.WelcomeText);
 
@@ -439,14 +444,9 @@ public class LandmarkedMain extends AppCompatActivity {
         startActivity(load);
     }
 
-    public void getLandmarkData(){
+    public void getLandmarkData(View v){
 
-        // Create progress dialog box while app is searching for landmarks
-        ProgressDialog dialog=new ProgressDialog(this);
-        dialog.setMessage("Searching for Landmarks...");
-        dialog.setCancelable(false);
-        dialog.setInverseBackgroundForced(false);
-        dialog.show();
+        //showProgressDialog();
 
         try
         {
@@ -510,6 +510,15 @@ public class LandmarkedMain extends AppCompatActivity {
             result.putParcelableArrayListExtra("sending_history", landmarkGet);
             startActivity(result);
         }
+    }
+
+    public void showProgressDialog() {
+
+        // Create progress dialog box while app is searching for landmarks
+        dialog.setMessage("Searching for Landmarks...");
+        dialog.setCancelable(false);
+        dialog.setInverseBackgroundForced(false);
+        dialog.show();
     }
 
     public void checkLocationPermission() {
