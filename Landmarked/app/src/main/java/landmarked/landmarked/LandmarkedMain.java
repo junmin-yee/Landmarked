@@ -149,8 +149,7 @@ public class LandmarkedMain extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-<<<<<<< HEAD
-=======
+
 
         // Checks if app has permission to use location.
         checkLocationPermission();
@@ -190,7 +189,7 @@ public class LandmarkedMain extends AppCompatActivity {
   //   {
     //        text.setText("Welcome back " + acct.getEmail());
    //     }
->>>>>>> 2c38214ce488f22d75cef928b7a065b22be82f4c
+
     }
 
     @Override
@@ -228,7 +227,7 @@ public class LandmarkedMain extends AppCompatActivity {
         return lst;
 
     }
-    private synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
+    public synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
     {
        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
 
@@ -499,7 +498,8 @@ public class LandmarkedMain extends AppCompatActivity {
                     }
 
                     // Add landmarks to GUI
-                    landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
+                    //landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
+                    m_conn.Insert(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata);
                 }
 
                 // Finish loading page activity

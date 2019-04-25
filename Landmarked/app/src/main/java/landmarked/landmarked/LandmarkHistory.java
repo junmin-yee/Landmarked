@@ -17,7 +17,7 @@ import landmarked.landmarked.Database.LocalLandmark;
 import landmarked.landmarked.Database.LocalLandmarkPass;
 
 public class LandmarkHistory extends AppCompatActivity {
-
+     static LandmarkedMain m_instance;
     public TextView landmarkInfo;
     public LinearLayout LandmarkList;
     public TextView tempView;
@@ -26,6 +26,7 @@ public class LandmarkHistory extends AppCompatActivity {
         /*SharedPreferences themePref = this.getSharedPreferences("LandmarkedPreferences", MODE_PRIVATE);
         int myTheme = themePref.getInt("themePreferences", R.style.AppTheme);
         setTheme(myTheme);*/
+        m_instance = LandmarkedMain.getInstance();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landmark_history);
@@ -39,7 +40,8 @@ public class LandmarkHistory extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
+        //ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
+        ArrayList<LocalLandmark> recievedLandmark = m_instance.getUserLandmarksFromAzure(/*m_instance.get_m_username()*/"someemail@gmail.com");
 
         for (int v = 0; v < recievedLandmark.size(); v++) {
             AddElement(recievedLandmark.get(v).getName(), recievedLandmark.get(v).getLatitude(), recievedLandmark.get(v).getLongitude(), recievedLandmark.get(v).getElevation());
