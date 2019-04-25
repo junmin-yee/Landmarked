@@ -149,8 +149,6 @@ public class LandmarkedMain extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-<<<<<<< HEAD
-=======
 
         // Checks if app has permission to use location.
         checkLocationPermission();
@@ -190,7 +188,6 @@ public class LandmarkedMain extends AppCompatActivity {
   //   {
     //        text.setText("Welcome back " + acct.getEmail());
    //     }
->>>>>>> 2c38214ce488f22d75cef928b7a065b22be82f4c
     }
 
     @Override
