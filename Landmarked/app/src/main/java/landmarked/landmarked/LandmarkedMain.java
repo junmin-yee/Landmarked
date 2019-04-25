@@ -452,10 +452,16 @@ public class LandmarkedMain extends AppCompatActivity {
         {
             currLocation = mSensorData.getCurrentLocation();
 
+            // Set sensor information as current
             mLandmarkRetrieval.SetSensorInformation(mSensorData);
-            mLandmarkRetrieval.LandmarkProximitySearch();
 
-            Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
+            // Search for landmarks
+            //mLandmarkRetrieval.LandmarkProximitySearch();
+            mLandmarkRetrieval.LandmarkBoundaryBoxSearch();
+
+            // Get the search results
+            //Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
+            Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkBoundaryBoxSearchResults();
 
             if(retrievedLandmarks.size() > 0)
             {
