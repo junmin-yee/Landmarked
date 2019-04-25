@@ -17,6 +17,7 @@
     <string name="GetDataButtonText">Get Data</string>
     <string name="HistoryButtonText">History</string>
     <string name="SignOutButtonText">Sign Out</string>
+    <string name="SignInButtonText">Sign In</string>
     <string name="LandmarHistoryHeader">Landmark History</string>
     <string-array name="ShortenedLocData">
         <item>Name</item>

@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
+
+import landmarked.landmarked.DataManipulation.addCustomLandmark;
 import landmarked.landmarked.R;
 
 import landmarked.landmarked.LandmarkSelected;
@@ -37,12 +39,12 @@ public class CustomLandmark extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_landmark");
+        /*ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_landmark");
 
         for(int v = 0; v < recievedLandmark.size(); v++)
         {
             AddElement(recievedLandmark.get(v).getName(), recievedLandmark.get(v).getLatitude(), recievedLandmark.get(v).getLongitude(), recievedLandmark.get(v).getElevation());
-        }
+        }*/
 
             /*for (CarmenFeature feat : landmarkList) {
                 CarmenFeatureHelper landmarkHelper = new CarmenFeatureHelper(feat);
@@ -127,4 +129,9 @@ public class CustomLandmark extends AppCompatActivity {
     }
 
 
+    public void addCustom(View v)
+    {
+        Intent customAdd = new Intent(this, addCustomLandmark.class);
+        startActivity(customAdd);
+    }
 }
