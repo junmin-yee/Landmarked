@@ -15,6 +15,7 @@ import landmarked.landmarked.Database.AppDatabase;
 import landmarked.landmarked.Database.CustomLocalLandmark;
 import landmarked.landmarked.Database.CustomLocalLandmarkAccessorMethods;
 import landmarked.landmarked.Database.CustomLocalLandmarkAccessorMethods_Impl;
+import landmarked.landmarked.LandmarkedMain;
 import landmarked.landmarked.R;
 
 public class addCustomLandmark extends AppCompatActivity
@@ -87,8 +88,11 @@ public class addCustomLandmark extends AppCompatActivity
         CustomLocalLandmark addition = new CustomLocalLandmark(name, lat, lon, elev, "",currDate);
 
         //CustomLocalLandmarkAccessorMethods_Impl add = new CustomLocalLandmarkAccessorMethods_Impl;
-        CustomLocalLandmarkAccessorMethods_Impl add = new CustomLocalLandmarkAccessorMethods_Impl(AppDatabase.getM_DB_instance(this));
-        add.insertCustomLandmarkStructure(addition);
+        /*CustomLocalLandmarkAccessorMethods_Impl add = new CustomLocalLandmarkAccessorMethods_Impl(AppDatabase.getM_DB_instance(this));
+        add.insertCustomLandmarkStructure(addition);*/
+
+        LandmarkedMain main =  LandmarkedMain.getInstance();
+        main.insertCustomLandmarkStructure(addition);
 
         finish();
     }

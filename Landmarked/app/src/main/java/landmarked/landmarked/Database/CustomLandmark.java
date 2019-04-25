@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.List;
 
 import landmarked.landmarked.DataManipulation.addCustomLandmark;
+import landmarked.landmarked.LandmarkedMain;
 import landmarked.landmarked.R;
 
 import landmarked.landmarked.LandmarkSelected;
@@ -142,6 +144,16 @@ public class CustomLandmark extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        LandmarkedMain main = LandmarkedMain.getInstance();
+
+        List<CustomLocalLandmark> val = main.getAllCustomLocals();
+
+        for (int i = 0; i < val.size(); i++)
+        {
+            CustomLocalLandmark res = val.get(i);
+            AddElement(res.getName(), res.m_latitude, res.m_longitude, res.m_elevation);
+        }
         /*CustomLocalLandmarkAccessorMethods_Impl grab = new CustomLocalLandmarkAccessorMethods_Impl(AppDatabase.getM_DB_instance(this));
         CustomLocalLandmark[] arr = grab.getAll();
 
