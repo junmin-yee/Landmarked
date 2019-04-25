@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DataManipulation.addCustomLandmark">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nameText"
+                android:layout_width="68dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:text="Name:"
+                android:textColor="#000000"
+                android:textSize="22sp"/>
+
+            <EditText
+                android:id="@+id/landmarkName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#000000"
+                android:inputType="text"
+                android:textColor="#000000"/>
+
+            <CheckBox
+                android:id="@+id/currLocationBox"
+                android:layout_width="175dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="28dp"
+                android:buttonTint="#000000"
+                android:text="Current Location"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:onClick="onCheckClicked"/>
+
+            <TextView
+                android:id="@+id/LatitudeText"
+                android:layout_width="67dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Lat:"
+                android:textSize="22sp"/>
+
+            <EditText
+                android:id="@+id/latitudeEntry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#000000"
+                android:ems="10"
+                android:inputType="numberSigned|numberDecimal"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:id="@+id/longitudeText"
+                android:layout_width="67dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="16dp"
+                android:text="Long:"
+                android:textSize="22sp"/>
+
+            <EditText
+                android:id="@+id/longitudeEntry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#000000"
+                android:ems="10"
+                android:inputType="numberSigned|numberDecimal"
+                android:textColor="#000000" />
+
+            <CheckBox
+                android:id="@+id/elevationBox"
+                android:layout_width="163dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:buttonTint="#000000"
+                android:text="Current Elevation"
+                android:textColor="#000000"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/elevationText"
+                android:layout_width="58dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="16dp"
+                android:text="Elev:"
+                android:textSize="22sp"/>
+
+            <EditText
+                android:id="@+id/elevationEntry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#000000"
+                android:ems="10"
+                android:inputType="numberSigned|numberDecimal"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:id="@+id/notesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:text="Notes:"
+                android:textSize="22sp"/>
+
+            <EditText
+                android:id="@+id/notesEntry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#000000"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:scrollbars="vertical"
+                android:textColor="#000000"/>
+
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Save"/>
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
