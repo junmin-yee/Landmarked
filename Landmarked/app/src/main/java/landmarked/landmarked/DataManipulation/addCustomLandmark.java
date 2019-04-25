@@ -92,4 +92,9 @@ public class addCustomLandmark extends AppCompatActivity
 
         finish();
     }
+
+    public void onCancelCustom(View v)
+    {
+        finish();
+    }
 }
