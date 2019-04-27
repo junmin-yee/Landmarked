@@ -45,7 +45,7 @@ public class LandmarkedMain extends AppCompatActivity {
     private static ReentrantLock m_thread_lock;
     public static final String ACTIVITY_MESSAGE = "Sending to Map";
     private static LandmarkedMain m_instance;//instance of the main activity that can be accessed through getter getInstance(), handy for things such as closing the app from another instance
-
+    private static GoogleSignInAccount m_acct;
     public TextView directionTV;
     public TextView locationTV;
 
@@ -99,8 +99,8 @@ public class LandmarkedMain extends AppCompatActivity {
 
         m_thread = Executors.newSingleThreadExecutor();
         m_conn = new AzureConnectionClass();
-        GoogleSignInAccount acct = GoogleAuthentication.getUser();
-        //don't think this will work
+
+
         if(isConnected)
         {
             Intent ii = new Intent(this, GoogleAuthentication.class);
@@ -124,7 +124,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure(m_user.getUserEmailName());
 
         //Calling method with dummy data:
-        ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure("someemail@gmail.com");
+        ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure(m_username);
 
 
         setContentView(R.layout.activity_get_sensor_data);
@@ -135,6 +135,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //locationTV = findViewById(R.id.current_location_text);
 
     }
+
     public void setUserName(String name)
     {
         m_username = name;
@@ -171,28 +172,6 @@ public class LandmarkedMain extends AppCompatActivity {
 
         // Create ProgressDialog for landmark searching
         dialog = new ProgressDialog(this);
-
-      //  TextView text = findViewById(R.id.WelcomeText);
-
-
-        ////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-     //   GoogleSignInAccount acct = GoogleAuthentication.getUser();
-        //m_username = acct.getEmail();
-
-    //    if(m_username == null)
-        //if(GoogleAuthentication.getUserEmailName() == null)
-        {
-            //text.setText("Not connected: sign out button -> close and restart app to sign in");
-        }
-    //    else
-  //   {
-    //        text.setText("Welcome back " + acct.getEmail());
-   //     }
-
 
 
     }
@@ -231,6 +210,20 @@ public class LandmarkedMain extends AppCompatActivity {
         m_thread.execute(runCommand);
         return lst;
 
+    }
+    public  void InsertUserToAzure()
+    {
+        Runnable runCommand = new Runnable() {
+
+            @Override
+            public void run()
+            {
+
+                m_conn.InsertUsername(m_username, m_acct.getGivenName(), m_acct.getFamilyName());
+            }
+
+        };
+        m_thread.execute(runCommand);
     }
     public synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
     {
@@ -503,8 +496,8 @@ public class LandmarkedMain extends AppCompatActivity {
                     }
 
                     // Add landmarks to GUI
-                    //landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
-                    m_conn.Insert(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata);
+                    landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
+                   // m_conn.Insert(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata);
                 }
 
                 // Finish loading page activity
@@ -570,10 +563,10 @@ public class LandmarkedMain extends AppCompatActivity {
     {
         super.onResume();
         TextView text = findViewById(R.id.WelcomeText);
-        GoogleSignInAccount acct = GoogleAuthentication.getUser();
+        m_acct = GoogleAuthentication.getUser();
 
-        if(acct != null)
-            m_username = acct.getEmail();
+        if(m_acct != null)
+            m_username = m_acct.getEmail();
 
 
         if(m_username == null)
@@ -582,9 +575,9 @@ public class LandmarkedMain extends AppCompatActivity {
         }
         else
         {
-            text.setText("Welcome back " + acct.getEmail());
+            text.setText("Welcome back " + m_acct.getEmail());
         }
-
+       // InsertUserToAzure();
 
     }
 }
