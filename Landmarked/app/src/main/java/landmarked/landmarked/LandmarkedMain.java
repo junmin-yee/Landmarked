@@ -139,10 +139,10 @@ public class LandmarkedMain extends AppCompatActivity {
 
     }
 
-<<<<<<< HEAD
-=======
+
+
     // Setter/Getter for Google Authentication Username
->>>>>>> 8f7db91556062eacb86a0059a3c90cd1f0c1a89f
+
     public void setUserName(String name)
     {
         m_username = name;
@@ -174,9 +174,7 @@ public class LandmarkedMain extends AppCompatActivity {
         // Create ProgressDialog for landmark searching
         dialog = new ProgressDialog(this);
 
-<<<<<<< HEAD
 
-=======
       //  TextView text = findViewById(R.id.WelcomeText);
         ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -192,7 +190,7 @@ public class LandmarkedMain extends AppCompatActivity {
   //   {
     //        text.setText("Welcome back " + acct.getEmail());
    //     }
->>>>>>> 8f7db91556062eacb86a0059a3c90cd1f0c1a89f
+
     }
 
     @Override
@@ -214,7 +212,7 @@ public class LandmarkedMain extends AppCompatActivity {
         return m_thread;
     }
 
-<<<<<<< HEAD
+
     public ArrayList<LocalLandmark> getLandmarksAzure()
     {
         ArrayList<LocalLandmark>lst = new ArrayList<LocalLandmark>();
@@ -246,9 +244,9 @@ public class LandmarkedMain extends AppCompatActivity {
         };
         m_thread.execute(runCommand);
     }
-=======
+
     // Gets all landmarks from Azure given specific username
->>>>>>> 8f7db91556062eacb86a0059a3c90cd1f0c1a89f
+
     public synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
     {
        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
@@ -594,10 +592,9 @@ public class LandmarkedMain extends AppCompatActivity {
         {
             text.setText("Welcome back " + m_acct.getEmail());
         }
-<<<<<<< HEAD
+
        // InsertUserToAzure();
 
-=======
->>>>>>> 8f7db91556062eacb86a0059a3c90cd1f0c1a89f
+
     }
 }
