@@ -11,13 +11,18 @@ import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.util.Date;
 
+import landmarked.landmarked.LandmarkedMain;
+
 
 public class AzureConnectionClass {
     private static Connection mConnection;
     private static AzureConnectionClass m_instance;
-
+    private static String m_username;
+    static LandmarkedMain m_main;
     public AzureConnectionClass()
     {
+        m_main = LandmarkedMain.getInstance();
+        m_username = m_main.get_m_username();
         mConnection = null;
         m_instance = this;
     }
@@ -62,8 +67,13 @@ public class AzureConnectionClass {
         try
         {
 
-            String query = "INSERT INTO dbo.Landmark (LandmarkName, LandmarkLat, LandmarkLong, LandmarkEle, LandmarkWikiInfo) VALUES ('"+name+"', '"+latitude+"', '"+longitude+"', '"+0.00+"', '"+wiki+"')";
+        //    String query = "INSERT INTO dbo.Landmark (LandmarkName, LandmarkLat, LandmarkLong, LandmarkEle, LandmarkWikiInfo) VALUES ('"+name+"', '"+latitude+"', '"+longitude+"', '"+0.00+"', '"+wiki+"')";
             Statement m_query = mConnection.createStatement();
+        //    m_query.executeUpdate(query);
+         String   query = "INSERT Into dbo.UserLandmark VALUES (UserID, LandmarkID)"
+            +  "SELECT UserID, LandmarkID"
+            +   "FROM User, Landmark"
+            +   "WHERE User.name = '"+m_username+"', Landmark.name = '"+name+"'";
             m_query.executeUpdate(query);
 
         }

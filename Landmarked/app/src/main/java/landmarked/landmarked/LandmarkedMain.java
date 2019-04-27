@@ -2,6 +2,7 @@ package landmarked.landmarked;
 
 import android.Manifest;
 
+import android.app.ProgressDialog;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Room;
 import android.content.Context;
@@ -58,6 +59,18 @@ public class LandmarkedMain extends AppCompatActivity {
     public String m_conn_msg;
     public static AzureConnectionClass m_conn;
 
+    // getLandmarkData stuff. Needed for searching landmarks and sensor stuff.
+    public static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+
+    public SensorData mSensorData;
+    public LandmarkRetrieval mLandmarkRetrieval;
+    public Location currLocation;
+    public float[] currOrientation = new float[3];
+    public ArrayList<LocalLandmark> landmarkGet = new ArrayList<>();
+
+    public ProgressDialog dialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -89,8 +102,6 @@ public class LandmarkedMain extends AppCompatActivity {
         GoogleSignInAccount acct = GoogleAuthentication.getUser();
         //don't think this will work
         if(isConnected)
-
-        //Change this check to make sure that not only is there an internet connection, but that the user isn't logged in
         {
             Intent ii = new Intent(this, GoogleAuthentication.class);
             startActivity(ii);
@@ -99,7 +110,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //This method will use a singleton pattern to either return the already existing instance
         db = AppDatabase.getM_DB_instance(getApplicationContext());
         main_instance = this;
-       // String acct_name = m_user.getUserEmailName();
+
 
         m_conn.Connect();
         //InsertAzure("sometest", "someTest", "SomeTest", 0.1F, "Sometest"); //INSERTAZURE IS A FUNCTION WITHIN LANDMARKEDMAIN
@@ -117,7 +128,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_get_sensor_data);
-        String str = m_username;
+        
        // text.setText("test");
 
         //directionTV = findViewById(R.id.current_direction_text);
@@ -129,10 +140,37 @@ public class LandmarkedMain extends AppCompatActivity {
         m_username = name;
     }
 
+    public static String get_m_username()
+    {
+        return m_username;
+    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
+
+
+
+
+
+        // Checks if app has permission to use location.
+        checkLocationPermission();
+
+        //Instantiate with this context
+        mSensorData = new SensorData(this);
+
+        //Instantiate with existing SensorData object
+        mLandmarkRetrieval = new LandmarkRetrieval();
+
+        //Register listeners
+        mSensorData.registerOrientationSensors();
+        mSensorData.registerLocationSensor();
+
+        currOrientation = mSensorData.getCurrentOrientation();
+
+        // Create ProgressDialog for landmark searching
+        dialog = new ProgressDialog(this);
 
       //  TextView text = findViewById(R.id.WelcomeText);
 
@@ -154,12 +192,18 @@ public class LandmarkedMain extends AppCompatActivity {
   //   {
     //        text.setText("Welcome back " + acct.getEmail());
    //     }
+
+
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
+        //Unregister listeners
+        mSensorData.unregisterOrientationSensors();
+        mSensorData.unregisterLocationSensor();
     }
 
     public static ExecutorService getThreadPoolInstance()
@@ -188,7 +232,7 @@ public class LandmarkedMain extends AppCompatActivity {
         return lst;
 
     }
-    private synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
+    public synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
     {
        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
 
@@ -376,16 +420,16 @@ public class LandmarkedMain extends AppCompatActivity {
     }*/
 
 
-    /*public void seeCustomLandmarks(View v)
+    public void seeCustomLandmarks(View v)
     {
         Intent customLand = new Intent(this, CustomLandmark.class);
 
-        customLand.putParcelableArrayListExtra("sending_landmark", landmarkGet);
+        //customLand.putParcelableArrayListExtra("sending_landmark", landmarkGet);
 
         startActivity(customLand);
     }
 
-    public void seeHistoryPage(View v)
+    /*public void seeHistoryPage(View v)
     {
         Intent hist = new Intent(this, LandmarkHistory.class);
         hist.putParcelableArrayListExtra("sending_history", landmarkGet);
@@ -409,6 +453,114 @@ public class LandmarkedMain extends AppCompatActivity {
         Intent load = new Intent(this, LoadingPage.class);
         startActivity(load);
     }
+
+    public void getLandmarkData(View v){
+
+        //showProgressDialog();
+
+        try
+        {
+            currLocation = mSensorData.getCurrentLocation();
+
+            // Set sensor information as current
+            mLandmarkRetrieval.SetSensorInformation(mSensorData);
+
+            // Search for landmarks
+            //mLandmarkRetrieval.LandmarkProximitySearch();
+            mLandmarkRetrieval.LandmarkBoundaryBoxSearch();
+
+            // Get the search results
+            //Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
+            Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkBoundaryBoxSearchResults();
+
+            if(retrievedLandmarks.size() > 0)
+            {
+                // Clear landmark results already within GUI.
+                landmarkGet.clear();
+
+                // Set iterator for list of landmarks.
+                Iterator<CarmenFeature> retLanIterator = retrievedLandmarks.iterator();
+
+                // Iterate through list of landmarks and add them to GUI.
+                while(retLanIterator.hasNext())
+                {
+                    CarmenFeatureHelper retriever = new CarmenFeatureHelper(retLanIterator.next());
+
+                    double lat = retriever.getLandmarkLatitude();
+                    double lon = retriever.getLandmarkLongitude();
+                    String name = retriever.getLandmarkName();
+                    String placename = retriever.getLandmarkName();
+                    String wikidata = retriever.getLandmarkWikiData();
+                    Date lan_date = new Date();
+
+                    boolean test_elev = retriever.checkElevationExists();
+                    double elev_result;
+
+                    if (test_elev)
+                        elev_result = retriever.getLandmarkElevation();
+                    else {
+                        elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
+                    }
+
+                    // Add landmarks to GUI
+                    //landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
+                    m_conn.Insert(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata);
+                }
+
+                // Finish loading page activity
+                //finish(); // We don't want this in our main activity!!!
+            }
+            else
+                throw new NullPointerException("Landmark search test failed."); // temporary so the UI seems to be a bit more fluid. Otherwise it will display data but not have any landmarks.
+        }
+        catch (SecurityException | NullPointerException e)
+        {}
+
+
+        // if any results are within the GUI landmark list
+        if (landmarkGet.size() > 0) {
+            // Dismiss the... dialog. Refers to the progress dialog
+            dialog.dismiss();
+
+            // Show landmark history page (Shows the results returned from landmark search)
+            Intent result = new Intent(this, LandmarkHistory.class);
+            result.putParcelableArrayListExtra("sending_history", landmarkGet);
+            startActivity(result);
+        }
+    }
+
+    public void showProgressDialog() {
+
+        // Create progress dialog box while app is searching for landmarks
+        dialog.setMessage("Searching for Landmarks...");
+        dialog.setCancelable(false);
+        dialog.setInverseBackgroundForced(false);
+        dialog.show();
+    }
+
+    public void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION))
+            {
+
+            }
+            else
+            {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            }
+        }
+        else
+        {
+            // Permission has already been granted
+        }
+    }
+
     @Override protected void onPause()
     {
         super.onPause();
@@ -417,28 +569,21 @@ public class LandmarkedMain extends AppCompatActivity {
     @Override protected void onResume()
     {
         super.onResume();
-          TextView text = findViewById(R.id.WelcomeText);
+        TextView text = findViewById(R.id.WelcomeText);
+        GoogleSignInAccount acct = GoogleAuthentication.getUser();
 
-
-        ////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-           GoogleSignInAccount acct = GoogleAuthentication.getUser();
-
-           if(acct != null)
-               m_username = acct.getEmail();
+        if(acct != null)
+            m_username = acct.getEmail();
 
 
         if(m_username == null)
         {
-            //text.setText("Not connected: sign out button -> close and restart app to sign in");
+            text.setText("Not connected: sign in failed");
         }
-           else
-          {
-               text.setText("Welcome back " + acct.getEmail());
-            }
+        else
+        {
+            text.setText("Welcome back " + acct.getEmail());
+        }
 
 
     }

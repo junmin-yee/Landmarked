@@ -69,7 +69,7 @@ public class CustomLocalLandmark {
         m_name = name;
         m_latitude = latitude;
         m_longitude = longitude;
-        m_elevation =elevation;
+        m_elevation = elevation;
         m_wiki_info = wiki;
         m_datesaved = date;
     }
