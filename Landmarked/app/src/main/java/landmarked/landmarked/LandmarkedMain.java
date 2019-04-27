@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -62,6 +63,7 @@ public class LandmarkedMain extends AppCompatActivity {
     // getLandmarkData stuff. Needed for searching landmarks and sensor stuff.
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
+    // Sensor data variables
     public SensorData mSensorData;
     public LandmarkRetrieval mLandmarkRetrieval;
     public Location currLocation;
@@ -70,6 +72,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
     public ProgressDialog dialog;
 
+    private static final String TAG = "LandmarkedMain";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,24 +138,20 @@ public class LandmarkedMain extends AppCompatActivity {
         //locationTV = findViewById(R.id.current_location_text);
 
     }
+
+    // Setter/Getter for Google Authentication Username
     public void setUserName(String name)
     {
         m_username = name;
     }
-
     public static String get_m_username()
     {
         return m_username;
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
-
-
-
-
 
         // Checks if app has permission to use location.
         checkLocationPermission();
@@ -173,12 +172,7 @@ public class LandmarkedMain extends AppCompatActivity {
         dialog = new ProgressDialog(this);
 
       //  TextView text = findViewById(R.id.WelcomeText);
-
-
         ////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
      //   GoogleSignInAccount acct = GoogleAuthentication.getUser();
         //m_username = acct.getEmail();
@@ -192,9 +186,6 @@ public class LandmarkedMain extends AppCompatActivity {
   //   {
     //        text.setText("Welcome back " + acct.getEmail());
    //     }
-
-
-
     }
 
     @Override
@@ -206,6 +197,7 @@ public class LandmarkedMain extends AppCompatActivity {
         mSensorData.unregisterLocationSensor();
     }
 
+    // Creates a threadpool if one has not yet been created
     public static ExecutorService getThreadPoolInstance()
     {
         if(m_thread == null)
@@ -215,23 +207,7 @@ public class LandmarkedMain extends AppCompatActivity {
         return m_thread;
     }
 
-    public ArrayList<LocalLandmark> getLandmarksAzure()
-    {
-        ArrayList<LocalLandmark>lst = new ArrayList<LocalLandmark>();
-        Runnable runCommand = new Runnable() {
-            @Override
-            public void run() {
-                ArrayList<LocalLandmark> temp = m_conn.getLandmarks();
-                for(int x = 0; x < temp.size(); x++)
-                {
-                    lst.add(x, temp.get(x));
-                }
-            }
-        };
-        m_thread.execute(runCommand);
-        return lst;
-
-    }
+    // Gets all landmarks from Azure given specific username
     public synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
     {
        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
@@ -253,6 +229,7 @@ public class LandmarkedMain extends AppCompatActivity {
         return lst;
     }
 
+    // Inserts a landmark into Azure.
     public void InsertAzure(String name, String latitude, String longitude, float elevation, String wiki)
     {
         Runnable runCommand = new Runnable() {
@@ -266,8 +243,6 @@ public class LandmarkedMain extends AppCompatActivity {
 
     //Insert local data by primitive type
     public void insertLocalLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki, Date date) {
-
-
         //no error checking, at this point it's assumed that the primitive data is correct
         //It's also assumed that an instance of the DB has been initialized
         //insert is called through an instance of the interface LocalLandmarkAccessorMethods
@@ -276,8 +251,6 @@ public class LandmarkedMain extends AppCompatActivity {
         LocalLandmark land = new LocalLandmark(name, latitude, longitude, elevation, wiki,date);
 
         //SQL operations are required to be on their own thread, if they aren't on their own thread they will crash the app for trying to run on the main thread.
-
-
         //Creating a Runnable action that will run when our thread calls execute on it.
         Runnable runCommand = new Runnable() {
             @Override
@@ -290,9 +263,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //What we're trying to avoid is incomplete data result if , for example, an insert and a select * are done on different threads? who knows. This way, they execute one at a time,
         //FIFO, and we can guarantee asyncrhnous behavior AKA SQL calls will be performed in the order they are called.
         m_thread.execute(runCommand);
-
     }
-
 
     //This function will turn raw data into a CustomLocalLandmark and insert it
     public void insertCustomLandmarkPrimitive(String name, String latitude, String longitude, float elevation, String wiki, Date date )
@@ -307,10 +278,10 @@ public class LandmarkedMain extends AppCompatActivity {
                 db.CustomMethodsVar().insertCustomLandmarkStructure(land);
                 //db instance call it's member variable for custom landmarks that's able to call insertCustom..... that's declared in interface CustomLocalLandmarkAccessorMethods
             }
-
         };
-
     }
+
+    // Gets all custom landmarks from the local SQLite database
     public List<CustomLocalLandmark> getAllCustomLocals()
     {
         List lst = new ArrayList<CustomLocalLandmark>();
@@ -330,7 +301,6 @@ public class LandmarkedMain extends AppCompatActivity {
         m_thread.execute(getData);
             //will contain contents of getAll()
         return lst;
-
     }
 
     //We need to do some conversion to a customLocalLandmark arg
@@ -345,13 +315,11 @@ public class LandmarkedMain extends AppCompatActivity {
                 db.CustomMethodsVar().insertCustomLandmarkStructure(LandmarkArg);
                 //db instance call it's member variable for custom landmarks that's able to call insertCustom..... that's declared in interface CustomLocalLandmarkAccessorMethods
             }
-
         };
         m_thread.execute(insertStructure);
-
     }
 
-
+    // Inserts a landmark into the local SQLite database
     public void insertLocalLandmarkStructureArg(LocalLandmark landmarkArg)
     {
         //all sql ops must be done on thread other than main thread
@@ -368,7 +336,6 @@ public class LandmarkedMain extends AppCompatActivity {
        //Execute our new Runnable with our thread pool
        m_thread.execute(insertStructure);
     }
-
 
     //This function will return all rows from local DB and return them in the form of a list
     public List<LocalLandmark> getLocalLandmarkData()
@@ -392,16 +359,13 @@ public class LandmarkedMain extends AppCompatActivity {
         m_thread.execute(getData);
         //will contain contents of getAll()
         return lst;
-
     }
 
     @Override
     public void onDestroy()
     {
         super.onDestroy();
-
     }
-
 
     /*public void showMap(View v)
     {
@@ -419,16 +383,16 @@ public class LandmarkedMain extends AppCompatActivity {
         //finish();
     }*/
 
-
+    // Show list of custom landmarks
     public void seeCustomLandmarks(View v)
     {
         Intent customLand = new Intent(this, CustomLandmark.class);
 
         //customLand.putParcelableArrayListExtra("sending_landmark", landmarkGet);
-
         startActivity(customLand);
     }
 
+    // Show list of landmarks in history
     /*public void seeHistoryPage(View v)
     {
         Intent hist = new Intent(this, LandmarkHistory.class);
@@ -436,24 +400,27 @@ public class LandmarkedMain extends AppCompatActivity {
         startActivity(hist);
     }*/
 
+    // Gets current instance of the main activity
     public static LandmarkedMain getInstance()//return instance of main activity
     {
         return m_instance;
     }
 
+    // Signs a user out on click
     public void GoogleSignOut(View v)
     {
         GoogleAuthentication m_auth = new GoogleAuthentication();
         m_auth.signOut();
-
     }
 
+    // Runs the loading screen on click
     public void loadingScreen(View v)
     {
         Intent load = new Intent(this, LoadingPage.class);
         startActivity(load);
     }
 
+    // Gets landmark data from mapbox given sensor data
     public void getLandmarkData(View v){
 
         //showProgressDialog();
@@ -514,8 +481,9 @@ public class LandmarkedMain extends AppCompatActivity {
                 throw new NullPointerException("Landmark search test failed."); // temporary so the UI seems to be a bit more fluid. Otherwise it will display data but not have any landmarks.
         }
         catch (SecurityException | NullPointerException e)
-        {}
-
+        {
+            Log.e(TAG, "Sensor data and results");
+        }
 
         // if any results are within the GUI landmark list
         if (landmarkGet.size() > 0) {
@@ -529,6 +497,7 @@ public class LandmarkedMain extends AppCompatActivity {
         }
     }
 
+    // Shows a progress dialog as a wait
     public void showProgressDialog() {
 
         // Create progress dialog box while app is searching for landmarks
@@ -538,6 +507,7 @@ public class LandmarkedMain extends AppCompatActivity {
         dialog.show();
     }
 
+    // Checks whether the location permission is given by user
     public void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED)
@@ -575,7 +545,6 @@ public class LandmarkedMain extends AppCompatActivity {
         if(acct != null)
             m_username = acct.getEmail();
 
-
         if(m_username == null)
         {
             text.setText("Not connected: sign in failed");
@@ -584,7 +553,5 @@ public class LandmarkedMain extends AppCompatActivity {
         {
             text.setText("Welcome back " + acct.getEmail());
         }
-
-
     }
 }
