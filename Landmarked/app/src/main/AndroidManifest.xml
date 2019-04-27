@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/landmarked_icon_round"
         android:supportsRtl="true"
         android:theme="@style/newTheme">
-        <activity android:name=".DataManipulation.addCustomLandmark"></activity>
+        <activity android:name=".DataManipulation.addCustomLandmark"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".LandmarkHistory"
             android:screenOrientation="portrait" />

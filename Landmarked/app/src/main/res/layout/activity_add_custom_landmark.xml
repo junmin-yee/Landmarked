@@ -9,7 +9,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteX="32dp"
         tools:layout_editor_absoluteY="0dp">
 
         <LinearLayout
@@ -28,7 +28,7 @@
                 android:ems="10"
                 android:text="Name:"
                 android:textColor="#000000"
-                android:textSize="22sp"/>
+                android:textSize="22sp" />
 
             <EditText
                 android:id="@+id/landmarkName"
@@ -36,8 +36,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:backgroundTint="#000000"
-                android:inputType="text"
-                android:textColor="#000000"/>
+                android:inputType="none"
+                android:textColor="#000000" />
 
             <CheckBox
                 android:id="@+id/currLocationBox"
@@ -46,10 +46,10 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="28dp"
                 android:buttonTint="#000000"
+                android:onClick="onCheckClicked"
                 android:text="Current Location"
                 android:textColor="#000000"
-                android:textSize="16sp"
-                android:onClick="onCheckClicked"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/LatitudeText"
@@ -58,7 +58,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Lat:"
-                android:textSize="22sp"/>
+                android:textSize="22sp" />
 
             <EditText
                 android:id="@+id/latitudeEntry"
@@ -68,7 +68,7 @@
                 android:backgroundTint="#000000"
                 android:ems="10"
                 android:inputType="numberSigned|numberDecimal"
-                android:textColor="#000000"/>
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/longitudeText"
@@ -76,7 +76,7 @@
                 android:layout_height="46dp"
                 android:layout_marginStart="16dp"
                 android:text="Long:"
-                android:textSize="22sp"/>
+                android:textSize="22sp" />
 
             <EditText
                 android:id="@+id/longitudeEntry"
@@ -96,9 +96,10 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
                 android:buttonTint="#000000"
+                android:onClick="onCheckClicked"
                 android:text="Current Elevation"
                 android:textColor="#000000"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/elevationText"
@@ -106,7 +107,7 @@
                 android:layout_height="43dp"
                 android:layout_marginStart="16dp"
                 android:text="Elev:"
-                android:textSize="22sp"/>
+                android:textSize="22sp" />
 
             <EditText
                 android:id="@+id/elevationEntry"
@@ -116,16 +117,16 @@
                 android:backgroundTint="#000000"
                 android:ems="10"
                 android:inputType="numberSigned|numberDecimal"
-                android:textColor="#000000"/>
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/notesText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:text="Notes:"
-                android:textSize="22sp"/>
+                android:textSize="22sp" />
 
             <EditText
                 android:id="@+id/notesEntry"
@@ -137,17 +138,40 @@
                 android:ems="10"
                 android:inputType="textMultiLine"
                 android:scrollbars="vertical"
-                android:textColor="#000000"/>
+                android:textColor="#000000" />
 
-            <Button
-                android:id="@+id/buttonSave"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Save"/>
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/colorPrimary"
+                    android:onClick="onCancelCustom"
+                    android:layout_weight="1"
+                    android:text="Cancel" />
+
+                <Button
+                    android:id="@+id/buttonSave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/colorPrimary"
+                    android:onClick="onSaveCustom"
+                    android:layout_weight="1"
+                    android:text="Save"/>
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

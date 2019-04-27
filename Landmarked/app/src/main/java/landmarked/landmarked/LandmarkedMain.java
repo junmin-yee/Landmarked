@@ -420,16 +420,16 @@ public class LandmarkedMain extends AppCompatActivity {
     }*/
 
 
-    /*public void seeCustomLandmarks(View v)
+    public void seeCustomLandmarks(View v)
     {
         Intent customLand = new Intent(this, CustomLandmark.class);
 
-        customLand.putParcelableArrayListExtra("sending_landmark", landmarkGet);
+        //customLand.putParcelableArrayListExtra("sending_landmark", landmarkGet);
 
         startActivity(customLand);
     }
 
-    public void seeHistoryPage(View v)
+    /*public void seeHistoryPage(View v)
     {
         Intent hist = new Intent(this, LandmarkHistory.class);
         hist.putParcelableArrayListExtra("sending_history", landmarkGet);
