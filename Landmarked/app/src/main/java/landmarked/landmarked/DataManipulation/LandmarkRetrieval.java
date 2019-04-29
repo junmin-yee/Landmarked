@@ -22,12 +22,11 @@ import retrofit2.Response;
 import static android.support.constraint.Constraints.TAG;
 
 public class LandmarkRetrieval {
-    final int EARTH_RADIUS = 6378137;
-    final double BEARING_ERROR = 0.01;
-    final double DIRECTION_SHIFT = 0.15;
-    final int FIELD_OF_VIEW_DEGREE = 3;
-
-    final int BIGGER_BBOX_OFFSET = 15;
+    private static final int EARTH_RADIUS = 6378137;
+    private static final double BEARING_ERROR = 0.01;
+    private static final double DIRECTION_SHIFT = 0.15;
+    private static final int FIELD_OF_VIEW_DEGREE = 3;
+    private static final int BIGGER_BBOX_OFFSET = 3;
 
     private SensorData mSensorData;
     private Location mCurrLocation;
@@ -68,26 +67,35 @@ public class LandmarkRetrieval {
     {
         // Variable for max line of sight distance in meters
         int losdistance = 0;
-        // Get current pitch and roll
+        // Get current pitch and roll and azimuth
         float azimuth = mSensorData.getCurrentOrientation()[0];
         float pitch = mSensorData.getCurrentOrientation()[1];
         float roll = mSensorData.getCurrentOrientation()[2];
 
-        // Check phone pitch
-        if (pitch < -Math.PI/4)
-            losdistance = 10000;
-        else if (pitch > -Math.PI/4)// && pitch < 0)
-            losdistance = 5000;
+        double x = 0;
+        double y = 0;
 
-        // Calculate change in distance in Cartesian
-        double x = losdistance*Math.sin(pitch)*Math.cos(roll);
-        double y = losdistance*Math.sin(pitch)*Math.sin(roll);
-        //double z = losdistance*Math.cos(pitch);
+        // Check phone pitch
+        if (pitch <= 0)
+        {
+            losdistance = 10000;
+            // Calculate change in distance in Cartesian
+            x = losdistance * Math.sin(90 - pitch) * Math.cos(azimuth);
+            y = losdistance * Math.sin(90 - pitch) * Math.sin(azimuth);
+        }
+        else if (pitch > 0)
+        {
+            losdistance = 5000;
+            // Calculate change in distance in Cartesian
+            x = losdistance * Math.sin(-90 - pitch) * Math.cos(azimuth);
+            y = losdistance * Math.sin(-90 - pitch) * Math.sin(azimuth);
+        }
 
         // Create new location of distance away
         Location max = new Location("Provider");
         max.setLatitude(mCurrLocation.getLatitude() + (BIGGER_BBOX_OFFSET*(180/Math.PI)*(y/EARTH_RADIUS)));
-        max.setLongitude(mCurrLocation.getLongitude() + (BIGGER_BBOX_OFFSET*(180/Math.PI)*(x/EARTH_RADIUS))/Math.cos(mCurrLocation.getLatitude()));
+        max.setLongitude(mCurrLocation.getLongitude() +
+                (BIGGER_BBOX_OFFSET*(180/Math.PI)*(x/EARTH_RADIUS)/Math.cos(mCurrLocation.getLatitude())));
 
         return max;
     }
