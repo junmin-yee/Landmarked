@@ -71,7 +71,6 @@ public class LandmarkedMain extends AppCompatActivity {
     public ArrayList<LocalLandmark> landmarkGet = new ArrayList<>();
 
     public ProgressDialog dialog;
-    public ProgressDialog test_dialog;
 
     private static final String TAG = "LandmarkedMain";
 
@@ -534,23 +533,21 @@ public class LandmarkedMain extends AppCompatActivity {
                         // Dismiss the... dialog. Refers to the progress dialog
                         dialog.dismiss();
 
+                        if (landmarkGet.size() > 0) {
+
+                            // Show landmark history page (Shows the results returned from landmark search)
+                            Intent result = new Intent(main_instance, LandmarkHistory.class);
+                            result.putParcelableArrayListExtra("sending_history", landmarkGet);
+                            startActivity(result);
+                        }
+
                     }
                 });
 
             }
 
-
         }).start();
 
-
-        // if any results are within the GUI landmark list
-        if (landmarkGet.size() > 0) {
-
-            // Show landmark history page (Shows the results returned from landmark search)
-            Intent result = new Intent(this, LandmarkHistory.class);
-            result.putParcelableArrayListExtra("sending_history", landmarkGet);
-            startActivity(result);
-        }
     }
 
     // Shows a progress dialog as a wait
