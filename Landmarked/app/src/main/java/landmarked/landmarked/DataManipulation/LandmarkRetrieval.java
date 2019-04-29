@@ -27,6 +27,8 @@ public class LandmarkRetrieval {
     final double DIRECTION_SHIFT = 0.15;
     final int FIELD_OF_VIEW_DEGREE = 3;
 
+    final int BIGGER_BBOX_OFFSET = 15;
+
     private SensorData mSensorData;
     private Location mCurrLocation;
     private Location mGeoCodeSWLocation;
@@ -84,9 +86,8 @@ public class LandmarkRetrieval {
 
         // Create new location of distance away
         Location max = new Location("Provider");
-        max.setLatitude(mCurrLocation.getLatitude() + (180/Math.PI)*(y/EARTH_RADIUS));
-        max.setLongitude(mCurrLocation.getLongitude() +
-                (180/Math.PI)*(x/EARTH_RADIUS)/Math.cos(mCurrLocation.getLatitude()));
+        max.setLatitude(mCurrLocation.getLatitude() + (BIGGER_BBOX_OFFSET*(180/Math.PI)*(y/EARTH_RADIUS)));
+        max.setLongitude(mCurrLocation.getLongitude() + (BIGGER_BBOX_OFFSET*(180/Math.PI)*(x/EARTH_RADIUS))/Math.cos(mCurrLocation.getLatitude()));
 
         return max;
     }
@@ -361,6 +362,9 @@ public class LandmarkRetrieval {
         }
         catch(java.io.IOException e){
             Log.d(TAG, "BoundaryBoxForwardGeocodeSearch: java.io.IOException");
+        }
+        catch(java.lang.NullPointerException e){
+            Log.d(TAG, "BoundaryBoxForwardGeocodeSearch: NullPointerException. Likely did not find any landmarks");
         }
 
     /*
