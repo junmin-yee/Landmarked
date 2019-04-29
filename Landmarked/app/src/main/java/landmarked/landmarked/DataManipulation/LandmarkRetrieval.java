@@ -67,6 +67,7 @@ public class LandmarkRetrieval {
         // Variable for max line of sight distance in meters
         int losdistance = 0;
         // Get current pitch and roll
+        float azimuth = mSensorData.getCurrentOrientation()[0];
         float pitch = mSensorData.getCurrentOrientation()[1];
         float roll = mSensorData.getCurrentOrientation()[2];
 
@@ -84,7 +85,8 @@ public class LandmarkRetrieval {
         // Create new location of distance away
         Location max = new Location("Provider");
         max.setLatitude(mCurrLocation.getLatitude() + (180/Math.PI)*(y/EARTH_RADIUS));
-        max.setLongitude(mCurrLocation.getLongitude() + (180/Math.PI)*(x/EARTH_RADIUS)/Math.cos(mCurrLocation.getLatitude()));
+        max.setLongitude(mCurrLocation.getLongitude() +
+                (180/Math.PI)*(x/EARTH_RADIUS)/Math.cos(mCurrLocation.getLatitude()));
 
         return max;
     }
@@ -99,14 +101,14 @@ public class LandmarkRetrieval {
         double testlat = mGeoCodeNELocation.getLatitude() - mGeoCodeSWLocation.getLatitude();
         double testlong = mGeoCodeNELocation.getLongitude() - mGeoCodeSWLocation.getLongitude();
         // Test if looking directly North within error
-        if (testlat > 0 && Math.abs(testlong) < BEARING_ERROR)
+        if (testlat >= 0 && Math.abs(testlong) < BEARING_ERROR)
         {
             // Shift values in each direction
             mGeoCodeSWLocation.setLongitude(mGeoCodeSWLocation.getLongitude() - DIRECTION_SHIFT);
             mGeoCodeNELocation.setLongitude(mGeoCodeNELocation.getLongitude() + DIRECTION_SHIFT);
         }
         // Test if looking directly South within error
-        else if (testlat < 0 && Math.abs(testlong) < BEARING_ERROR)
+        else if (testlat <= 0 && Math.abs(testlong) < BEARING_ERROR)
         {
             // Swap location points
             temp = mGeoCodeNELocation;
@@ -118,7 +120,7 @@ public class LandmarkRetrieval {
             mGeoCodeNELocation.setLongitude(mGeoCodeNELocation.getLongitude() + DIRECTION_SHIFT);
         }
         // Test if looking directly West within error
-        else if (testlong < 0 && Math.abs(testlat) < BEARING_ERROR)
+        else if (testlong <= 0 && Math.abs(testlat) < BEARING_ERROR)
         {
             // Swap location points
             temp = mGeoCodeNELocation;
@@ -130,7 +132,7 @@ public class LandmarkRetrieval {
             mGeoCodeNELocation.setLatitude(mGeoCodeNELocation.getLatitude() + DIRECTION_SHIFT);
         }
         // Test if looking directly East
-        else if (testlong > 0 && Math.abs(testlat) < BEARING_ERROR)
+        else if (testlong >= 0 && Math.abs(testlat) < BEARING_ERROR)
         {
             // Shift values in each direction
             mGeoCodeSWLocation.setLatitude(mGeoCodeSWLocation.getLatitude() - DIRECTION_SHIFT);
