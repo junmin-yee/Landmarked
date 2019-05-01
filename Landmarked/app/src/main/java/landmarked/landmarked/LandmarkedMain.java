@@ -129,7 +129,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //Calling method with dummy data:
         ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure(m_username);
 
-
+        //InsertUserToAzure();
         setContentView(R.layout.activity_get_sensor_data);
         
        // text.setText("test");
@@ -175,21 +175,6 @@ public class LandmarkedMain extends AppCompatActivity {
         dialog = new ProgressDialog(this);
 
 
-      //  TextView text = findViewById(R.id.WelcomeText);
-        ////////////////////////////////////////////////////////////////////////////////////////////
-
-     //   GoogleSignInAccount acct = GoogleAuthentication.getUser();
-        //m_username = acct.getEmail();
-
-    //    if(m_username == null)
-        //if(GoogleAuthentication.getUserEmailName() == null)
-        {
-            //text.setText("Not connected: sign out button -> close and restart app to sign in");
-        }
-    //    else
-  //   {
-    //        text.setText("Welcome back " + acct.getEmail());
-   //     }
 
     }
 
@@ -551,19 +536,19 @@ public class LandmarkedMain extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED)
         {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION))
-            {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.ACCESS_FINE_LOCATION))
+        {
 
-            }
-            else
-            {
-                // No explanation needed; request the permission
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            }
         }
+        else
+        {
+            // No explanation needed; request the permission
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
         else
         {
             // Permission has already been granted
@@ -591,9 +576,11 @@ public class LandmarkedMain extends AppCompatActivity {
         else
         {
             text.setText("Welcome back " + m_acct.getEmail());
+            //insertUserToAzure will make a query that attempts to insert the username. However, if the user is already in the DB, they will not be added again.
+            InsertUserToAzure();
         }
 
-       // InsertUserToAzure();
+
 
 
     }

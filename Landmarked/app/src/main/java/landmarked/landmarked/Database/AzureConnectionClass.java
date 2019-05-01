@@ -68,8 +68,10 @@ public class AzureConnectionClass {
         {
 
 
-           String query = "INSERT Into dbo.AppUser (FirstName, LastName, Email) "
-                    +  " Values ('"+fname+"', '"+lname+"', '"+email+"')";
+           String query = "IF NOT EXISTS ( SELECT 1 FROM AppUser WHERE Email = '"+email+"')"
+                + "BEGIN "
+                +   "INSERT INTO AppUser (FirstName,LastName, Email) Values ('"+fname+"', '"+lname+"', '"+email+"')"
+                + "END";
             Statement m_query = mConnection.createStatement();
             m_query.executeUpdate(query);
 
