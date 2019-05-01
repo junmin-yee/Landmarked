@@ -68,7 +68,8 @@
         android:background="@drawable/buttondesign"
         android:text="@string/HistoryButtonText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonCustom" />
+        app:layout_constraintTop_toTopOf="@+id/buttonCustom"
+        android:onClick="seeHistoryPage"/>
 
     <Button
         android:id="@+id/sign_out_button"
