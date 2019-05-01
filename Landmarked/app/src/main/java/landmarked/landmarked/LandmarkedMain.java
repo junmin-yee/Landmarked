@@ -417,12 +417,12 @@ public class LandmarkedMain extends AppCompatActivity {
     }
 
     // Show list of landmarks in history
-    /*public void seeHistoryPage(View v)
+    public void seeHistoryPage(View v)
     {
         Intent hist = new Intent(this, LandmarkHistory.class);
-        hist.putParcelableArrayListExtra("sending_history", landmarkGet);
+        //hist.putParcelableArrayListExtra("sending_history", landmarkGet);
         startActivity(hist);
-    }*/
+    }
 
     // Gets current instance of the main activity
     public static LandmarkedMain getInstance()//return instance of main activity
