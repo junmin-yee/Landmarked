@@ -447,78 +447,92 @@ public class LandmarkedMain extends AppCompatActivity {
     // Gets landmark data from mapbox given sensor data
     public void getLandmarkData(View v){
 
-        //showProgressDialog();
+        showProgressDialog();
 
-        try
-        {
-            currLocation = mSensorData.getCurrentLocation();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-            // Set sensor information as current
-            mLandmarkRetrieval.SetSensorInformation(mSensorData);
-
-            // Search for landmarks
-            //mLandmarkRetrieval.LandmarkProximitySearch();
-            mLandmarkRetrieval.LandmarkBoundaryBoxSearch();
-
-            // Get the search results
-            //Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
-            Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkBoundaryBoxSearchResults();
-
-            if(retrievedLandmarks.size() > 0)
-            {
-                // Clear landmark results already within GUI.
-                landmarkGet.clear();
-
-                // Set iterator for list of landmarks.
-                Iterator<CarmenFeature> retLanIterator = retrievedLandmarks.iterator();
-
-                // Iterate through list of landmarks and add them to GUI.
-                while(retLanIterator.hasNext())
+                try
                 {
-                    CarmenFeatureHelper retriever = new CarmenFeatureHelper(retLanIterator.next());
+                    currLocation = mSensorData.getCurrentLocation();
 
-                    double lat = retriever.getLandmarkLatitude();
-                    double lon = retriever.getLandmarkLongitude();
-                    String name = retriever.getLandmarkName();
-                    String placename = retriever.getLandmarkName();
-                    String wikidata = retriever.getLandmarkWikiData();
-                    Date lan_date = new Date();
+                    // Set sensor information as current
+                    mLandmarkRetrieval.SetSensorInformation(mSensorData);
 
-                    boolean test_elev = retriever.checkElevationExists();
-                    double elev_result;
+                    // Search for landmarks
+                    mLandmarkRetrieval.LandmarkProximitySearch();
+                    //mLandmarkRetrieval.LandmarkBoundaryBoxSearch();
 
-                    if (test_elev)
-                        elev_result = retriever.getLandmarkElevation();
-                    else {
-                        elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
+                    // Get the search results
+                    Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
+                    //Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkBoundaryBoxSearchResults();
+
+                    if(retrievedLandmarks.size() > 0)
+                    {
+                        // Clear landmark results already within GUI.
+                        landmarkGet.clear();
+
+                        // Set iterator for list of landmarks.
+                        Iterator<CarmenFeature> retLanIterator = retrievedLandmarks.iterator();
+
+                        // Iterate through list of landmarks and add them to GUI.
+                        while(retLanIterator.hasNext())
+                        {
+                            CarmenFeatureHelper retriever = new CarmenFeatureHelper(retLanIterator.next());
+
+                            double lat = retriever.getLandmarkLatitude();
+                            double lon = retriever.getLandmarkLongitude();
+                            String name = retriever.getLandmarkName();
+                            String placename = retriever.getLandmarkName();
+                            String wikidata = retriever.getLandmarkWikiData();
+                            Date lan_date = new Date();
+
+                            boolean test_elev = retriever.checkElevationExists();
+                            double elev_result;
+
+                            if (test_elev)
+                                elev_result = retriever.getLandmarkElevation();
+                            else {
+                                elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
+                            }
+
+                            // Add landmarks to GUI
+                            landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
+                            //m_conn.Insert(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata);
+                        }
+
+                        // Finish loading page activity
+                        //finish(); // We don't want this in our main activity!!!
                     }
-
-                    // Add landmarks to GUI
-                    landmarkGet.add(new LocalLandmark(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata, lan_date));
-                   // m_conn.Insert(placename, Double.toString(lat), Double.toString(lon), (float)elev_result, wikidata);
+                    else
+                        throw new NullPointerException("Landmark search test failed."); // temporary so the UI seems to be a bit more fluid. Otherwise it will display data but not have any landmarks.
                 }
+                catch (SecurityException | NullPointerException e)
+                {}
 
-                // Finish loading page activity
-                //finish(); // We don't want this in our main activity!!!
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        // Dismiss the... dialog. Refers to the progress dialog
+                        dialog.dismiss();
+
+                        if (landmarkGet.size() > 0) {
+
+                            // Show landmark history page (Shows the results returned from landmark search)
+                            Intent result = new Intent(main_instance, LandmarkHistory.class);
+                            result.putParcelableArrayListExtra("sending_history", landmarkGet);
+                            startActivity(result);
+                        }
+
+                    }
+                });
+
             }
-            else
-                throw new NullPointerException("Landmark search test failed."); // temporary so the UI seems to be a bit more fluid. Otherwise it will display data but not have any landmarks.
-        }
-        catch (SecurityException | NullPointerException e)
-        {
-            Log.e(TAG, "Sensor data and results");
-        }
 
-        // if any results are within the GUI landmark list
-        if (landmarkGet.size() > 0) {
-            // Dismiss the... dialog. Refers to the progress dialog
-            dialog.dismiss();
+        }).start();
 
-            // Show landmark history page (Shows the results returned from landmark search)
-            Intent result = new Intent(this, LandmarkHistory.class);
-            result.putParcelableArrayListExtra("sending_history", landmarkGet);
-            startActivity(result);
-        }
     }
 
     // Shows a progress dialog as a wait
@@ -527,6 +541,7 @@ public class LandmarkedMain extends AppCompatActivity {
         // Create progress dialog box while app is searching for landmarks
         dialog.setMessage("Searching for Landmarks...");
         dialog.setCancelable(false);
+        dialog.setIndeterminate(true);
         dialog.setInverseBackgroundForced(false);
         dialog.show();
     }

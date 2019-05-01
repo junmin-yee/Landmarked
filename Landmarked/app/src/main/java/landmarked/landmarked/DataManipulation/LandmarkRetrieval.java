@@ -22,10 +22,11 @@ import retrofit2.Response;
 import static android.support.constraint.Constraints.TAG;
 
 public class LandmarkRetrieval {
-    final int EARTH_RADIUS = 6378137;
-    final double BEARING_ERROR = 0.01;
-    final double DIRECTION_SHIFT = 0.15;
-    final int FIELD_OF_VIEW_DEGREE = 3;
+    private static final int EARTH_RADIUS = 6378137;
+    private static final double BEARING_ERROR = 0.01;
+    private static final double DIRECTION_SHIFT = 0.15;
+    private static final int FIELD_OF_VIEW_DEGREE = 3;
+    private static final int BIGGER_BBOX_OFFSET = 3;
 
     private SensorData mSensorData;
     private Location mCurrLocation;
@@ -66,27 +67,35 @@ public class LandmarkRetrieval {
     {
         // Variable for max line of sight distance in meters
         int losdistance = 0;
-        // Get current pitch and roll
+        // Get current pitch and roll and azimuth
         float azimuth = mSensorData.getCurrentOrientation()[0];
         float pitch = mSensorData.getCurrentOrientation()[1];
         float roll = mSensorData.getCurrentOrientation()[2];
 
-        // Check phone pitch
-        if (pitch < -Math.PI/4)
-            losdistance = 10000;
-        else if (pitch > -Math.PI/4)// && pitch < 0)
-            losdistance = 5000;
+        double x = 0;
+        double y = 0;
 
-        // Calculate change in distance in Cartesian
-        double x = losdistance*Math.sin(pitch)*Math.cos(roll);
-        double y = losdistance*Math.sin(pitch)*Math.sin(roll);
-        //double z = losdistance*Math.cos(pitch);
+        // Check phone pitch
+        if (pitch <= 0)
+        {
+            losdistance = 10000;
+            // Calculate change in distance in Cartesian
+            x = losdistance * Math.sin(90 - pitch) * Math.cos(azimuth);
+            y = losdistance * Math.sin(90 - pitch) * Math.sin(azimuth);
+        }
+        else if (pitch > 0)
+        {
+            losdistance = 5000;
+            // Calculate change in distance in Cartesian
+            x = losdistance * Math.sin(-90 - pitch) * Math.cos(azimuth);
+            y = losdistance * Math.sin(-90 - pitch) * Math.sin(azimuth);
+        }
 
         // Create new location of distance away
         Location max = new Location("Provider");
-        max.setLatitude(mCurrLocation.getLatitude() + (180/Math.PI)*(y/EARTH_RADIUS));
+        max.setLatitude(mCurrLocation.getLatitude() + (BIGGER_BBOX_OFFSET*(180/Math.PI)*(y/EARTH_RADIUS)));
         max.setLongitude(mCurrLocation.getLongitude() +
-                (180/Math.PI)*(x/EARTH_RADIUS)/Math.cos(mCurrLocation.getLatitude()));
+                (BIGGER_BBOX_OFFSET*(180/Math.PI)*(x/EARTH_RADIUS)/Math.cos(mCurrLocation.getLatitude())));
 
         return max;
     }
@@ -203,7 +212,6 @@ public class LandmarkRetrieval {
                 .accessToken("pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g")
                 //.query(Point.fromLngLat(-122.139053, 41.021809))
                 .query(Point.fromLngLat(mCurrLocation.getLongitude(), mCurrLocation.getLatitude()))
-                //.proximity(Point)      // Useful for setting a bias of results toward a specific point - Calculate point in front of user?
                 .limit(5)
                 .geocodingTypes(GeocodingCriteria.TYPE_PLACE)
                 .build();
@@ -257,12 +265,12 @@ public class LandmarkRetrieval {
     }
 
     // Proximity based forward geocode search on point generated in front of location.
-    private void ProximityForwardGeocodeSearch(Location location, String category){
+    private void ProximityForwardGeocodeSearch(Location proximity_point, String category){
 
-        Location proximity_search = CalculateMaxLineofSight(); // NEEDS TO GET CHANGED TO USE BOUNDARY BOX
+        Location proximity_search = CalculateMaxLineofSight();
         // USE mGeoCodeSWLocation and mGeoCodeNELocation points to create
 
-        // Hardcoded "lake" for testing purposes - must set up a better way. One potential solution (but very inefficient) would be to have separate queries for each type of landmark.
+        // Searches for a basic type of landmark - only works because we base results around a proximity point.
         String query_string = category + " near " + mRevResults.get(0).placeName(); //+ mCurrLocation.getLongitude() + ", " + mCurrLocation.getLatitude();
 
         // Sets Access Token
@@ -307,7 +315,7 @@ public class LandmarkRetrieval {
                 if (mFwdResults.size() > 0) {
 
                     // Log the location of response.
-                    Log.d(TAG, "ProximityForwardGeocodeSearch: " + mFwdResults.size() + " results at " + location.toString());
+                    Log.d(TAG, "ProximityForwardGeocodeSearch: " + mFwdResults.size() + " results at " + mCurrLocation.toString());
 
                 } else {
 
@@ -363,6 +371,9 @@ public class LandmarkRetrieval {
         catch(java.io.IOException e){
             Log.d(TAG, "BoundaryBoxForwardGeocodeSearch: java.io.IOException");
         }
+        catch(java.lang.NullPointerException e){
+            Log.d(TAG, "BoundaryBoxForwardGeocodeSearch: NullPointerException. Likely did not find any landmarks");
+        }
 
     /*
         forwardGeocode.enqueueCall(new Callback<GeocodingResponse>() {
@@ -402,8 +413,10 @@ public class LandmarkRetrieval {
 
         ReverseGeocodeSearch();
         if(mRevResults != null) {
+            Location proximityPoint = CalculateMaxLineofSight();
+
             for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
-                ProximityForwardGeocodeSearch(mCurrLocation, mLandmarkCategories[iterator]);
+                ProximityForwardGeocodeSearch(proximityPoint, mLandmarkCategories[iterator]);
 
                 if (mFwdResults != null) {
                     mProximityResults.addAll(mFwdResults);
