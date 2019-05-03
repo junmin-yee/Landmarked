@@ -9,18 +9,14 @@ import android.arch.persistence.room.TypeConverters;
 @Database(entities = {LocalLandmark.class, CustomLocalLandmark.class,
         CustomLandmarkPhoto.class, CustomLandmarkNotes.class}, version = 2)
 @TypeConverters({Converters.class})
-public abstract class AppDatabase extends RoomDatabase {
-
-
+public abstract class AppDatabase extends RoomDatabase
+{
     private static AppDatabase m_DB_instance; //Singleton instance of DB;
 
     public abstract LocalLandmarkAccessorMethods LocalLandmarkMethodsVar(); //Interface methods found in LocalLandmarkAccessorMethods.java
     public abstract CustomLocalLandmarkAccessorMethods CustomMethodsVar(); //Interface methods found in CustomLocalLandmarkAccessorMethods.java
 
-    private static Context m_context;
-
-
-
+    // Gets an instance of the database
     public static AppDatabase getM_DB_instance(final Context context) // if hte db already exists, we'll return the instance. otherwise create the db
     {
         if (m_DB_instance == null)
@@ -39,5 +35,4 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         return m_DB_instance;
     }
-
 }

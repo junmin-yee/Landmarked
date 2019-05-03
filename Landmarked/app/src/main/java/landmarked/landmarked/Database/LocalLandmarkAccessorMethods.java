@@ -21,11 +21,8 @@ import android.arch.persistence.room.Dao;
 @Dao
 public interface LocalLandmarkAccessorMethods {
 
-
-
     @Query("SELECT * FROM LocalLandmark")
     LocalLandmark[] getAll();
-
 
     @Query("SELECT Name FROM LocalLandmark")
     String getLocalLandmarkName();
@@ -42,12 +39,6 @@ public interface LocalLandmarkAccessorMethods {
     @Query("SELECT WikiInfo FROM LocalLandmark")
     String getWiki();
 
-
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertLocalLandmarkStructure(LocalLandmark LandmarkArg);
-
-
-
-
 }
