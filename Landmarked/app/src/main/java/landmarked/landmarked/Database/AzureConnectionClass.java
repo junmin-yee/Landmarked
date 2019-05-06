@@ -13,7 +13,6 @@ import java.util.Date;
 
 import landmarked.landmarked.LandmarkedMain;
 
-
 public class AzureConnectionClass {
     private static Connection mConnection;
     private static AzureConnectionClass m_instance;
@@ -27,11 +26,13 @@ public class AzureConnectionClass {
         m_instance = this;
     }
 
+    // Get an instance of the connection
     public static Connection ConnectionGetInstance()
     {
         return mConnection;
     }
 
+    // Get an instance of the azure database
     public static AzureConnectionClass getAzureInstance()
     {
         return m_instance;
@@ -43,12 +44,12 @@ public class AzureConnectionClass {
         mConnection = null;
 
         String ConnectionURL = null;
-        // Connect to database
 
+        // Connect to database
         try
         {
-
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");//Load the JDBC driver, this was one of the things that was missing. Without loading the driver, Android does not know where to find it.
+            //Load the JDBC driver, this was one of the things that was missing. Without loading the driver, Android does not know where to find it.
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
             ConnectionURL = String.format("jdbc:jtds:sqlserver://landmarks.database.windows.net:1433;databaseName=Landmarked;user=landmarked.admin@landmarks;password=ReallyIntricatePassword18.;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
             mConnection = DriverManager.getConnection(ConnectionURL);//connect
         }
@@ -62,16 +63,23 @@ public class AzureConnectionClass {
         }
         return mConnection;
     }
+
+    // Inserts a user into the database
     public void InsertUsername(String email, String fname, String lname)
     {
         try
         {
 
 
+
            String query = "IF NOT EXISTS ( SELECT 1 FROM AppUser WHERE Email = '"+email+"')"
                 + "BEGIN "
                 +   "INSERT INTO AppUser (FirstName,LastName, Email) Values ('"+fname+"', '"+lname+"', '"+email+"')"
                 + "END";
+
+           String query = "INSERT Into dbo.AppUser (FirstName, LastName, Email) "
+                    +  " Values ('"+fname+"', '"+lname+"', '"+email+"')";
+
             Statement m_query = mConnection.createStatement();
             m_query.executeUpdate(query);
 
@@ -84,13 +92,13 @@ public class AzureConnectionClass {
         {
             Log.e("Error 2","Something went wrong");
         }
-
     }
+
+    // Inserts a landmark into the database
     public void Insert(String name, String latitude, String longitude, float elevation, String wiki)
     {
         try
         {
-
             String query = "INSERT INTO dbo.Landmark (LandmarkName, LandmarkLat, LandmarkLong, LandmarkEle, LandmarkWikiInfo) VALUES ('"+name+"', '"+latitude+"', '"+longitude+"', '"+0.00+"', '"+wiki+"')";
             Statement m_query = mConnection.createStatement();
             m_query.executeUpdate(query);
@@ -99,7 +107,6 @@ public class AzureConnectionClass {
             +   " FROM dbo.AppUser, dbo.Landmark "
             +   " WHERE AppUser.Email = '"+m_username+"', Landmark.LandmarkName = '"+name+"'";
             m_query.executeUpdate(query);
-
         }
         catch (SQLException se)
         {
@@ -111,7 +118,7 @@ public class AzureConnectionClass {
         }
     }
 
-
+    // Gets a list of landmarks in the database
     public ArrayList<LocalLandmark> getLandmarks()
     {
         ArrayList lst = new ArrayList();
@@ -130,7 +137,6 @@ public class AzureConnectionClass {
                 LocalLandmark temp = new LocalLandmark(name, latitude,longitude,elevation,wiki,new Date());
                 lst.add(temp);
             }
-
         }
         catch (SQLException se)
         {
@@ -141,11 +147,10 @@ public class AzureConnectionClass {
             Log.e("Error 2","Something went wrong");
         }
 
-
-
         return lst;
     }
 
+    // Query to find a list of landmarks by email
     public ArrayList<LocalLandmark> getLandmarksByEmail(String Email)
     {
         ArrayList lst = new ArrayList();
@@ -168,7 +173,6 @@ public class AzureConnectionClass {
                 LocalLandmark temp = new LocalLandmark(name, latitude,longitude,elevation,wiki,new Date());
                 lst.add(temp);
             }
-
         }
         catch (SQLException se)
         {
@@ -179,10 +183,10 @@ public class AzureConnectionClass {
             Log.e("Error 2","Something went wrong");
         }
 
-
-
         return lst;
     }
+
+    // Disconnects from the database
     public void Disconnect()
     {
         try {

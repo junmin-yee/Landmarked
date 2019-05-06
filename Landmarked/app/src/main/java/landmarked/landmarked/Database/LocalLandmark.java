@@ -22,9 +22,6 @@ import java.util.Date;
 
 @Entity
 public class LocalLandmark implements Parcelable {
-
-
-
     @PrimaryKey
     public int LandmarkID;
 
@@ -69,7 +66,6 @@ public class LocalLandmark implements Parcelable {
 
     }
 
-
     //copy ctor
     public LocalLandmark(LocalLandmark landmarkArg)
     {
@@ -79,10 +75,7 @@ public class LocalLandmark implements Parcelable {
         m_elevation = landmarkArg.m_elevation;
         m_wiki_info = landmarkArg.m_wiki_info;
         m_date_saved = landmarkArg.m_date_saved;
-
     }
-
-
 
     public final String getName()
     {

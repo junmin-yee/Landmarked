@@ -7,6 +7,7 @@ public class LandmarkLayout extends LinearLayout //Needs to be updated to take L
 {
     private LocalLandmarkPass m_landmark;
 
+    // Sets up the layout for a landmark
     public LandmarkLayout(Context c, String name, String lat, String longitude, float elev)
     {
         super(c);

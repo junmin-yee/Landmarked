@@ -41,11 +41,7 @@ public class CustomLandmark extends AppCompatActivity {
 
         Intent i = getIntent();
 
-
-
-
         /*ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_landmark");
-
 
         for(int v = 0; v < recievedLandmark.size(); v++)
         {
@@ -61,7 +57,6 @@ public class CustomLandmark extends AppCompatActivity {
 
                 AddElement(name, latitude, longitude, elevation);
             }*/
-
 
         //AddElement("temp", "34.5634", "-54.4464", (float)1000.65);
         //AddElement("Shasta(fake)", "23.565", "-46.54", (float)2365.76784);
@@ -133,7 +128,6 @@ public class CustomLandmark extends AppCompatActivity {
 
         startActivity(i);
     }
-
 
     public void addCustom(View v)
     {

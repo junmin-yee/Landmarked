@@ -5,6 +5,8 @@ import android.arch.persistence.room.TypeConverter;
 import java.util.Date;
 
 public class Converters {
+
+    // Simple converter for time stamp input to database
     @TypeConverter
     public static Date fromTimestamp(Long value) {
         return value == null ? null : new Date(value);

@@ -80,22 +80,22 @@ public class LandmarkRetrieval {
         {
             losdistance = 10000;
             // Calculate change in distance in Cartesian
-            x = losdistance * Math.sin(90 - pitch) * Math.cos(azimuth);
-            y = losdistance * Math.sin(90 - pitch) * Math.sin(azimuth);
+            x = losdistance * Math.sin(-Math.PI/2 - pitch) * Math.cos(-azimuth);
+            y = losdistance * Math.sin(-Math.PI/2 - pitch) * Math.sin(-azimuth);
         }
         else if (pitch > 0)
         {
             losdistance = 5000;
             // Calculate change in distance in Cartesian
-            x = losdistance * Math.sin(-90 - pitch) * Math.cos(azimuth);
-            y = losdistance * Math.sin(-90 - pitch) * Math.sin(azimuth);
+            x = losdistance * Math.sin(Math.PI/2 - pitch) * Math.cos(-azimuth);
+            y = losdistance * Math.sin(Math.PI/2 - pitch) * Math.sin(-azimuth);
         }
 
         // Create new location of distance away
         Location max = new Location("Provider");
         max.setLatitude(mCurrLocation.getLatitude() + (BIGGER_BBOX_OFFSET*(180/Math.PI)*(y/EARTH_RADIUS)));
         max.setLongitude(mCurrLocation.getLongitude() +
-                (BIGGER_BBOX_OFFSET*(180/Math.PI)*(x/EARTH_RADIUS)/Math.cos(mCurrLocation.getLatitude())));
+                (BIGGER_BBOX_OFFSET*(180/Math.PI)*(x/EARTH_RADIUS)/Math.cos((Math.PI/180)*mCurrLocation.getLatitude())));
 
         return max;
     }
