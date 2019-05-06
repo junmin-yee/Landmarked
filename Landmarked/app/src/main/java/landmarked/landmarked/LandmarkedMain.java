@@ -52,7 +52,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
     //DB instance
     AppDatabase db;
-    public static LandmarkedMain main_instance;
+
     //Thread pool instance
     public static ExecutorService m_thread;
     GoogleAuthentication m_user;
@@ -79,7 +79,6 @@ public class LandmarkedMain extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         m_user = new GoogleAuthentication();
-        m_thread_lock = new ReentrantLock();
         ConnectivityManager conn = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = conn.getActiveNetworkInfo();
         Boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
@@ -109,10 +108,10 @@ public class LandmarkedMain extends AppCompatActivity {
             Intent ii = new Intent(this, GoogleAuthentication.class);
             startActivity(ii);
         }
-        m_instance = this;
+
         //This method will use a singleton pattern to either return the already existing instance
         db = AppDatabase.getM_DB_instance(getApplicationContext());
-        main_instance = this;
+        m_instance = this;
 
 
         m_conn.Connect();
@@ -521,7 +520,7 @@ public class LandmarkedMain extends AppCompatActivity {
                         if (landmarkGet.size() > 0) {
 
                             // Show landmark history page (Shows the results returned from landmark search)
-                            Intent result = new Intent(main_instance, LandmarkHistory.class);
+                            Intent result = new Intent(m_instance, LandmarkHistory.class);
                             result.putParcelableArrayListExtra("sending_history", landmarkGet);
                             startActivity(result);
                         }
