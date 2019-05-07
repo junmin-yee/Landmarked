@@ -93,13 +93,12 @@ public class SensorData {
             if (mGravity != null && mGeomagnetic != null){
                 //Funky math stuff
                 float R[] = new float[9];
-                float I[] = new float[9];
-                float remap[] = new float[9];
-                boolean passed = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+                //float remap[] = new float[9];
+                boolean passed = SensorManager.getRotationMatrix(R, null, mGravity, mGeomagnetic);
                 if (passed) {
                     //Calculate orientation
-                    SensorManager.remapCoordinateSystem(R, SensorManager.AXIS_X, SensorManager.AXIS_Z, remap);
-                    SensorManager.getOrientation(remap, mOrientation);
+                    //SensorManager.remapCoordinateSystem(R, SensorManager.AXIS_X, SensorManager.AXIS_Z, remap);
+                    SensorManager.getOrientation(R, mOrientation);
                 }
             }
         }
