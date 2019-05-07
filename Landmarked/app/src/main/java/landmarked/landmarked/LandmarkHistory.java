@@ -38,14 +38,14 @@ public class LandmarkHistory extends AppCompatActivity {
 
         LandmarkList = findViewById(R.id.landmarkList);
 
-        //Intent i = getIntent();
+        Intent i = getIntent();
 
-        //ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
+        ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
         //ArrayList<LocalLandmark> recievedLandmark = m_instance.getUserLandmarksFromAzure(m_instance.get_m_username());
 
-      //  for (int v = 0; v < recievedLandmark.size(); v++) {
-      //      AddElement(recievedLandmark.get(v).getName(), recievedLandmark.get(v).getLatitude(), recievedLandmark.get(v).getLongitude(), recievedLandmark.get(v).getElevation());
-       // }
+       for (int v = 0; v < recievedLandmark.size(); v++) {
+            AddElement(recievedLandmark.get(v).getName(), recievedLandmark.get(v).getLatitude(), recievedLandmark.get(v).getLongitude(), recievedLandmark.get(v).getElevation());
+        }
     }
 
     void AddElement(String name, String latitude, String longitude, float elevation)
