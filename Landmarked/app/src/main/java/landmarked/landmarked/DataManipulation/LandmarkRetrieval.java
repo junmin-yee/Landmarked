@@ -27,6 +27,7 @@ public class LandmarkRetrieval {
     private static final double DIRECTION_SHIFT = 0.15;
     private static final int FIELD_OF_VIEW_DEGREE = 3;
     private static final int BIGGER_BBOX_OFFSET = 3;
+    private static final int DEGREES_IN_CIRCLE = 360;
 
     private SensorData mSensorData;
     private Location mCurrLocation;
@@ -71,6 +72,7 @@ public class LandmarkRetrieval {
         float azimuth = mSensorData.getCurrentOrientation()[0];
         float pitch = mSensorData.getCurrentOrientation()[1];
         float roll = mSensorData.getCurrentOrientation()[2];
+        float direction = ((float)Math.toDegrees(azimuth) + DEGREES_IN_CIRCLE) % DEGREES_IN_CIRCLE;
 
         double x = 0;
         double y = 0;
@@ -80,22 +82,24 @@ public class LandmarkRetrieval {
         {
             losdistance = 10000;
             // Calculate change in distance in Cartesian
-            x = losdistance * Math.sin(-Math.PI/2 - pitch) * Math.cos(-azimuth);
-            y = losdistance * Math.sin(-Math.PI/2 - pitch) * Math.sin(-azimuth);
+            //x = losdistance * Math.sin(-Math.PI/2 - pitch) * Math.cos(roll);
+            //y = losdistance * Math.sin(-Math.PI/2 - pitch) * Math.sin(roll);
         }
         else if (pitch > 0)
         {
             losdistance = 5000;
             // Calculate change in distance in Cartesian
-            x = losdistance * Math.sin(Math.PI/2 - pitch) * Math.cos(-azimuth);
-            y = losdistance * Math.sin(Math.PI/2 - pitch) * Math.sin(-azimuth);
+            //x = losdistance * Math.sin(Math.PI/2 - pitch) * Math.cos(roll);
+            //y = losdistance * Math.sin(Math.PI/2 - pitch) * Math.sin(roll);
         }
+        x = losdistance*Math.sin(Math.toRadians(direction));
+        y = losdistance*Math.cos(Math.toRadians(direction));
 
         // Create new location of distance away
         Location max = new Location("Provider");
-        max.setLatitude(mCurrLocation.getLatitude() + (BIGGER_BBOX_OFFSET*(180/Math.PI)*(y/EARTH_RADIUS)));
+        max.setLatitude(mCurrLocation.getLatitude() + (180/Math.PI)*(y/EARTH_RADIUS));
         max.setLongitude(mCurrLocation.getLongitude() +
-                (BIGGER_BBOX_OFFSET*(180/Math.PI)*(x/EARTH_RADIUS)/Math.cos((Math.PI/180)*mCurrLocation.getLatitude())));
+                (180/Math.PI)*(x/EARTH_RADIUS)/Math.cos((Math.PI/180)*mCurrLocation.getLatitude()));
 
         return max;
     }
