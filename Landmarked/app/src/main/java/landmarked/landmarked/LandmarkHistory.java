@@ -17,10 +17,11 @@ import landmarked.landmarked.Database.LocalLandmark;
 import landmarked.landmarked.Database.LocalLandmarkPass;
 
 public class LandmarkHistory extends AppCompatActivity {
-     static LandmarkedMain m_instance;
+    static LandmarkedMain m_instance;
     public TextView landmarkInfo;
     public LinearLayout LandmarkList;
     public TextView tempView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /*SharedPreferences themePref = this.getSharedPreferences("LandmarkedPreferences", MODE_PRIVATE);
@@ -40,16 +41,16 @@ public class LandmarkHistory extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
-        //ArrayList<LocalLandmark> recievedLandmark = m_instance.getUserLandmarksFromAzure(m_instance.get_m_username());
+        //ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
+        ArrayList<LocalLandmark> recievedLandmark = m_instance.getUserLandmarksFromAzure(m_instance.get_m_username());
 
-       for (int v = 0; v < recievedLandmark.size(); v++) {
+        for (int v = 0; v < recievedLandmark.size(); v++) {
             AddElement(recievedLandmark.get(v).getName(), recievedLandmark.get(v).getLatitude(), recievedLandmark.get(v).getLongitude(), recievedLandmark.get(v).getElevation());
         }
     }
 
-    void AddElement(String name, String latitude, String longitude, float elevation)
-    {
+
+    void AddElement(String name, String latitude, String longitude, float elevation) {
         /***********************************************
          * Dynamically adds elements into the UI given a name, latitude,
          * longitude, and elevation
@@ -64,7 +65,7 @@ public class LandmarkHistory extends AppCompatActivity {
         vert.setOrientation(LinearLayout.HORIZONTAL);
 
         vert.setBackgroundColor(Color.LTGRAY);
-        vert.setPadding(20,20,20,20);
+        vert.setPadding(20, 20, 20, 20);
 
         ImageView img = new ImageView(this);
         img.setBackgroundColor(Color.WHITE);
@@ -85,7 +86,7 @@ public class LandmarkHistory extends AppCompatActivity {
         tempView.setText(conCatStr); //concats strings together ¯\_(ツ)_/¯ Will probably fix later
         //Addendum: Also, should add multiple textboxes in the future
         tempView.setTextColor(Color.BLACK);
-        tempView.setPadding(10,0,0,0);
+        tempView.setPadding(10, 0, 0, 0);
         tempView.setLayoutParams(params);
         tempView.setTextAppearance(R.style.ListElemText); //set text appearance
         vert.addView(tempView);
@@ -100,8 +101,7 @@ public class LandmarkHistory extends AppCompatActivity {
         }
     };
 
-    private void LandmarkClickListener(View v)
-    {
+    public void LandmarkClickListener(View v) {
         /*******************************************************
          * Sends info to another page which changes depending on the data recieved
          * Will not change as elements are addeed
@@ -114,5 +114,14 @@ public class LandmarkHistory extends AppCompatActivity {
         i.putExtra("passing_landmark", passing); //passes the landmark into Intent
 
         startActivity(i);
+    }
+
+    public void seeHistoryPage(View v) {
+
+
+        Intent i = new Intent(this, LandmarkHistory.class);
+        startActivity(i);
+
+
     }
 }
