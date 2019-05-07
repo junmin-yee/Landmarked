@@ -77,11 +77,10 @@ public class AzureConnectionClass {
                 +   "INSERT INTO AppUser (FirstName,LastName, Email) Values ('"+fname+"', '"+lname+"', '"+email+"')"
                 + "END";
 
-           String query = "INSERT Into dbo.AppUser (FirstName, LastName, Email) "
-                    +  " Values ('"+fname+"', '"+lname+"', '"+email+"')";
-
             Statement m_query = mConnection.createStatement();
             m_query.executeUpdate(query);
+
+
 
         }
         catch (SQLException se)
