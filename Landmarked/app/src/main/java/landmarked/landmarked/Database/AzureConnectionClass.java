@@ -117,6 +117,35 @@ public class AzureConnectionClass {
         }
     }
 
+    public int getUserID()
+    {
+        int ID = -1;
+        try {
+            m_username = m_main.get_m_username();
+            String query = "SELECT UserID "
+                    + "FROM dbo.AppUser "
+                    + "WHERE AppUser.Email = '"+m_username+"'";
+            Statement m_query = mConnection.createStatement();
+            ResultSet  result = m_query.executeQuery(query);
+
+                if(result.next())
+                {
+                    ID = (int) result.getInt("UserID");
+                }
+
+        }
+        catch (SQLException se)
+        {
+            Log.e("Error 1","Failed to connect to SQL Database");
+        }
+        catch (Exception e)
+        {
+            Log.e("Error 2","Something went wrong");
+        }
+
+        return ID;
+
+    }
     // Gets a list of landmarks in the database
     public ArrayList<LocalLandmark> getLandmarks()
     {

@@ -69,7 +69,7 @@
         android:text="@string/HistoryButtonText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/buttonCustom"
-        android:onClick="seeHistoryPage"/>
+        android:onClick="test_method"/>
 
     <Button
         android:id="@+id/sign_out_button"

@@ -589,6 +589,8 @@ public class LandmarkedMain extends AppCompatActivity {
             text.setText("Welcome back " + m_acct.getEmail());
             //insertUserToAzure will make a query that attempts to insert the username. However, if the user is already in the DB, they will not be added again.
             InsertUserToAzure();
+            int x = m_conn.getUserID();
+            int y = x;
         }
 
 
