@@ -41,8 +41,8 @@ public class LandmarkHistory extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        //ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
-        ArrayList<LocalLandmark> recievedLandmark = m_instance.getUserLandmarksFromAzure(m_instance.get_m_username());
+        ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
+       // ArrayList<LocalLandmark> recievedLandmark = m_instance.getUserLandmarksFromAzure(m_instance.get_m_username());
 
         for (int v = 0; v < recievedLandmark.size(); v++) {
             AddElement(recievedLandmark.get(v).getName(), recievedLandmark.get(v).getLatitude(), recievedLandmark.get(v).getLongitude(), recievedLandmark.get(v).getElevation());
@@ -116,12 +116,5 @@ public class LandmarkHistory extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void seeHistoryPage(View v) {
 
-
-        Intent i = new Intent(this, LandmarkHistory.class);
-        startActivity(i);
-
-
-    }
 }
