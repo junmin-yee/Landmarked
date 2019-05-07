@@ -119,8 +119,7 @@ public class LandmarkHistory extends AppCompatActivity {
     public void seeHistoryPage(View v) {
 
 
-        Intent i = new Intent(this, LandmarkHistory.class);
-        startActivity(i);
+      
 
 
     }
