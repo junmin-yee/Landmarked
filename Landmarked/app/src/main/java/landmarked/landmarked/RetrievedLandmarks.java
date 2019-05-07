@@ -30,7 +30,7 @@ public class RetrievedLandmarks extends AppCompatActivity {
         m_instance = LandmarkedMain.getInstance();
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landmark_history);
+        setContentView(R.layout.activity_landmark_retrieved);
 
         //get user ID that correlates to the database
         landmarkInfo = findViewById(R.id.LandmarkAttributes);
