@@ -16,7 +16,7 @@ import landmarked.landmarked.Database.LandmarkLayout;
 import landmarked.landmarked.Database.LocalLandmark;
 import landmarked.landmarked.Database.LocalLandmarkPass;
 
-public class LandmarkHistory extends AppCompatActivity {
+public class RetrievedLandmarks extends AppCompatActivity {
     static LandmarkedMain m_instance;
     public TextView landmarkInfo;
     public LinearLayout LandmarkList;

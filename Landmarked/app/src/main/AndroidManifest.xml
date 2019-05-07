@@ -17,7 +17,7 @@
         <activity android:name=".DataManipulation.addCustomLandmark"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".LandmarkHistory"
+            android:name=".RetrievedLandmarks"
             android:screenOrientation="portrait" />
         <activity
             android:name=".LoadingPage"

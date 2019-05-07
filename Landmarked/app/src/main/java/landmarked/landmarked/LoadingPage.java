@@ -123,7 +123,7 @@ public class LoadingPage extends AppCompatActivity {
         if (landmarkGet.size() > 0) {
 
             // Show landmark history page (Shows the results returned from landmark search)
-            Intent result = new Intent(this, LandmarkHistory.class);
+            Intent result = new Intent(this, RetrievedLandmarks.class);
             result.putParcelableArrayListExtra("sending_history", landmarkGet);
             startActivity(result);
         }
