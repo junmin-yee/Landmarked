@@ -26,6 +26,9 @@
             android:name=".LandmarkSelected"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".LandmarkHistory"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".LandmarkedMain"
             android:screenOrientation="portrait">
             <intent-filter>
