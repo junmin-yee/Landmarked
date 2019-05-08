@@ -98,13 +98,14 @@ public class AzureConnectionClass {
     {
         try
         {
-            String query = "INSERT INTO dbo.Landmark (LandmarkName, LandmarkLat, LandmarkLong, LandmarkEle, LandmarkWikiInfo) VALUES ('"+name+"', '"+latitude+"', '"+longitude+"', '"+0.00+"', '"+wiki+"')";
+            m_username = m_main.get_m_username();
+            String query = "INSERT INTO dbo.Landmark (LandmarkName, LandmarkLat, LandmarkLong, LandmarkEle, LandmarkWikiInfo) VALUES ('"+name+"', '"+latitude+"', '"+longitude+"', "+0.00+", '"+wiki+"')";
             Statement m_query = mConnection.createStatement();
             m_query.executeUpdate(query);
             query = "INSERT Into dbo.UserLandmark (UserID, LandmarkID) "
             +  " SELECT UserID, LandmarkID "
             +   " FROM dbo.AppUser, dbo.Landmark "
-            +   " WHERE AppUser.Email = '"+m_username+"', Landmark.LandmarkName = '"+name+"'";
+            +   " WHERE AppUser.Email = '"+m_username+"' AND Landmark.LandmarkName = '"+name+"'";
             m_query.executeUpdate(query);
         }
         catch (SQLException se)

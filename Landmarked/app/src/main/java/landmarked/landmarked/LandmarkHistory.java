@@ -32,7 +32,8 @@ public class LandmarkHistory extends AppCompatActivity {
 
 
 
-
+        List<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure(m_instance.get_m_username());
+        int x = 1;
 
 
         m_instance = m_instance.getInstance();
@@ -115,7 +116,6 @@ public class LandmarkHistory extends AppCompatActivity {
 
 
 
-    List<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure(m_instance.get_m_username());
 
 
 
