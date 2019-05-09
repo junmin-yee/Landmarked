@@ -47,7 +47,7 @@
                 android:layout_height="match_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="15dp"
-                android:text="@string/LandmarHistoryHeader"
+                android:text="@string/RetrievedLandmarkHeader"
                 android:textAlignment="center"
                 android:textSize="32sp"
                 tools:layout_editor_absoluteX="13dp" />

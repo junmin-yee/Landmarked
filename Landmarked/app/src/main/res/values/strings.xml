@@ -18,13 +18,14 @@
     <string name="HistoryButtonText">History</string>
     <string name="SignOutButtonText">Sign Out</string>
     <string name="SignInButtonText">Sign In</string>
-    <string name="LandmarHistoryHeader">Retrieved Landmarks</string>
+    <string name="RetrievedLandmarkHeader">Retrieved Landmarks</string>
     <string-array name="ShortenedLocData">
         <item>Name</item>
         <item>Lat</item>
         <item>Long</item>
         <item>Elv</item>
     </string-array>
+    <string name="LandmarkHistory">Your Landmark History</string>
     <string name="LandmarkSelect">Landmark Selected:</string>
     <string name="LandmarksFoundHeader">Landmarks Found</string>
     <string name="MapboxToken">pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g</string>

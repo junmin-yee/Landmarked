@@ -123,7 +123,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure(m_user.getUserEmailName());
 
         //Calling method with dummy data:
-        ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure(m_username);
+        ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure();
 
         //InsertUserToAzure();
         setContentView(R.layout.activity_get_sensor_data);
@@ -228,7 +228,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
     // Gets all landmarks from Azure given specific username
 
-    public synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure(String email)
+    public synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure()
     {
        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
 
@@ -236,7 +236,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
             @Override
             public void run() {
-                ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(email);
+                ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
                 for(int x = 0; x < temp.size(); x++)
                 {
                     lst.add(temp.get(x));
@@ -597,5 +597,12 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
 
+    }
+    public void LandmarkHist(View v) {
+
+
+        Intent i = new Intent(this, LandmarkHistory.class);
+
+        startActivity(i);
     }
 }

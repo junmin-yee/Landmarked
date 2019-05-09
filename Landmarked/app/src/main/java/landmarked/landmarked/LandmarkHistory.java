@@ -24,22 +24,23 @@ public class LandmarkHistory extends AppCompatActivity {
     public TextView landmarkInfo;
     public LinearLayout LandmarkList;
     public TextView tempView;
+    static String m_username;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
 
-
-
-        List<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure(m_instance.get_m_username());
+        m_instance = m_instance.getInstance();
+        m_username = m_instance.get_m_username();
+        ArrayList<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
         int x = 1;
 
 
         m_instance = m_instance.getInstance();
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landmark_retrieved);
+
+        setContentView(R.layout.activity_landmark_history);
 
         //get user ID that correlates to the database
         landmarkInfo = findViewById(R.id.LandmarkAttributes);
@@ -50,11 +51,11 @@ public class LandmarkHistory extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
+        //ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
         // ArrayList<LocalLandmark> recievedLandmark = m_instance.getUserLandmarksFromAzure(m_instance.get_m_username());
 
-        for (int v = 0; v < recievedLandmark.size(); v++) {
-            AddElement(recievedLandmark.get(v).getName(), recievedLandmark.get(v).getLatitude(), recievedLandmark.get(v).getLongitude(), recievedLandmark.get(v).getElevation());
+        for (int v = 0; v < lst.size(); v++) {
+            AddElement(lst.get(v).getName(), lst.get(v).getLatitude(), lst.get(v).getLongitude(), lst.get(v).getElevation());
         }
     }
 
@@ -104,31 +105,12 @@ public class LandmarkHistory extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            test_method(v);
+
         }
     };
 
 
-    public void test_method(View v)
-    {
-
-    }
 }
