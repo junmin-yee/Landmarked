@@ -5,10 +5,13 @@ import android.util.Log;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.sql.ResultSet;
+import java.util.Calendar;
 import java.util.Date;
 
 import landmarked.landmarked.LandmarkedMain;
@@ -107,6 +110,41 @@ public class AzureConnectionClass {
             +   " FROM dbo.AppUser, dbo.Landmark "
             +   " WHERE AppUser.Email = '"+m_username+"' AND Landmark.LandmarkName = '"+name+"'";
             m_query.executeUpdate(query);
+        }
+        catch (SQLException se)
+        {
+            Log.e("Error 1","Failed to connect to SQL Database");
+        }
+        catch (Exception e)
+        {
+            Log.e("Error 2","Something went wrong");
+        }
+    }
+
+    public void InsertCustomLandmark(String name, String latitude, String longitude, float elevation, String notes)
+    {
+        try
+        {
+            m_username = m_main.get_m_username();
+            PreparedStatement stmt = mConnection.prepareStatement("INSERT INTO dbo.CustomLandmark (CustomLandmarkName, CustomLandmarkLat, CustomLandmarkLong, CustomLandmarkEle, DateSaved, UserID) "
+                    + " VALUES "
+                    + " (?, ?, ?, ?, ?, "
+                    + " (SELECT UserID "+" FROM dbo.AppUser WHERE Email = '"+m_username+"'))");
+            Date currentDate = Calendar.getInstance().getTime();
+            java.sql.Timestamp currDate = new Timestamp(System.currentTimeMillis());
+            stmt.setString(1, name);
+            stmt.setString(2, latitude);
+            stmt.setString(3,longitude);
+            stmt.setFloat(4, elevation);
+            stmt.setTimestamp(5, currDate);
+            stmt.executeQuery();
+            /*String query;
+            query = "INSERT INTO dbo.CustomLandmark (CustomLandmarkName, CustomLandmarkLat, CustomLandmarkLong, CustomLandmarkEle, DateSaved, UserID) "
+            + " VALUES "
+            + " (?, ?, ?, ?, ?, "
+            + " (SELECT UserID "+" FROM dbo.AppUser WHERE Email = '"+m_username+"'))";
+            Statement m_query = mConnection.createStatement();
+            m_query.executeUpdate(query);*/
         }
         catch (SQLException se)
         {

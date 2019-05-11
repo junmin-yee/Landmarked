@@ -241,7 +241,7 @@ public class LandmarkedMain extends AppCompatActivity {
             @Override
             public void run() {
                 Semaphore sem = new Semaphore(1);
-                    sem.acquire();
+                    //sem.acquire();
                    ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
                    for(int x = 0; x < temp.size(); x++)
                    {

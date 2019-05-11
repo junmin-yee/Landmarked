@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import landmarked.landmarked.Database.AppDatabase;
+import landmarked.landmarked.Database.AzureConnectionClass;
 import landmarked.landmarked.Database.CustomLocalLandmark;
 import landmarked.landmarked.Database.CustomLocalLandmarkAccessorMethods;
 import landmarked.landmarked.Database.CustomLocalLandmarkAccessorMethods_Impl;
@@ -75,24 +76,49 @@ public class addCustomLandmark extends AppCompatActivity
 
     public void onSaveCustom(View v)
     {
+        int errorVar = 0;
+        float rangeVal;
         EditText temp = findViewById(R.id.landmarkName);
         String name = temp.getText().toString();
+        if(name.length() == 0)
+        {
+            errorVar += 1;
+        }
         temp = findViewById(R.id.latitudeEntry);
         String lat = temp.getText().toString();
+        rangeVal = Float.valueOf(lat);
+        if(rangeVal > 90 || rangeVal < -90)
+        {
+            errorVar += 2;
+        }
         temp = findViewById(R.id.longitudeEntry);
         String lon = temp.getText().toString();
+        rangeVal = Float.valueOf(lon);
+        if(rangeVal > 180 || rangeVal < -180)
+        {
+            errorVar += 4;
+        }
         temp = findViewById(R.id.elevationEntry);
         float elev = Float.parseFloat(temp.getText().toString());
+        if(elev > 8848 || elev < -420)
+        {
+            errorVar += 16;
+        }
         Date currDate = Calendar.getInstance().getTime();
 
-        CustomLocalLandmark addition = new CustomLocalLandmark(name, lat, lon, elev, "",currDate);
+        //CustomLocalLandmark addition = new CustomLocalLandmark(name, lat, lon, elev, "",currDate);
 
         //CustomLocalLandmarkAccessorMethods_Impl add = new CustomLocalLandmarkAccessorMethods_Impl;
         /*CustomLocalLandmarkAccessorMethods_Impl add = new CustomLocalLandmarkAccessorMethods_Impl(AppDatabase.getM_DB_instance(this));
         add.insertCustomLandmarkStructure(addition);*/
 
-        LandmarkedMain main =  LandmarkedMain.getInstance();
-        main.insertCustomLandmarkStructure(addition);
+        //LandmarkedMain main =  LandmarkedMain.getInstance();
+        //main.insertCustomLandmarkStructure(addition);
+
+        AzureConnectionClass thePowerOfTheAzure = AzureConnectionClass.getAzureInstance();
+        thePowerOfTheAzure.Connect();
+        thePowerOfTheAzure.InsertCustomLandmark(name, lat, lon, elev, "");
+        thePowerOfTheAzure.Disconnect();
 
         finish();
     }
