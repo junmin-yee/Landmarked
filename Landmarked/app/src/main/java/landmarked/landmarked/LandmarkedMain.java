@@ -104,7 +104,6 @@ public class LandmarkedMain extends AppCompatActivity {
         m_thread = Executors.newSingleThreadExecutor();
         m_conn = new AzureConnectionClass();
 
-
         if(isConnected)
         {
             Intent ii = new Intent(this, GoogleAuthentication.class);
@@ -114,7 +113,6 @@ public class LandmarkedMain extends AppCompatActivity {
         //This method will use a singleton pattern to either return the already existing instance
         db = AppDatabase.getM_DB_instance(getApplicationContext());
         m_instance = this;
-
 
         m_conn.Connect();
         //InsertAzure("sometest", "someTest", "SomeTest", 0.1F, "Sometest"); //INSERTAZURE IS A FUNCTION WITHIN LANDMARKEDMAIN
@@ -137,10 +135,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
         //directionTV = findViewById(R.id.current_direction_text);
         //locationTV = findViewById(R.id.current_location_text);
-
     }
-
-
 
     // Setter/Getter for Google Authentication Username
     public static AzureConnectionClass get_azure_instance(){ return m_conn; }
@@ -175,9 +170,6 @@ public class LandmarkedMain extends AppCompatActivity {
 
         // Create ProgressDialog for landmark searching
         dialog = new ProgressDialog(this);
-
-
-
     }
 
     @Override
@@ -199,7 +191,6 @@ public class LandmarkedMain extends AppCompatActivity {
         return m_thread;
     }
 
-
     public ArrayList<LocalLandmark> getLandmarksAzure()
     {
         ArrayList<LocalLandmark>lst = new ArrayList<LocalLandmark>();
@@ -215,7 +206,6 @@ public class LandmarkedMain extends AppCompatActivity {
         };
         m_thread.execute(runCommand);
         return lst;
-
     }
     public  void InsertUserToAzure()
     {
@@ -224,37 +214,30 @@ public class LandmarkedMain extends AppCompatActivity {
             @Override
             public void run()
             {
-
                 m_conn.InsertUsername(m_username, m_acct.getGivenName(), m_acct.getFamilyName());
             }
-
         };
         m_thread.execute(runCommand);
     }
 
     // Gets all landmarks from Azure given specific username
-
     public  ArrayList<LocalLandmark> getUserLandmarksFromAzure()
     {
-       ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
+        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
 
         Runnable runCommand = new Runnable() {
         ReentrantLock l = new ReentrantLock();
             @Override
-            public void run() {
-
-                   l.lock();
-                   ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
-                   for(int x = 0; x < temp.size(); x++)
-                   {
-                       m_list.add(temp.get(x));
-                   }
-                   l.unlock();
-
-
-
+            public void run()
+            {
+                l.lock();
+                ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
+                for(int x = 0; x < temp.size(); x++)
+                {
+                    m_list.add(temp.get(x));
+                }
+                l.unlock();
             }
-
         };
 
         m_thread.execute(runCommand);
@@ -363,7 +346,6 @@ public class LandmarkedMain extends AppCompatActivity {
            {
                db.LocalLandmarkMethodsVar().insertLocalLandmarkStructure(landmarkArg);
            }
-
        };
        //Execute our new Runnable with our thread pool
        m_thread.execute(insertStructure);
@@ -533,14 +515,10 @@ public class LandmarkedMain extends AppCompatActivity {
                             result.putParcelableArrayListExtra("sending_history", landmarkGet);
                             startActivity(result);
                         }
-
                     }
                 });
-
             }
-
         }).start();
-
     }
 
     // Shows a progress dialog as a wait
@@ -603,16 +581,10 @@ public class LandmarkedMain extends AppCompatActivity {
             InsertUserToAzure();
           //  Intent i = new Intent(this, LandmarkHistory.class);
             //startActivity(i);
-
         }
-
-
-
-
     }
-    public void LandmarkHist(View v) {
-
-
+    public void LandmarkHist(View v)
+    {
         Intent i = new Intent(this, LandmarkHistory.class);
 
         startActivity(i);
