@@ -40,6 +40,10 @@ import landmarked.landmarked.Database.AzureConnectionClass;
 import landmarked.landmarked.Database.CustomLandmark;
 import landmarked.landmarked.Database.CustomLocalLandmark;
 import landmarked.landmarked.Database.LocalLandmark;
+import landmarked.landmarked.GUI.GoogleAuthentication;
+import landmarked.landmarked.GUI.LandmarkHistory;
+import landmarked.landmarked.GUI.LoadingPage;
+import landmarked.landmarked.GUI.RetrievedLandmarks;
 
 public class LandmarkedMain extends AppCompatActivity {
     private static ReentrantLock m_thread_lock;
