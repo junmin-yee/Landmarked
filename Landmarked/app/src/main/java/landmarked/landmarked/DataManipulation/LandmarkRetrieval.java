@@ -105,8 +105,8 @@ public class LandmarkRetrieval {
         mGeoCodeLSLocation = new Location(mGeoCodeNELocation);
 
         // Set location behind user
-        mGeoCodeSWLocation.setLatitude(mCurrLocation.getLatitude() + (180/Math.PI)*((y/2)/EARTH_RADIUS));
-        mGeoCodeSWLocation.setLongitude(mCurrLocation.getLongitude() +
+        mGeoCodeSWLocation.setLatitude(mCurrLocation.getLatitude() - (180/Math.PI)*((y/2)/EARTH_RADIUS));
+        mGeoCodeSWLocation.setLongitude(mCurrLocation.getLongitude() -
                 (180/Math.PI)*((x/2)/EARTH_RADIUS)/Math.cos((Math.PI/180)*mCurrLocation.getLatitude()));
     }
 
@@ -441,7 +441,10 @@ public class LandmarkRetrieval {
             return -1;
         }
 
-        // Calculate boundary box settings given current user location and
+        // Calculate the Line of Sight in the direction the user is facing
+        CalculateMaxLineofSight();
+
+        // Calculate boundary box settings given current user location and Line of Sight
         CalculateBoundaryBox();
 
         // Calculate the field of view that the user is looking for
