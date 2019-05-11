@@ -27,7 +27,6 @@ public class LandmarkRetrieval {
     private static final double DIRECTION_SHIFT = 0.15;
     private static final int FIELD_OF_VIEW_DEGREE = 3;
     private static final int BIGGER_BBOX_OFFSET = 3;
-    private static final int DEGREES_IN_CIRCLE = 360;
 
     private SensorData mSensorData;
     private Location mCurrLocation;
@@ -69,10 +68,8 @@ public class LandmarkRetrieval {
         // Variable for max line of sight distance in meters
         int losdistance = 0;
         // Get current pitch and roll and azimuth
-        float azimuth = mSensorData.getCurrentOrientation()[0];
-        float pitch = mSensorData.getCurrentOrientation()[1];
-        float roll = mSensorData.getCurrentOrientation()[2];
-        float direction = ((float)Math.toDegrees(azimuth) + DEGREES_IN_CIRCLE) % DEGREES_IN_CIRCLE;
+        float pitch = mSensorData.getPitch();
+        float direction = mSensorData.getDirectionInDegrees();
 
         double x = 0;
         double y = 0;
@@ -109,7 +106,6 @@ public class LandmarkRetrieval {
         // Initial setup
         mGeoCodeSWLocation = mCurrLocation;
         mGeoCodeNELocation = CalculateMaxLineofSight();
-        Location temp; // For swapping value use
 
         double testlat = mGeoCodeNELocation.getLatitude() - mGeoCodeSWLocation.getLatitude();
         double testlong = mGeoCodeNELocation.getLongitude() - mGeoCodeSWLocation.getLongitude();
@@ -124,7 +120,7 @@ public class LandmarkRetrieval {
         else if (testlat <= 0 && Math.abs(testlong) < BEARING_ERROR)
         {
             // Swap location points
-            temp = mGeoCodeNELocation;
+            Location temp = new Location(mGeoCodeNELocation);
             mGeoCodeNELocation = mGeoCodeSWLocation;
             mGeoCodeSWLocation = temp;
 
@@ -136,7 +132,7 @@ public class LandmarkRetrieval {
         else if (testlong <= 0 && Math.abs(testlat) < BEARING_ERROR)
         {
             // Swap location points
-            temp = mGeoCodeNELocation;
+            Location temp = new Location(mGeoCodeNELocation);
             mGeoCodeNELocation = mGeoCodeSWLocation;
             mGeoCodeSWLocation = temp;
 
@@ -154,7 +150,7 @@ public class LandmarkRetrieval {
         // Test if looking Northwest
         else if (testlat > 0 && testlong < 0)
         {
-            temp = mGeoCodeNELocation;
+            Location temp = new Location(mGeoCodeNELocation);
             temp.setLatitude(mGeoCodeSWLocation.getLatitude());
             mGeoCodeNELocation.setLongitude(mGeoCodeSWLocation.getLongitude());
             mGeoCodeSWLocation = temp;
@@ -163,14 +159,14 @@ public class LandmarkRetrieval {
         else if (testlat < 0 && testlong < 0)
         {
             // Swap location points
-            temp = mGeoCodeNELocation;
+            Location temp = new Location(mGeoCodeNELocation);
             mGeoCodeNELocation = mGeoCodeSWLocation;
             mGeoCodeSWLocation = temp;
         }
         // Test if looking Southeast
         else if (testlat < 0 && testlong > 0)
         {
-            temp = mGeoCodeNELocation;
+            Location temp = new Location(mGeoCodeNELocation);
             temp.setLongitude(mGeoCodeSWLocation.getLongitude());
             mGeoCodeNELocation.setLatitude(mGeoCodeSWLocation.getLatitude());
             mGeoCodeSWLocation = temp;
