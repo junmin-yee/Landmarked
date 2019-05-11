@@ -51,6 +51,9 @@ public class LandmarkRetrieval {
         mProximityResults = new HashSet<>();
         mBoundaryBoxResults = new HashSet<>();
 
+        mGeoCodeNELocation = new Location("");
+        mGeoCodeSWLocation = new Location("");
+
         sensorInfoSet = false;
     }
 
@@ -414,6 +417,9 @@ public class LandmarkRetrieval {
 
         ReverseGeocodeSearch();
         if(mRevResults != null) {
+            // Sets the LSLocation
+            CalculateMaxLineofSight();
+
             for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
                 ProximityForwardGeocodeSearch(mGeoCodeLSLocation, mLandmarkCategories[iterator]);
 
