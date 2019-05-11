@@ -23,8 +23,8 @@ import static android.support.constraint.Constraints.TAG;
 
 public class LandmarkRetrieval {
     private static final int EARTH_RADIUS = 6378137;
-    private static final double BEARING_ERROR = 0.01;
-    private static final double DIRECTION_SHIFT = 0.15;
+    private static final double BEARING_ERROR = 0.10;
+    private static final double DIRECTION_SHIFT = 0.45;
     private static final int FIELD_OF_VIEW_DEGREE = 3;
     private static final int BIGGER_BBOX_OFFSET = 3;
 
