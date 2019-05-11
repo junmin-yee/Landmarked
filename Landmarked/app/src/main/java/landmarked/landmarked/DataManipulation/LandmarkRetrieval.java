@@ -27,12 +27,12 @@ public class LandmarkRetrieval {
     private static final double DIRECTION_SHIFT = 0.15;
     private static final int FIELD_OF_VIEW_DEGREE = 3;
     private static final int BIGGER_BBOX_OFFSET = 3;
+    private static final int DEGREES_IN_CIRCLE = 360;
 
     private SensorData mSensorData;
     private Location mCurrLocation;
     private Location mGeoCodeSWLocation;
     private Location mGeoCodeNELocation;
-    private Location mGeoCodeLSLocation;
     private float mLeftField;
     private float mRightField;
     private List<CarmenFeature> mRevResults;
@@ -51,9 +51,6 @@ public class LandmarkRetrieval {
         mProximityResults = new HashSet<>();
         mBoundaryBoxResults = new HashSet<>();
 
-        mGeoCodeNELocation = new Location("");
-        mGeoCodeSWLocation = new Location("");
-
         sensorInfoSet = false;
     }
 
@@ -67,13 +64,15 @@ public class LandmarkRetrieval {
     }
 
     // Calculate line of sight based on sensor data
-    private void CalculateMaxLineofSight()
+    private Location CalculateMaxLineofSight()
     {
         // Variable for max line of sight distance in meters
         int losdistance = 0;
         // Get current pitch and roll and azimuth
-        float pitch = mSensorData.getPitch();
-        float direction = mSensorData.getDirectionInDegrees();
+        float azimuth = mSensorData.getCurrentOrientation()[0];
+        float pitch = mSensorData.getCurrentOrientation()[1];
+        float roll = mSensorData.getCurrentOrientation()[2];
+        float direction = ((float)Math.toDegrees(azimuth) + DEGREES_IN_CIRCLE) % DEGREES_IN_CIRCLE;
 
         double x = 0;
         double y = 0;
@@ -81,14 +80,14 @@ public class LandmarkRetrieval {
         // Check phone pitch
         if (pitch <= 0)
         {
-            losdistance = 50000;
+            losdistance = 10000;
             // Calculate change in distance in Cartesian
             //x = losdistance * Math.sin(-Math.PI/2 - pitch) * Math.cos(roll);
             //y = losdistance * Math.sin(-Math.PI/2 - pitch) * Math.sin(roll);
         }
         else if (pitch > 0)
         {
-            losdistance = 25000;
+            losdistance = 5000;
             // Calculate change in distance in Cartesian
             //x = losdistance * Math.sin(Math.PI/2 - pitch) * Math.cos(roll);
             //y = losdistance * Math.sin(Math.PI/2 - pitch) * Math.sin(roll);
@@ -96,23 +95,21 @@ public class LandmarkRetrieval {
         x = losdistance*Math.sin(Math.toRadians(direction));
         y = losdistance*Math.cos(Math.toRadians(direction));
 
-        // Set location in front of user
-        mGeoCodeNELocation.setLatitude(mCurrLocation.getLatitude() + (180/Math.PI)*(y/EARTH_RADIUS));
-        mGeoCodeNELocation.setLongitude(mCurrLocation.getLongitude() +
+        // Create new location of distance away
+        Location max = new Location("Provider");
+        max.setLatitude(mCurrLocation.getLatitude() + (180/Math.PI)*(y/EARTH_RADIUS));
+        max.setLongitude(mCurrLocation.getLongitude() +
                 (180/Math.PI)*(x/EARTH_RADIUS)/Math.cos((Math.PI/180)*mCurrLocation.getLatitude()));
 
-        // Set location in front of user
-        mGeoCodeLSLocation = new Location(mGeoCodeNELocation);
-
-        // Set location behind user
-        mGeoCodeSWLocation.setLatitude(mCurrLocation.getLatitude() - (180/Math.PI)*((y/2)/EARTH_RADIUS));
-        mGeoCodeSWLocation.setLongitude(mCurrLocation.getLongitude() -
-                (180/Math.PI)*((x/2)/EARTH_RADIUS)/Math.cos((Math.PI/180)*mCurrLocation.getLatitude()));
+        return max;
     }
 
     private void CalculateBoundaryBox()
     {
         // Initial setup
+        mGeoCodeSWLocation = mCurrLocation;
+        mGeoCodeNELocation = CalculateMaxLineofSight();
+        Location temp; // For swapping value use
 
         double testlat = mGeoCodeNELocation.getLatitude() - mGeoCodeSWLocation.getLatitude();
         double testlong = mGeoCodeNELocation.getLongitude() - mGeoCodeSWLocation.getLongitude();
@@ -127,7 +124,7 @@ public class LandmarkRetrieval {
         else if (testlat <= 0 && Math.abs(testlong) < BEARING_ERROR)
         {
             // Swap location points
-            Location temp = new Location(mGeoCodeNELocation);
+            temp = mGeoCodeNELocation;
             mGeoCodeNELocation = mGeoCodeSWLocation;
             mGeoCodeSWLocation = temp;
 
@@ -139,7 +136,7 @@ public class LandmarkRetrieval {
         else if (testlong <= 0 && Math.abs(testlat) < BEARING_ERROR)
         {
             // Swap location points
-            Location temp = new Location(mGeoCodeNELocation);
+            temp = mGeoCodeNELocation;
             mGeoCodeNELocation = mGeoCodeSWLocation;
             mGeoCodeSWLocation = temp;
 
@@ -157,7 +154,7 @@ public class LandmarkRetrieval {
         // Test if looking Northwest
         else if (testlat > 0 && testlong < 0)
         {
-            Location temp = new Location(mGeoCodeNELocation);
+            temp = mGeoCodeNELocation;
             temp.setLatitude(mGeoCodeSWLocation.getLatitude());
             mGeoCodeNELocation.setLongitude(mGeoCodeSWLocation.getLongitude());
             mGeoCodeSWLocation = temp;
@@ -166,14 +163,14 @@ public class LandmarkRetrieval {
         else if (testlat < 0 && testlong < 0)
         {
             // Swap location points
-            Location temp = new Location(mGeoCodeNELocation);
+            temp = mGeoCodeNELocation;
             mGeoCodeNELocation = mGeoCodeSWLocation;
             mGeoCodeSWLocation = temp;
         }
         // Test if looking Southeast
         else if (testlat < 0 && testlong > 0)
         {
-            Location temp = new Location(mGeoCodeNELocation);
+            temp = mGeoCodeNELocation;
             temp.setLongitude(mGeoCodeSWLocation.getLongitude());
             mGeoCodeNELocation.setLatitude(mGeoCodeSWLocation.getLatitude());
             mGeoCodeSWLocation = temp;
@@ -183,8 +180,10 @@ public class LandmarkRetrieval {
 
     private void CalculateFieldofView()
     {
+        Location search = CalculateMaxLineofSight();
+
         // Set current bearing
-        mCurrLocation.setBearing(mCurrLocation.bearingTo(mGeoCodeLSLocation));
+        mCurrLocation.setBearing(mCurrLocation.bearingTo(search));
 
         mLeftField = mCurrLocation.getBearing() - FIELD_OF_VIEW_DEGREE;
         mRightField = mCurrLocation.getBearing() + FIELD_OF_VIEW_DEGREE;
@@ -272,6 +271,7 @@ public class LandmarkRetrieval {
     // Proximity based forward geocode search on point generated in front of location.
     private void ProximityForwardGeocodeSearch(Location proximity_point, String category){
 
+        Location proximity_search = CalculateMaxLineofSight();
         // USE mGeoCodeSWLocation and mGeoCodeNELocation points to create
 
         // Searches for a basic type of landmark - only works because we base results around a proximity point.
@@ -285,7 +285,7 @@ public class LandmarkRetrieval {
         MapboxGeocoding forwardGeocode = MapboxGeocoding.builder()
                 .accessToken("pk.eyJ1IjoicmVkZ3JlZWQ0IiwiYSI6ImNqb2k3NXNpNjAyMGEzcXBhbThoeXBtOGcifQ.AG9JmnzPQKHuSxazOvrk3g")
                 .query(query_string)
-                .proximity(Point.fromLngLat(mGeoCodeLSLocation.getLongitude(), mGeoCodeLSLocation.getLatitude()))
+                .proximity(Point.fromLngLat(proximity_search.getLongitude(), proximity_search.getLatitude()))
                 .limit(10)
                 .build();
 
@@ -417,11 +417,10 @@ public class LandmarkRetrieval {
 
         ReverseGeocodeSearch();
         if(mRevResults != null) {
-            // Sets the LSLocation
-            CalculateMaxLineofSight();
+            Location proximityPoint = CalculateMaxLineofSight();
 
             for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
-                ProximityForwardGeocodeSearch(mGeoCodeLSLocation, mLandmarkCategories[iterator]);
+                ProximityForwardGeocodeSearch(proximityPoint, mLandmarkCategories[iterator]);
 
                 if (mFwdResults != null) {
                     mProximityResults.addAll(mFwdResults);
@@ -441,10 +440,7 @@ public class LandmarkRetrieval {
             return -1;
         }
 
-        // Calculate the Line of Sight in the direction the user is facing
-        CalculateMaxLineofSight();
-
-        // Calculate boundary box settings given current user location and Line of Sight
+        // Calculate boundary box settings given current user location and
         CalculateBoundaryBox();
 
         // Calculate the field of view that the user is looking for

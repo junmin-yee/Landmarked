@@ -1,4 +1,4 @@
-package landmarked.landmarked.GUI;
+package landmarked.landmarked;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -12,9 +12,6 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-
-import landmarked.landmarked.LandmarkedMain;
-import landmarked.landmarked.R;
 
 public class DisplayMap extends AppCompatActivity {
     private MapView mapView;
@@ -36,11 +33,13 @@ public class DisplayMap extends AppCompatActivity {
                 mapboxMap.setStyle(Style.OUTDOORS, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
+
 // Map is set up and the style has loaded. Now you can add data or make other map adjustments
                         CameraPosition camera = new CameraPosition.Builder()
                                 .target(new LatLng(42.2587, -121.7836))
                                 .zoom(8)
                                 .build();
+
                         mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
                     }
                 });

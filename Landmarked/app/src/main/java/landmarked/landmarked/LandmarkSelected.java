@@ -1,4 +1,4 @@
-package landmarked.landmarked.GUI;
+package landmarked.landmarked;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import landmarked.landmarked.Database.LocalLandmarkPass;
-import landmarked.landmarked.LandmarkedMain;
-import landmarked.landmarked.R;
 
 public class LandmarkSelected extends AppCompatActivity {
     static LandmarkedMain m_instance;

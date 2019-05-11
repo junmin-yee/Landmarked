@@ -9,14 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import landmarked.landmarked.DataManipulation.addCustomLandmark;
 import landmarked.landmarked.LandmarkedMain;
 import landmarked.landmarked.R;
 
-import landmarked.landmarked.GUI.LandmarkSelected;
+import landmarked.landmarked.LandmarkSelected;
 
 public class CustomLandmark extends AppCompatActivity {
 

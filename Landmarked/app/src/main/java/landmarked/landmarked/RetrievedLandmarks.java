@@ -1,4 +1,4 @@
-package landmarked.landmarked.GUI;
+package landmarked.landmarked;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import landmarked.landmarked.Database.LandmarkLayout;
 import landmarked.landmarked.Database.LocalLandmark;
 import landmarked.landmarked.Database.LocalLandmarkPass;
-import landmarked.landmarked.LandmarkedMain;
-import landmarked.landmarked.R;
 
 public class RetrievedLandmarks extends AppCompatActivity {
     static LandmarkedMain m_instance;
@@ -50,6 +48,7 @@ public class RetrievedLandmarks extends AppCompatActivity {
             AddElement(recievedLandmark.get(v).getName(), recievedLandmark.get(v).getLatitude(), recievedLandmark.get(v).getLongitude(), recievedLandmark.get(v).getElevation());
         }
     }
+
 
     void AddElement(String name, String latitude, String longitude, float elevation) {
         /***********************************************
@@ -116,4 +115,6 @@ public class RetrievedLandmarks extends AppCompatActivity {
 
         startActivity(i);
     }
+
+
 }
