@@ -1,4 +1,4 @@
-package landmarked.landmarked;
+package landmarked.landmarked.GUI;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,18 +20,18 @@ import android.support.annotation.NonNull;
 import java.sql.Connection;
 
 import landmarked.landmarked.Database.AzureConnectionClass;
+import landmarked.landmarked.LandmarkedMain;
+import landmarked.landmarked.R;
 
 public class GoogleAuthentication extends AppCompatActivity implements View.OnClickListener {
-    static GoogleSignInClient m_GoogleSignInClient;
+    GoogleSignInClient m_GoogleSignInClient;
     static GoogleSignInAccount m_account;
-    final int RC_SIGN_ON = 9001;
+    private static final int RC_SIGN_ON = 9001;
     public static String Name;
     Connection m_conn_instance;
     AzureConnectionClass m_azure;
-    static LandmarkedMain  main_instance;
+    LandmarkedMain main_instance;
     ExecutorService m_thread;
-
-/////////////////////////////////////////make everything non static
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,8 +46,6 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         m_GoogleSignInClient = GoogleSignIn.getClient(this, gso);
         m_thread = LandmarkedMain.getThreadPoolInstance();
         m_azure = AzureConnectionClass.getAzureInstance();
-
-
     }
 
     //onStart looks for an account already signed in. The flow goes like this:
@@ -73,25 +71,24 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             case R.id.sign_in_button:
                 signIn();
                 break;
-
             case R.id.sign_out_button:
                 signOut();
                 break;
         }
     }
 
-
-    private void signIn() {
-
-                Intent signInIntent = m_GoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, RC_SIGN_ON);
-
+    private void signIn()
+    {
+        Intent signInIntent = m_GoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_ON);
     }
+
     private GoogleSignInAccount getLastAccount()
     {
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         return acct;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -106,6 +103,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             handleSignInResult(task);
         }
     }
+
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             //GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
@@ -122,6 +120,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             //updateAuth(null);
         }
     }
+
     public static String getUserEmailName()
     {
         return Name;
@@ -143,42 +142,38 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         }
     }
 
-    protected static GoogleSignInAccount getUser() {
-        try {
+    public static GoogleSignInAccount getUser()
+    {
+        try
+        {
            if(m_account == null)
-           {
-
-           }
-            return m_account;
-        } catch (NullPointerException e) {
-
-            //some container in the gui to display a message?
-            return null;
+           { }
+           return m_account;
+        }
+        catch (NullPointerException e)
+        {
+           //some container in the gui to display a message?
+           return null;
         }
     }
 
-
-    protected void signOut()
+    public void signOut()
     {
         m_GoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                        //Honestly i have no idea what's supposed to fill this function
-
                     }
                 });
-
         finish();
-
     }
+
     @Override protected void onStop()
     {
         super.onStop();
         //signOut();
-
     }
-
 
     @Override
     public void onBackPressed()
@@ -187,6 +182,5 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         //in my opinion, there't not really much else to do if the user doesn't want to log in. Possible we could use an offline mode?
         LandmarkedMain.getInstance().finish();
         finish();
-
     }
 }
