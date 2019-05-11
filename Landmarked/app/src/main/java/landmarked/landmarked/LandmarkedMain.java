@@ -237,17 +237,17 @@ public class LandmarkedMain extends AppCompatActivity {
        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
 
         Runnable runCommand = new Runnable() {
-        ReentrantLock lock = new ReentrantLock();
+        ReentrantLock l = new ReentrantLock();
             @Override
             public void run() {
-                Semaphore sem = new Semaphore(1);
-                    sem.acquire();
+
+                   l.lock();
                    ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
                    for(int x = 0; x < temp.size(); x++)
                    {
                        m_list.add(temp.get(x));
                    }
-
+                   l.unlock();
 
 
 
