@@ -240,9 +240,11 @@ public class LandmarkedMain extends AppCompatActivity {
             Runnable runCommand = new Runnable() {
                 @Override
                 public void run() {
+
                     m_list = m_conn.getLandmarksByEmail(m_username);
                 }
             };
+
             m_thread.execute(runCommand);
 
 
