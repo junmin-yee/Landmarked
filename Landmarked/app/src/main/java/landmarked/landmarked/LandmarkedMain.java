@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import landmarked.landmarked.DataManipulation.CarmenFeatureHelper;
@@ -70,6 +72,7 @@ public class LandmarkedMain extends AppCompatActivity {
     public ProgressDialog dialog;
 
     private static final String TAG = "LandmarkedMain";
+    public ArrayList<LocalLandmark> m_list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +126,7 @@ public class LandmarkedMain extends AppCompatActivity {
         //ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure(m_user.getUserEmailName());
 
         //Calling method with dummy data:
-        ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure();
+//        ArrayList<LocalLandmark> user_specific_lands = getUserLandmarksFromAzure();
 
         //InsertUserToAzure();
         setContentView(R.layout.activity_get_sensor_data);
@@ -138,6 +141,7 @@ public class LandmarkedMain extends AppCompatActivity {
 
 
     // Setter/Getter for Google Authentication Username
+    public static AzureConnectionClass get_azure_instance(){ return m_conn; }
 
     public void setUserName(String name)
     {
@@ -228,25 +232,31 @@ public class LandmarkedMain extends AppCompatActivity {
 
     // Gets all landmarks from Azure given specific username
 
-    public synchronized ArrayList<LocalLandmark> getUserLandmarksFromAzure()
+    public  ArrayList<LocalLandmark> getUserLandmarksFromAzure()
     {
        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
 
         Runnable runCommand = new Runnable() {
-
+        ReentrantLock lock = new ReentrantLock();
             @Override
             public void run() {
-                ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
-                for(int x = 0; x < temp.size(); x++)
-                {
-                    lst.add(temp.get(x));
-                }
+                Semaphore sem = new Semaphore(1);
+                    sem.acquire();
+                   ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
+                   for(int x = 0; x < temp.size(); x++)
+                   {
+                       m_list.add(temp.get(x));
+                   }
+
+
+
+
             }
 
         };
 
         m_thread.execute(runCommand);
-        return lst;
+        return m_list;
     }
 
     // Inserts a landmark into Azure.

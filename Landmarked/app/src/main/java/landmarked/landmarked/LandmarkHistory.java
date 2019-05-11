@@ -10,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import landmarked.landmarked.Database.AzureConnectionClass;
 import landmarked.landmarked.Database.LandmarkLayout;
 import landmarked.landmarked.Database.LocalLandmark;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.concurrent.ExecutorService;
 
 
 public class LandmarkHistory extends AppCompatActivity {
@@ -25,6 +26,8 @@ public class LandmarkHistory extends AppCompatActivity {
     public LinearLayout LandmarkList;
     public TextView tempView;
     static String m_username;
+    public static ExecutorService m_thread;
+    public static AzureConnectionClass m_conn;
 
 
     @Override
@@ -33,11 +36,24 @@ public class LandmarkHistory extends AppCompatActivity {
 
         m_instance = m_instance.getInstance();
         m_username = m_instance.get_m_username();
-        ArrayList<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
+        m_thread = m_instance.getThreadPoolInstance();
+        m_conn = m_instance.get_azure_instance();
+
+
+       // ArrayList<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
         int x = 1;
 
+    //    Runnable runCommand = new Runnable() {
+     //       @Override
+     //       public void run() {
+                ArrayList<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
+                for (int v = 0; v < lst.size(); v++) {
+                    AddElement(lst.get(v).getName(), lst.get(v).getLatitude(), lst.get(v).getLongitude(), lst.get(v).getElevation());
+                }
+       //     }
+    //    };
+       // m_thread.execute(runCommand);
 
-        m_instance = m_instance.getInstance();
 
 
         setContentView(R.layout.activity_landmark_history);
@@ -54,9 +70,7 @@ public class LandmarkHistory extends AppCompatActivity {
         //ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
         // ArrayList<LocalLandmark> recievedLandmark = m_instance.getUserLandmarksFromAzure(m_instance.get_m_username());
 
-        for (int v = 0; v < lst.size(); v++) {
-            AddElement(lst.get(v).getName(), lst.get(v).getLatitude(), lst.get(v).getLongitude(), lst.get(v).getElevation());
-        }
+
     }
 
 
