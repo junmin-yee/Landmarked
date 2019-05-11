@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import landmarked.landmarked.DataManipulation.CarmenFeatureHelper;
@@ -40,6 +38,10 @@ import landmarked.landmarked.Database.AzureConnectionClass;
 import landmarked.landmarked.Database.CustomLandmark;
 import landmarked.landmarked.Database.CustomLocalLandmark;
 import landmarked.landmarked.Database.LocalLandmark;
+import landmarked.landmarked.GUI.GoogleAuthentication;
+import landmarked.landmarked.GUI.LandmarkHistory;
+import landmarked.landmarked.GUI.LoadingPage;
+import landmarked.landmarked.GUI.RetrievedLandmarks;
 
 public class LandmarkedMain extends AppCompatActivity {
     private static ReentrantLock m_thread_lock;
