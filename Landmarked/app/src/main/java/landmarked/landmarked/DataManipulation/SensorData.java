@@ -12,8 +12,9 @@ import android.os.Bundle;
 
 public class SensorData {
 
-    public static final long LOCATION_REFRESH_TIME_IN_MS = 1000;
-    public static final float LOCATION_REFRESH_DISTANCE = 0;
+    private static final long LOCATION_REFRESH_TIME_IN_MS = 1000;
+    private static final float LOCATION_REFRESH_DISTANCE = 0;
+    private static final int DEGREES_IN_CIRCLE = 360;
 
     private SensorManager mSensorManager;
     private Sensor accelerometer;
@@ -72,6 +73,26 @@ public class SensorData {
     public float[] getCurrentOrientation(){
         //Get sensor data from phone
         return mOrientation;
+    }
+
+    public float getDirectionInDegrees()
+    {
+        return ((float)Math.toDegrees(mOrientation[0]) + DEGREES_IN_CIRCLE) % DEGREES_IN_CIRCLE;
+    }
+
+    public float getAzimuth()
+    {
+        return mOrientation[0];
+    }
+
+    public float getPitch()
+    {
+        return mOrientation[1];
+    }
+
+    public float getRoll()
+    {
+        return mOrientation[2];
     }
 
     public Location getCurrentLocation() {

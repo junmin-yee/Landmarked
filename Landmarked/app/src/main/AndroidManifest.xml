@@ -17,16 +17,16 @@
         <activity android:name=".DataManipulation.addCustomLandmark"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".RetrievedLandmarks"
+            android:name=".GUI.RetrievedLandmarks"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LoadingPage"
+            android:name=".GUI.LoadingPage"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LandmarkSelected"
+            android:name=".GUI.LandmarkSelected"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LandmarkHistory"
+            android:name=".GUI.LandmarkHistory"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".LandmarkedMain"
@@ -38,14 +38,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DisplayMap"
+            android:name=".GUI.DisplayMap"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Database.CustomLandmark"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".GoogleAuthentication"
+            android:name=".GUI.GoogleAuthentication"
             android:screenOrientation="portrait" />
     </application>
 

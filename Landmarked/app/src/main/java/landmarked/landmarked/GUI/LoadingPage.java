@@ -1,4 +1,4 @@
-package landmarked.landmarked;
+package landmarked.landmarked.GUI;
 
 import android.Manifest;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import landmarked.landmarked.DataManipulation.CarmenFeatureHelper;
 import landmarked.landmarked.DataManipulation.LandmarkRetrieval;
 import landmarked.landmarked.DataManipulation.SensorData;
 import landmarked.landmarked.Database.LocalLandmark;
+import landmarked.landmarked.R;
 
 public class LoadingPage extends AppCompatActivity {
 
@@ -108,8 +109,6 @@ public class LoadingPage extends AppCompatActivity {
         {}
     }
 
-
-
     @Override
     protected void onStop()
     {
@@ -135,9 +134,7 @@ public class LoadingPage extends AppCompatActivity {
         {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION))
-            {
-
-            }
+            { }
             else
             {
                 // No explanation needed; request the permission
