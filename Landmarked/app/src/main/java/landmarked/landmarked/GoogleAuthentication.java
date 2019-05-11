@@ -31,7 +31,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
     static LandmarkedMain  main_instance;
     ExecutorService m_thread;
 
-/////////////////////////////////////////make everything non static
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

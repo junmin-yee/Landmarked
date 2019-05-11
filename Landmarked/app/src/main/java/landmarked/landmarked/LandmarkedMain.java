@@ -234,29 +234,20 @@ public class LandmarkedMain extends AppCompatActivity {
 
     public  ArrayList<LocalLandmark> getUserLandmarksFromAzure()
     {
-       ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
 
-        Runnable runCommand = new Runnable() {
-        ReentrantLock l = new ReentrantLock();
-            @Override
-            public void run() {
+            Runnable runCommand = new Runnable() {
+                @Override
+                public void run() {
+                    m_list = m_conn.getLandmarksByEmail(m_username);
+                }
+            };
+            m_thread.execute(runCommand);
 
-                   l.lock();
-                   ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
-                   for(int x = 0; x < temp.size(); x++)
-                   {
-                       m_list.add(temp.get(x));
-                   }
-                   l.unlock();
+
+            return m_list;
 
 
 
-            }
-
-        };
-
-        m_thread.execute(runCommand);
-        return m_list;
     }
 
     // Inserts a landmark into Azure.
