@@ -104,7 +104,9 @@ public class addCustomLandmark extends AppCompatActivity
         {
             errorVar += 16;
         }
-        Date currDate = Calendar.getInstance().getTime();
+        //Date currDate = Calendar.getInstance().getTime();
+        temp = findViewById(R.id.notesEntry);
+        String note = temp.getText().toString();
 
         //CustomLocalLandmark addition = new CustomLocalLandmark(name, lat, lon, elev, "",currDate);
 
@@ -116,9 +118,10 @@ public class addCustomLandmark extends AppCompatActivity
         //main.insertCustomLandmarkStructure(addition);
 
         AzureConnectionClass thePowerOfTheAzure = AzureConnectionClass.getAzureInstance();
-        thePowerOfTheAzure.Connect();
+        //thePowerOfTheAzure.Connect();
         thePowerOfTheAzure.InsertCustomLandmark(name, lat, lon, elev, "");
-        thePowerOfTheAzure.Disconnect();
+        thePowerOfTheAzure.insertNote(note);
+        //thePowerOfTheAzure.Disconnect();
 
         finish();
     }
