@@ -18,6 +18,8 @@ import landmarked.landmarked.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
 
@@ -39,17 +41,22 @@ public class LandmarkHistory extends AppCompatActivity {
         m_username = m_instance.get_m_username();
         m_thread = m_instance.getThreadPoolInstance();
         m_conn = m_instance.get_azure_instance();
-
+        CountDownLatch waitLatch = new CountDownLatch(1);
        // ArrayList<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
-        int x = 1;
+
 
     //    Runnable runCommand = new Runnable() {
      //       @Override
      //       public void run() {
-                ArrayList<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
-                for (int v = 0; v < lst.size(); v++) {
-                    AddElement(lst.get(v).getName(), lst.get(v).getLatitude(), lst.get(v).getLongitude(), lst.get(v).getElevation());
-                }
+        try {
+            Vector<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
+            int x = 10;
+            for (int v = 0; v < lst.size(); v++) {
+                AddElement(lst.get(v).getName(), lst.get(v).getLatitude(), lst.get(v).getLongitude(), lst.get(v).getElevation());
+            }
+        }
+        catch(Exception e)
+        {}
        //     }
     //    };
        // m_thread.execute(runCommand);
