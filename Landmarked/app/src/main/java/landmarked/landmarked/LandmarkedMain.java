@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
@@ -76,7 +78,7 @@ public class LandmarkedMain extends AppCompatActivity {
     public ProgressDialog dialog;
 
     private static final String TAG = "LandmarkedMain";
-    public ArrayList<LocalLandmark> m_list = new ArrayList<>();
+    public Vector<LocalLandmark> m_list = new Vector<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,30 +238,31 @@ public class LandmarkedMain extends AppCompatActivity {
 
     // Gets all landmarks from Azure given specific username
 
-    public  ArrayList<LocalLandmark> getUserLandmarksFromAzure()
+    public Vector<LocalLandmark> getUserLandmarksFromAzure()throws InterruptedException
     {
+        CountDownLatch threadLatch = new CountDownLatch(1);
        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
 
         Runnable runCommand = new Runnable() {
-        ReentrantLock lock = new ReentrantLock();
             @Override
             public void run() {
-                Semaphore sem = new Semaphore(1);
-                    //sem.acquire();
+
+
                    ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
                    for(int x = 0; x < temp.size(); x++)
                    {
                        m_list.add(temp.get(x));
                    }
-
-
-
-
+                threadLatch.countDown();
             }
-
         };
 
         m_thread.execute(runCommand);
+        try {
+            threadLatch.await();
+        }
+        catch(Exception e)
+        {}
         return m_list;
     }
 

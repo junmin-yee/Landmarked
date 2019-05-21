@@ -18,6 +18,8 @@ import landmarked.landmarked.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
 
@@ -40,28 +42,22 @@ public class LandmarkHistory extends AppCompatActivity {
         m_thread = m_instance.getThreadPoolInstance();
         m_conn = m_instance.get_azure_instance();
 
-       // ArrayList<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
-        int x = 1;
-
-    //    Runnable runCommand = new Runnable() {
-     //       @Override
-     //       public void run() {
-                ArrayList<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
-                for (int v = 0; v < lst.size(); v++) {
-                    AddElement(lst.get(v).getName(), lst.get(v).getLatitude(), lst.get(v).getLongitude(), lst.get(v).getElevation());
-                }
-       //     }
-    //    };
-       // m_thread.execute(runCommand);
-
         setContentView(R.layout.activity_landmark_history);
 
-        //get user ID that correlates to the database
         landmarkInfo = findViewById(R.id.LandmarkAttributes);
 
-        //landmarkInfo.setText("Landmark History");
+        LandmarkList = findViewById(R.id.LandmarkInfo);
 
-        LandmarkList = findViewById(R.id.landmarkList);
+
+        try {
+            Vector<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
+            int x = 10;
+            for (int v = 0; v < lst.size(); v++) {
+                AddElement(lst.get(v).getName(), lst.get(v).getLatitude(), lst.get(v).getLongitude(), lst.get(v).getElevation());
+            }
+        }
+        catch(Exception e)
+        {}
 
         Intent i = getIntent();
 
