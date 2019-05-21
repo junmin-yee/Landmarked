@@ -2,12 +2,15 @@ package landmarked.landmarked.DataManipulation;
 
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 
+import java.util.List;
+
 public class CarmenFeatureHelper {
 
     private double mLandmarkLatitude;
     private double mLandmarkLongitude;
     private String mLandmarkName;
     private String mLandmarkPlaceName;
+    private List<String> mLandmarkPlaceType;
     private String mLandmarkWikiData;
 
     private double mLandmarkElevation;
@@ -15,14 +18,20 @@ public class CarmenFeatureHelper {
 
     public CarmenFeatureHelper(CarmenFeature carmenFeature) {
 
-        mLandmarkLatitude = carmenFeature.center().latitude();
-        mLandmarkLongitude = carmenFeature.center().longitude();
+        try {
+            mLandmarkLatitude = carmenFeature.center().latitude();
+            mLandmarkLongitude = carmenFeature.center().longitude();
+        }
+        catch(NullPointerException e) {
+            // Sets to invalid (impossible) Latitude and Longitude.
+            mLandmarkLatitude = -100.0;
+            mLandmarkLongitude = -100.0;
+        }
 
         // Returns null if there is no wikidata entry within "properties"
-        if(carmenFeature.properties().has("wikidata")){
+        if (carmenFeature.properties().has("wikidata")) {
             mLandmarkWikiData = carmenFeature.properties().get("wikidata").getAsString();
-        }
-        else {
+        } else {
             mLandmarkWikiData = "";
         }
 
@@ -40,8 +49,11 @@ public class CarmenFeatureHelper {
         mLandmarkName = carmenFeature.text();
 
         // .placeName results in an expanded name: "Klamath Lake, 11100-12898 The Dalles-California Hwy, Chiloquin, Oregon, 97624, United States"
-        // Appears to be the address, though there are more similar fields laballed "address"
+        // Appears to be the address, though there are more similar fields labelled "address"
         mLandmarkPlaceName = carmenFeature.placeName();
+
+        // List of Strings that represent the type oc Carmen Feature it is. (e.g. Street, Address, POI, etc.)
+        mLandmarkPlaceType = carmenFeature.placeType();
     }
 
     public double getLandmarkLatitude() {
@@ -59,6 +71,8 @@ public class CarmenFeatureHelper {
     public String getLandmarkPlaceName() {
         return mLandmarkPlaceName;
     }
+
+    public List<String> getmLandmarkPlaceType() { return mLandmarkPlaceType; }
 
     public String getLandmarkWikiData() { return mLandmarkWikiData; }
 
