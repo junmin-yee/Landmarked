@@ -395,6 +395,12 @@ public class LandmarkRetrieval {
             }
         }
 
+        /* Basic Landmark Filtering
+         * Remove if Landmark is outside the Field of View or fails the basic PlaceType filter.
+         */
+        if (mBoundaryBoxResults != null)
+            mBoundaryBoxResults.removeIf(n -> (!CheckFieldofView(n) || !LandmarkFilter.validPlaceType(n)));
+
         // number of results returned
         return mBoundaryBoxResults.size();
     } 

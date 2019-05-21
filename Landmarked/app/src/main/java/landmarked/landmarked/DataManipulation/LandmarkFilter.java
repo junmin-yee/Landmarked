@@ -18,7 +18,7 @@ public class LandmarkFilter {
      *
      * In short: What a mess.
       */
-    public boolean placeTypeFilter(CarmenFeature feature){
+    public static boolean validPlaceType(CarmenFeature feature){
         // If the CarmenFeature is one of the following, it will not be filtered.
         return (feature.placeType().contains("poi") || feature.placeType().contains("address") || feature.placeType().contains("place"));
     }
