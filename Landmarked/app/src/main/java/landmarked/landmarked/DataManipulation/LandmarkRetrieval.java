@@ -194,12 +194,18 @@ public class LandmarkRetrieval {
         mRightField = mCurrLocation.getBearing() + FIELD_OF_VIEW_DEGREE;
     }
 
-    private boolean CheckFieldofView(Location location)
+    private boolean CheckFieldofView(CarmenFeature location)
     {
         float testBearing;
         boolean isWithinField = false;
 
-        testBearing = mCurrLocation.bearingTo(location);
+        // Convert object to appropriate type
+        Location location_to = new Location("");
+
+        location_to.setLongitude(location.center().longitude());
+        location_to.setLatitude(location.center().latitude());
+
+        testBearing = mCurrLocation.bearingTo(location_to);
 
         if (testBearing >= mLeftField && testBearing <= mRightField)
             isWithinField = true;
@@ -244,7 +250,7 @@ public class LandmarkRetrieval {
         catch(java.io.IOException e){
             Log.d(TAG, "ReverseGeocodeSearch: java.io.IOException");
         }
-        
+
     }
 
     // Proximity based forward geocode search on point generated in front of location.
@@ -374,12 +380,13 @@ public class LandmarkRetrieval {
         CalculateBoundaryBox();
 
         // Calculate the field of view that the user is looking for
-        //CalculateFieldofView();
+        CalculateFieldofView();
 
         // USE mGeoCodeSWLocation and mGeoCodeNELocation points to create the boundary box points for search
         Point SWPoint = Point.fromLngLat(mGeoCodeSWLocation.getLongitude(), mGeoCodeSWLocation.getLatitude());
         Point NEPoint = Point.fromLngLat(mGeoCodeNELocation.getLongitude(), mGeoCodeNELocation.getLatitude());
 
+        // Perform BBox search on various categories. If results are returned, append them together.
         for (int iterator = 0; iterator < mLandmarkCategories.length; iterator++) {
             BoundaryBoxForwardGeocodeSearch(SWPoint, NEPoint, mLandmarkCategories[iterator]);
 
