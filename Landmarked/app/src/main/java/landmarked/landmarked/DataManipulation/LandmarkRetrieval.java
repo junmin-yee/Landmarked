@@ -473,15 +473,13 @@ public class LandmarkRetrieval {
     public Set<CarmenFeature> getLandmarkProximitySearchResults() {
 
         // Return list of Carmen Features.
-        Set<CarmenFeature> retResults = this.mProximityResults;
-        return retResults;
+        return this.mProximityResults;
     }
 
     public Set<CarmenFeature> getLandmarkBoundaryBoxSearchResults() {
 
         // Return list of Carmen Features.
-        Set<CarmenFeature> retResults = this.mBoundaryBoxResults;
-        return retResults;
+        return this.mBoundaryBoxResults;
     }
 
 }
