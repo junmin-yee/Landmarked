@@ -1,4 +1,4 @@
-package landmarked.landmarked;
+package landmarked.landmarked.GUI;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,6 +13,8 @@ import android.widget.TextView;
 import landmarked.landmarked.Database.AzureConnectionClass;
 import landmarked.landmarked.Database.LandmarkLayout;
 import landmarked.landmarked.Database.LocalLandmark;
+import landmarked.landmarked.LandmarkedMain;
+import landmarked.landmarked.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,6 @@ public class LandmarkHistory extends AppCompatActivity {
     public static ExecutorService m_thread;
     public static AzureConnectionClass m_conn;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,6 @@ public class LandmarkHistory extends AppCompatActivity {
         m_username = m_instance.get_m_username();
         m_thread = m_instance.getThreadPoolInstance();
         m_conn = m_instance.get_azure_instance();
-
 
        // ArrayList<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
         int x = 1;
@@ -54,8 +54,6 @@ public class LandmarkHistory extends AppCompatActivity {
     //    };
        // m_thread.execute(runCommand);
 
-
-
         setContentView(R.layout.activity_landmark_history);
 
         //get user ID that correlates to the database
@@ -69,10 +67,7 @@ public class LandmarkHistory extends AppCompatActivity {
 
         //ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_history");
         // ArrayList<LocalLandmark> recievedLandmark = m_instance.getUserLandmarksFromAzure(m_instance.get_m_username());
-
-
     }
-
 
     void AddElement(String name, String latitude, String longitude, float elevation) {
         /***********************************************
@@ -118,13 +113,9 @@ public class LandmarkHistory extends AppCompatActivity {
         LandmarkList.addView(vert);// add element to the list
     }
 
-
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
-
-        }
+        public void onClick(View v)
+        { }
     };
-
-
 }

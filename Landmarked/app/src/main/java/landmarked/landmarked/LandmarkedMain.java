@@ -40,6 +40,10 @@ import landmarked.landmarked.Database.AzureConnectionClass;
 import landmarked.landmarked.Database.CustomLandmark;
 import landmarked.landmarked.Database.CustomLocalLandmark;
 import landmarked.landmarked.Database.LocalLandmark;
+import landmarked.landmarked.GUI.GoogleAuthentication;
+import landmarked.landmarked.GUI.LandmarkHistory;
+import landmarked.landmarked.GUI.LoadingPage;
+import landmarked.landmarked.GUI.RetrievedLandmarks;
 
 public class LandmarkedMain extends AppCompatActivity {
     private static ReentrantLock m_thread_lock;
@@ -240,7 +244,8 @@ public class LandmarkedMain extends AppCompatActivity {
         ReentrantLock lock = new ReentrantLock();
             @Override
             public void run() {
-                
+                Semaphore sem = new Semaphore(1);
+                    //sem.acquire();
                    ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
                    for(int x = 0; x < temp.size(); x++)
                    {
@@ -466,12 +471,12 @@ public class LandmarkedMain extends AppCompatActivity {
                     mLandmarkRetrieval.SetSensorInformation(mSensorData);
 
                     // Search for landmarks
-                    mLandmarkRetrieval.LandmarkProximitySearch();
-                    //mLandmarkRetrieval.LandmarkBoundaryBoxSearch();
+                    //mLandmarkRetrieval.LandmarkProximitySearch();
+                    mLandmarkRetrieval.LandmarkBoundaryBoxSearch();
 
                     // Get the search results
-                    Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
-                    //Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkBoundaryBoxSearchResults();
+                    //Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkProximitySearchResults();
+                    Set<CarmenFeature> retrievedLandmarks = mLandmarkRetrieval.getLandmarkBoundaryBoxSearchResults();
 
                     if(retrievedLandmarks.size() > 0)
                     {
@@ -552,23 +557,24 @@ public class LandmarkedMain extends AppCompatActivity {
     }
 
     // Checks whether the location permission is given by user
-    public void checkLocationPermission() {
+    public void checkLocationPermission()
+    {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED)
         {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.ACCESS_FINE_LOCATION))
-        {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION))
+            {
 
+            }
+            else
+            {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            }
         }
-        else
-        {
-            // No explanation needed; request the permission
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
         else
         {
             // Permission has already been granted
