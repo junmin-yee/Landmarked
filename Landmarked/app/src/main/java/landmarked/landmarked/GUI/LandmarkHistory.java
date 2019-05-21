@@ -42,6 +42,12 @@ public class LandmarkHistory extends AppCompatActivity {
         m_thread = m_instance.getThreadPoolInstance();
         m_conn = m_instance.get_azure_instance();
 
+        setContentView(R.layout.activity_landmark_history);
+
+        landmarkInfo = findViewById(R.id.LandmarkAttributes);
+
+        LandmarkList = findViewById(R.id.LandmarkInfo);
+
 
         try {
             Vector<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
@@ -52,15 +58,6 @@ public class LandmarkHistory extends AppCompatActivity {
         }
         catch(Exception e)
         {}
-
-        setContentView(R.layout.activity_landmark_history);
-
-        //get user ID that correlates to the database
-        landmarkInfo = findViewById(R.id.LandmarkAttributes);
-
-        //landmarkInfo.setText("Landmark History");
-
-        LandmarkList = findViewById(R.id.landmarkList);
 
         Intent i = getIntent();
 
