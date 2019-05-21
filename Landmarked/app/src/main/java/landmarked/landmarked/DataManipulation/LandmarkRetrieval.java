@@ -18,7 +18,7 @@ public class LandmarkRetrieval {
     private static final int EARTH_RADIUS = 6378137;
     private static final double BEARING_ERROR = 0.10;
     private static final double DIRECTION_SHIFT = 0.45;
-    private static final int FIELD_OF_VIEW_DEGREE = 3;
+    private static final int FIELD_OF_VIEW_DEGREE = 20;
     private static final int BIGGER_BBOX_OFFSET = 3;
 
     private SensorData mSensorData;
@@ -198,8 +198,17 @@ public class LandmarkRetrieval {
 
         testBearing = mCurrLocation.bearingTo(location_to);
 
+        /* testBearing values:
+                East side goes from 0 degrees (at N) to 180 degrees (at S)
+                West side goes from 0 degrees (at N) to -180 degrees (at S)
+         */
+        if (testBearing < 0) // if testBearing is negative, align it with the left/right fields.
+            testBearing = 180 + (180 + testBearing); // convert to a 0-360 degree value.
+
+        // Test the bearing from current location to landmark result to determine if it's within the FOV.
         if (testBearing >= mLeftField && testBearing <= mRightField)
             isWithinField = true;
+
 
         return isWithinField;
     }
@@ -390,7 +399,7 @@ public class LandmarkRetrieval {
          * Remove if Landmark is outside the Field of View or fails the basic PlaceType filter.
          */
         if (mBoundaryBoxResults != null)
-            mBoundaryBoxResults.removeIf(n -> (!CheckFieldofView(n) || !LandmarkFilter.validPlaceType(n)));
+            mBoundaryBoxResults.removeIf(n -> (!LandmarkFilter.validPlaceType(n) || !CheckFieldofView(n)));
 
         // number of results returned
         return mBoundaryBoxResults.size();
