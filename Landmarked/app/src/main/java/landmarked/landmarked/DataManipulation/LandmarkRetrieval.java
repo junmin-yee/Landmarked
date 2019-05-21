@@ -19,6 +19,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import landmarked.landmarked.DataManipulation.LandmarkFilter;
+
 import static android.support.constraint.Constraints.TAG;
 
 public class LandmarkRetrieval {
@@ -40,6 +42,8 @@ public class LandmarkRetrieval {
     private Set<CarmenFeature> mProximityResults;
     private Set<CarmenFeature> mBoundaryBoxResults;
     private boolean sensorInfoSet;
+
+    private LandmarkFilter landmarkFilter;
 
     // These categories limit the search results (or, at least, heavily bias them)
     // Need more categories or perhaps have the user define the search???
