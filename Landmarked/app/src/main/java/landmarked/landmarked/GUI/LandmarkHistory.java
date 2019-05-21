@@ -41,13 +41,8 @@ public class LandmarkHistory extends AppCompatActivity {
         m_username = m_instance.get_m_username();
         m_thread = m_instance.getThreadPoolInstance();
         m_conn = m_instance.get_azure_instance();
-        CountDownLatch waitLatch = new CountDownLatch(1);
-       // ArrayList<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
 
 
-    //    Runnable runCommand = new Runnable() {
-     //       @Override
-     //       public void run() {
         try {
             Vector<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
             int x = 10;
@@ -57,9 +52,6 @@ public class LandmarkHistory extends AppCompatActivity {
         }
         catch(Exception e)
         {}
-       //     }
-    //    };
-       // m_thread.execute(runCommand);
 
         setContentView(R.layout.activity_landmark_history);
 
