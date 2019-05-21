@@ -244,33 +244,7 @@ public class LandmarkRetrieval {
         catch(java.io.IOException e){
             Log.d(TAG, "ReverseGeocodeSearch: java.io.IOException");
         }
-
-        /*
-        reverseGeocode.enqueueCall(new Callback<GeocodingResponse>() {
-            @Override
-            public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) {
-
-                mRevResults = response.body().features();
-
-                if (mRevResults.size() > 0) {
-
-                    // Log the location of response.
-                    Log.d(TAG, "ReverseGeocodeSearch: " + mRevResults.size() + " results at " + mCurrLocation.toString());
-
-                } else {
-
-                    // No results were found.
-                    Log.d(TAG, "ReverseGeocodeSearch: No result found");
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
-                // Failed to send request
-                throwable.printStackTrace();
-            }
-        });*/
+        
     }
 
     // Proximity based forward geocode search on point generated in front of location.
@@ -313,32 +287,6 @@ public class LandmarkRetrieval {
             Log.d(TAG, "ProximityForwardGeocodeSearch: java.io.IOException");
         }
 
-        /*
-        forwardGeocode.enqueueCall(new Callback<GeocodingResponse>() {
-            @Override
-            public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) {
-
-                mFwdResults = response.body().features();
-
-                if (mFwdResults.size() > 0) {
-
-                    // Log the location of response.
-                    Log.d(TAG, "ProximityForwardGeocodeSearch: " + mFwdResults.size() + " results at " + mCurrLocation.toString());
-
-                } else {
-
-                    // No results were found.
-                    Log.d(TAG, "ProximityForwardGeocodeSearch: No result found");
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
-                // Failed to send request
-                throwable.printStackTrace();
-            }
-        });*/
     }
 
     // Boundary Box Forward Geocode search based on BB in front of user.
@@ -383,32 +331,6 @@ public class LandmarkRetrieval {
             Log.d(TAG, "BoundaryBoxForwardGeocodeSearch: NullPointerException. Likely did not find any landmarks");
         }
 
-    /*
-        forwardGeocode.enqueueCall(new Callback<GeocodingResponse>() {
-            @Override
-            public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) {
-
-                mFwdResults = response.body().features();
-
-                if (mFwdResults.size() > 0) {
-
-                    // Log the location of response.
-                    Log.d(TAG, "BoundaryBoxForwardGeocodeSearch: " + mFwdResults.size() + " results at " + mCurrLocation.toString());
-
-                } else {
-
-                    // No results were found.
-                    Log.d(TAG, "BoundaryBoxForwardGeocodeSearch: No result found");
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
-                // Failed to send request
-                throwable.printStackTrace();
-            }
-        });*/
     }
 
     // Collect nearby Features from Proximity Geocode Search
