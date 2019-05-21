@@ -4,7 +4,6 @@ import android.location.Location;
 import android.util.Log;
 
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
-import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
 import com.mapbox.geojson.Point;
 import com.mapbox.api.geocoding.v5.GeocodingCriteria;
 import com.mapbox.api.geocoding.v5.MapboxGeocoding;
@@ -12,14 +11,6 @@ import com.mapbox.api.geocoding.v5.MapboxGeocoding;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import landmarked.landmarked.LandmarkedMain;
-import landmarked.landmarked.R;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import landmarked.landmarked.DataManipulation.LandmarkFilter;
 
 import static android.support.constraint.Constraints.TAG;
 
