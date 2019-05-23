@@ -279,6 +279,39 @@ public class AzureConnectionClass {
         return lst;
     }
 
+    public ArrayList<CustomLocalLandmark> getCustomLandmarksByUser()
+    {
+        ArrayList<CustomLocalLandmark> listOfCustoms = new ArrayList<>();
+        try
+        {
+            m_username = m_main.get_m_username();
+            PreparedStatement stmt = mConnection.prepareStatement("SELECT CustomLandmarkID, CustomLandmarkName, CustomLandmarkLat, CustomLandmarkLong, CustomLandmarkEle, (SELECT NoteText " +
+                    "FROM Note " +
+                    "WHERE CustomLandmark.CustomLandmarkID = Note.CustomLandmarkID) AS 'Notes'" +
+                    "FROM CustomLandmark, AppUser " +
+                    "WHERE CustomLandmark.UserID = AppUser.UserID AND AppUser.email = ?");
+            stmt.setString(1, m_username);
+
+            ResultSet results = stmt.executeQuery();
+            while(results.next())
+            {
+                String name = results.getString("CustomLandmarkName");
+                String latitude = results.getString("CustomLandmarkLat");
+                String longitude = results.getString("CustomLandmarkLong");
+                float elevation = results.getFloat("CustomLandmarkEle");
+                String notes = results.getString("Notes");
+                CustomLocalLandmark temp = new CustomLocalLandmark(name, latitude, longitude, elevation, notes, null);
+                listOfCustoms.add(temp);
+            }
+
+        }
+        catch (SQLException se)
+        {Log.e(TAG,"Failed to connect to SQL Database");}
+        catch (Exception e)
+        { Log.e(TAG,"Exception caught in InsertNote: ", e); }
+        return listOfCustoms;
+    }
+
     // Disconnects from the database
     public void Disconnect()
     {

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,15 +12,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Vector;
 
 import landmarked.landmarked.DataManipulation.addCustomLandmark;
+import landmarked.landmarked.GUI.CustomSelected;
 import landmarked.landmarked.LandmarkedMain;
 import landmarked.landmarked.R;
 
-import landmarked.landmarked.GUI.LandmarkSelected;
-
 public class CustomLandmark extends AppCompatActivity {
 
+    private static final String TAG = "CustomLandmark";
     public TextView landmarkInfo;
     public LinearLayout LandmarkList;
     public TextView tempView;
@@ -39,7 +41,17 @@ public class CustomLandmark extends AppCompatActivity {
 
         LandmarkList = findViewById(R.id.landmarkList);
 
-        Intent i = getIntent();
+        try {
+            Vector<CustomLocalLandmark> lst = LandmarkedMain.getInstance().getCustomLandmarksFromAzure();
+            for(int i = 0; i < lst.size(); i++)
+            {
+                elementWrapper(lst.get(i));
+            }
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, "Exception caught in onCreate: ", e);
+        }
 
         /*ArrayList<LocalLandmark> recievedLandmark = i.getParcelableArrayListExtra("sending_landmark");
 
@@ -62,7 +74,7 @@ public class CustomLandmark extends AppCompatActivity {
         //AddElement("Shasta(fake)", "23.565", "-46.54", (float)2365.76784);
     }
 
-    void AddElement(String name, String latitude, String longitude, float elevation)
+    void AddElement(String name, String latitude, String longitude, float elevation, String notes)
     {
         /***********************************************
          * Dynamically adds elements into the UI given a name, latitude,
@@ -73,7 +85,7 @@ public class CustomLandmark extends AppCompatActivity {
         ************************************************/
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(landmarkInfo.getLayoutParams());
 
-        LandmarkLayout vert = new LandmarkLayout(this, name, latitude, longitude, elevation);
+        CustomLandmarkLayout vert = new CustomLandmarkLayout(this, name, latitude, longitude, elevation, notes);
         vert.setOnClickListener(listener);
         vert.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -119,12 +131,12 @@ public class CustomLandmark extends AppCompatActivity {
          * Sends info to another page which changes depending on the data recieved
          * Will not change as elements are addeed
         *******************************************************/
-        LandmarkLayout pushed = (LandmarkLayout) v; //gets LandmarkLayout element
+        CustomLandmarkLayout pushed = (CustomLandmarkLayout) v; //gets LandmarkLayout element
         //Should not have any other object using this listener
-        LocalLandmarkPass passing = pushed.GetLandmark(); //gets the landmark
+        CustomLandmarkPass passing = pushed.GetLandmark(); //gets the landmark
 
-        Intent i = new Intent(this, LandmarkSelected.class);
-        i.putExtra("passing_landmark", passing); //passes the landmark into Intent
+        Intent i = new Intent(this, CustomSelected.class);
+        i.putExtra("passing_custom", passing); //passes the landmark into Intent
 
         startActivity(i);
     }
@@ -135,7 +147,7 @@ public class CustomLandmark extends AppCompatActivity {
         startActivity(customAdd);
     }
 
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
 
@@ -155,6 +167,11 @@ public class CustomLandmark extends AppCompatActivity {
         {
             CustomLocalLandmark res = arr[i];
             AddElement(res.getName(), res.m_latitude, res.m_longitude, res.m_elevation);
-        }*/
+        }
+    }*/
+
+    public void elementWrapper(CustomLocalLandmark custom)
+    {
+        AddElement(custom.getName(), custom.getLatitude(), custom.getLongitude(), custom.getElevation(), custom.getWiki());
     }
 }

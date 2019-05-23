@@ -1,18 +1,17 @@
 package landmarked.landmarked.GUI;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import landmarked.landmarked.Database.CustomLandmark;
 import landmarked.landmarked.Database.CustomLandmarkPass;
-import landmarked.landmarked.Database.LocalLandmarkPass;
 import landmarked.landmarked.LandmarkedMain;
 import landmarked.landmarked.R;
 
-public class LandmarkSelected extends AppCompatActivity {
+public class CustomSelected extends AppCompatActivity
+{
     static LandmarkedMain m_instance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +21,7 @@ public class LandmarkSelected extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        LocalLandmarkPass my_land = i.getParcelableExtra("passing_landmark");
+        CustomLandmarkPass my_land = i.getParcelableExtra("passing_custom");
 
         TextView LandmarkInfo = findViewById(R.id.textView2);
 
@@ -34,8 +33,18 @@ public class LandmarkSelected extends AppCompatActivity {
                 "\n" + attributesArr[2] + ": " + my_land.getLongitude() + "\n" + attributesArr[3] + ": " + my_land.getElevation();
 
         //This is the call to insert into azure cloud
-        m_instance.InsertAzure(my_land.getName(), my_land.getLatitiude(), my_land.getLongitude(),my_land.getElevation(), "" );
+        //m_instance.InsertAzure(my_land.getName(), my_land.getLatitiude(), my_land.getLongitude(),my_land.getElevation(), "" );
         LandmarkInfo.setText(conCatStr);
+
+        LandmarkInfo = findViewById(R.id.noteInfo);
+        LandmarkInfo.setText("Notes:\n\n");
+        if(my_land.getNotes() == null)
+        {
+            LandmarkInfo.append("{Note field left blank}");
+        }
+        else
+        {
+            LandmarkInfo.append(my_land.getNotes());
+        }
     }
 }
-

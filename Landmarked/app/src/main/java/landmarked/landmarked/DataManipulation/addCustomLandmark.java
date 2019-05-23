@@ -15,7 +15,7 @@ import landmarked.landmarked.Database.AppDatabase;
 import landmarked.landmarked.Database.AzureConnectionClass;
 import landmarked.landmarked.Database.CustomLocalLandmark;
 import landmarked.landmarked.Database.CustomLocalLandmarkAccessorMethods;
-import landmarked.landmarked.Database.CustomLocalLandmarkAccessorMethods_Impl;
+import landmarked.landmarked.Database.CustomLocalLandmarkAccessorMethods;
 import landmarked.landmarked.LandmarkedMain;
 import landmarked.landmarked.R;
 

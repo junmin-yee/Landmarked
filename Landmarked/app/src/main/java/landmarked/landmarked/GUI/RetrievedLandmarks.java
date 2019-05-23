@@ -47,7 +47,7 @@ public class RetrievedLandmarks extends AppCompatActivity {
        // ArrayList<LocalLandmark> recievedLandmark = m_instance.getUserLandmarksFromAzure(m_instance.get_m_username());
 
         for (int v = 0; v < recievedLandmark.size(); v++) {
-            AddElement(recievedLandmark.get(v).getName(), recievedLandmark.get(v).getLatitude(), recievedLandmark.get(v).getLongitude(), recievedLandmark.get(v).getElevation());
+            elementWrapper(recievedLandmark.get(v));
         }
     }
 
@@ -115,5 +115,10 @@ public class RetrievedLandmarks extends AppCompatActivity {
         i.putExtra("passing_landmark", passing); //passes the landmark into Intent
 
         startActivity(i);
+    }
+
+    public void elementWrapper(LocalLandmark local)
+    {
+        AddElement(local.getName(), local.getLatitude(), local.getLongitude(), local.getElevation());
     }
 }

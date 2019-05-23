@@ -246,7 +246,8 @@ public class LandmarkedMain extends AppCompatActivity {
     public Vector<LocalLandmark> getUserLandmarksFromAzure()throws InterruptedException
     {
         CountDownLatch threadLatch = new CountDownLatch(1);
-       ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
+       //ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
+       m_list.clear();
 
         Runnable runCommand = new Runnable() {
             @Override
@@ -269,6 +270,34 @@ public class LandmarkedMain extends AppCompatActivity {
             Log.w(TAG, "getUserLandmarksFromAzure CountDownLatch await failed", e);
         }
         return m_list;
+    }
+
+    public Vector<CustomLocalLandmark> getCustomLandmarksFromAzure() throws InterruptedException
+    {
+        CountDownLatch threadLatch = new CountDownLatch(1);
+        Vector<CustomLocalLandmark> lst = new Vector<CustomLocalLandmark>();
+
+        Runnable runCommand = new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<CustomLocalLandmark> temp = m_conn.getCustomLandmarksByUser();
+                for(int i = 0; i < temp.size(); i++)
+                {
+                    lst.add(temp.get(i));
+                }
+                threadLatch.countDown();
+            }
+        };
+        m_thread.execute(runCommand);
+        try
+        {
+            threadLatch.await();
+        }
+        catch (Exception e)
+        {
+            Log.w(TAG, "getCustomLandmarksFromAzure CountDownLatch await failed", e);
+        }
+        return lst;
     }
 
     // Inserts a landmark into Azure.

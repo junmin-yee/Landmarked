@@ -11,6 +11,14 @@ public class LocalLandmarkPass implements Parcelable
     private float m_elevation;
     //no wiki info or otherwise required yet
 
+    public LocalLandmarkPass()
+    {
+        m_name = "";
+        m_latitude = "0";
+        m_longitude = "0";
+        m_elevation = 0;
+    }
+
     public LocalLandmarkPass(LocalLandmark landmark)
     {
         m_name = landmark.getName();
@@ -40,6 +48,11 @@ public class LocalLandmarkPass implements Parcelable
     public String getLongitude(){return m_longitude;}
     public float getElevation(){return  m_elevation;}
 
+    public void setName(String name){m_name = name;}
+    public void setLatitiude(String lat){m_latitude = lat;}
+    public void setLongitude(String longitude){m_longitude = longitude;}
+    public void setElevation(float elev){m_elevation = elev;}
+
     public int describeContents()
     {return 0;}
 
@@ -64,3 +77,4 @@ public class LocalLandmarkPass implements Parcelable
         }
     };
 }
+

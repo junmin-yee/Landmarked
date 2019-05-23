@@ -38,6 +38,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".GUI.CustomSelected"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".GUI.DisplayMap"
             android:screenOrientation="portrait" />
         <activity

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import landmarked.landmarked.Database.AzureConnectionClass;
 import landmarked.landmarked.Database.LandmarkLayout;
 import landmarked.landmarked.Database.LocalLandmark;
+import landmarked.landmarked.Database.LocalLandmarkPass;
 import landmarked.landmarked.LandmarkedMain;
 import landmarked.landmarked.R;
 
@@ -54,11 +55,9 @@ public class LandmarkHistory extends AppCompatActivity {
             Vector<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
             int x = 10;
             for (int v = 0; v < lst.size(); v++) {
-                AddElement(lst.get(v).getName(), lst.get(v).getLatitude(), lst.get(v).getLongitude(), lst.get(v).getElevation());
+                elementWrapper(lst.get(v));
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             Log.e(TAG, "Exception caught in onCreate: ", e);
         }
 
@@ -114,7 +113,28 @@ public class LandmarkHistory extends AppCompatActivity {
 
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
-        public void onClick(View v)
-        { }
+        public void onClick(View v) {
+            LandmarkClickListener(v);
+        }
     };
+
+    public void LandmarkClickListener(View v) {
+        /*******************************************************
+         * Sends info to another page which changes depending on the data recieved
+         * Will not change as elements are addeed
+         *******************************************************/
+        LandmarkLayout pushed = (LandmarkLayout) v; //gets LandmarkLayout element
+        //Should not have any other object using this listener
+        LocalLandmarkPass passing = pushed.GetLandmark(); //gets the landmark
+
+        Intent i = new Intent(this, LandmarkSelected.class);
+        i.putExtra("passing_landmark", passing); //passes the landmark into Intent
+
+        startActivity(i);
+    }
+
+    public void elementWrapper(LocalLandmark local)
+    {
+        AddElement(local.getName(), local.getLatitude(), local.getLongitude(), local.getElevation());
+    }
 }
