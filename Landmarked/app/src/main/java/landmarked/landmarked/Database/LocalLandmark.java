@@ -51,7 +51,6 @@ public class LocalLandmark implements Parcelable {
         m_longitude = "none provided";
         m_elevation = 0.0f;
         m_wiki_info = "none provided";
-
     }
 
     //primitive arg ctor
@@ -63,7 +62,6 @@ public class LocalLandmark implements Parcelable {
         m_elevation = elevation;
         m_wiki_info = wiki;
         m_date_saved = date;
-
     }
 
     //copy ctor
@@ -99,7 +97,9 @@ public class LocalLandmark implements Parcelable {
     }
 
     public int describeContents()
-    {return 0;}
+    {
+        return 0;
+    }
 
     public  void writeToParcel(Parcel output, int flags)
     {

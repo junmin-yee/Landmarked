@@ -15,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -95,20 +96,22 @@ public class LandmarkedMain extends AppCompatActivity {
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI)
             {
                 m_conn_msg = "connected to WIFI";
+                Log.i(TAG, m_conn_msg);
             }
             if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
             {
                 m_conn_msg = "connected to mobile data";
+                Log.i(TAG, m_conn_msg);
             }
         }
         else
         {
             m_conn_msg = "Not connected to either mobile or WIFI";
+            Log.i(TAG, m_conn_msg);
         }
 
         m_thread = Executors.newSingleThreadExecutor();
         m_conn = new AzureConnectionClass();
-
 
         if(isConnected)
         {
@@ -119,7 +122,6 @@ public class LandmarkedMain extends AppCompatActivity {
         //This method will use a singleton pattern to either return the already existing instance
         db = AppDatabase.getM_DB_instance(getApplicationContext());
         m_instance = this;
-
 
         m_conn.Connect();
         //InsertAzure("sometest", "someTest", "SomeTest", 0.1F, "Sometest"); //INSERTAZURE IS A FUNCTION WITHIN LANDMARKEDMAIN
@@ -144,8 +146,6 @@ public class LandmarkedMain extends AppCompatActivity {
         //locationTV = findViewById(R.id.current_location_text);
 
     }
-
-
 
     // Setter/Getter for Google Authentication Username
     public static AzureConnectionClass get_azure_instance(){ return m_conn; }
@@ -227,14 +227,13 @@ public class LandmarkedMain extends AppCompatActivity {
         return lst;
 
     }
-    public  void InsertUserToAzure()
+    public void InsertUserToAzure()
     {
         Runnable runCommand = new Runnable() {
 
             @Override
             public void run()
             {
-
                 m_conn.InsertUsername(m_username, m_acct.getGivenName(), m_acct.getFamilyName());
             }
 
@@ -252,8 +251,6 @@ public class LandmarkedMain extends AppCompatActivity {
         Runnable runCommand = new Runnable() {
             @Override
             public void run() {
-
-
                    ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
                    for(int x = 0; x < temp.size(); x++)
                    {
@@ -268,7 +265,9 @@ public class LandmarkedMain extends AppCompatActivity {
             threadLatch.await();
         }
         catch(Exception e)
-        {}
+        {
+            Log.w(TAG, "getUserLandmarksFromAzure CountDownLatch await failed", e);
+        }
         return m_list;
     }
 
@@ -374,7 +373,6 @@ public class LandmarkedMain extends AppCompatActivity {
            {
                db.LocalLandmarkMethodsVar().insertLocalLandmarkStructure(landmarkArg);
            }
-
        };
        //Execute our new Runnable with our thread pool
        m_thread.execute(insertStructure);
@@ -475,6 +473,8 @@ public class LandmarkedMain extends AppCompatActivity {
                 try
                 {
                     currLocation = mSensorData.getCurrentLocation();
+                    Log.d(TAG, "Current latitude: " + currLocation.getLatitude() + ", " +
+                            "Current longitude: " + currLocation.getLongitude());
 
                     // Set sensor information as current
                     mLandmarkRetrieval.SetSensorInformation(mSensorData);
@@ -524,11 +524,15 @@ public class LandmarkedMain extends AppCompatActivity {
                         // Finish loading page activity
                         //finish(); // We don't want this in our main activity!!!
                     }
-                    else
+                    else {
+                        Log.e(TAG, "Landmark search test failed");
                         throw new NullPointerException("Landmark search test failed."); // temporary so the UI seems to be a bit more fluid. Otherwise it will display data but not have any landmarks.
+                    }
                 }
                 catch (SecurityException | NullPointerException e)
-                {}
+                {
+                    Log.e(TAG, "Exception caught in getLandmarkData: ", e);
+                }
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -544,14 +548,10 @@ public class LandmarkedMain extends AppCompatActivity {
                             result.putParcelableArrayListExtra("sending_history", landmarkGet);
                             startActivity(result);
                         }
-
                     }
                 });
-
             }
-
         }).start();
-
     }
 
     // Shows a progress dialog as a wait
@@ -574,7 +574,7 @@ public class LandmarkedMain extends AppCompatActivity {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION))
             {
-
+                Log.d(TAG, "Showing request permission rationale");
             }
             else
             {
@@ -599,15 +599,14 @@ public class LandmarkedMain extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
-
+                    Log.d(TAG, "Location permission granted");
                 }
                 else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
+                    Log.w(TAG, "Location permission denied");
                 }
             }
-            // other 'case' lines to check for other
-            // permissions this app might request.
         }
         locationPermissionLock.countDown();
     }
@@ -629,6 +628,7 @@ public class LandmarkedMain extends AppCompatActivity {
         if(m_username == null)
         {
             text.setText("Not connected: sign in failed");
+            Log.i(TAG, "Notc connected: sign in failed");
         }
         else
         {
@@ -637,7 +637,6 @@ public class LandmarkedMain extends AppCompatActivity {
             InsertUserToAzure();
           //  Intent i = new Intent(this, LandmarkHistory.class);
             //startActivity(i);
-
         }
     }
     public void LandmarkHist(View v) {

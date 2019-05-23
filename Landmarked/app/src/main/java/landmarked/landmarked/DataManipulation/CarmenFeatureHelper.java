@@ -1,11 +1,14 @@
 package landmarked.landmarked.DataManipulation;
 
+import android.util.Log;
+
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 
 import java.util.List;
 
 public class CarmenFeatureHelper {
 
+    private static final String TAG = "CarmenFeatureHelper";
     private double mLandmarkLatitude;
     private double mLandmarkLongitude;
     private String mLandmarkName;
@@ -23,6 +26,7 @@ public class CarmenFeatureHelper {
             mLandmarkLongitude = carmenFeature.center().longitude();
         }
         catch(NullPointerException e) {
+            Log.e(TAG, "Exception caught in CarmenFeatureHelper: ", e);
             // Sets to invalid (impossible) Latitude and Longitude.
             mLandmarkLatitude = -100.0;
             mLandmarkLongitude = -100.0;

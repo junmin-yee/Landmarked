@@ -33,10 +33,7 @@ public class LandmarkFilter {
         Set<CarmenFeature> filter = new HashSet<>();
 
         // filter by whitelist of objects
-
         filteredLandmarks.retainAll(filter);
-
-
 
         return filteredLandmarks;
     }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ import java.util.concurrent.ExecutorService;
 
 public class LandmarkHistory extends AppCompatActivity {
 
+    private static final String TAG = "LandmarkHistory";
     static LandmarkedMain m_instance;
     public TextView landmarkInfo;
     public LinearLayout LandmarkList;
@@ -48,7 +50,6 @@ public class LandmarkHistory extends AppCompatActivity {
 
         LandmarkList = findViewById(R.id.LandmarkInfo);
 
-
         try {
             Vector<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
             int x = 10;
@@ -57,7 +58,9 @@ public class LandmarkHistory extends AppCompatActivity {
             }
         }
         catch(Exception e)
-        {}
+        {
+            Log.e(TAG, "Exception caught in onCreate: ", e);
+        }
 
         Intent i = getIntent();
 

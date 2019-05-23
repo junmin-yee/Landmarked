@@ -63,7 +63,6 @@ public class CustomLocalLandmark {
 
     }
 
-
     public CustomLocalLandmark(String name, String latitude, String longitude, float elevation, String wiki, Date date)
     {
         m_name = name;

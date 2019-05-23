@@ -29,6 +29,4 @@ public interface CustomLocalLandmarkAccessorMethods {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCustomLandmarkStructure(CustomLocalLandmark LandmarkArg);
-
-
 }

@@ -2,6 +2,7 @@ package landmarked.landmarked.GUI;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -24,6 +25,7 @@ import landmarked.landmarked.LandmarkedMain;
 import landmarked.landmarked.R;
 
 public class GoogleAuthentication extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "GoogleAuthentication";
     GoogleSignInClient m_GoogleSignInClient;
     static GoogleSignInAccount m_account;
     private static final int RC_SIGN_ON = 9001;
@@ -116,6 +118,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
             updateAuth(m_account);
         } catch (ApiException e) {
             int msg = e.getStatusCode();
+            Log.e(TAG, "Exception caught in handleSignInResult: ", e);
             finish();
             //updateAuth(null);
         }
@@ -152,6 +155,7 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
         }
         catch (NullPointerException e)
         {
+            Log.e(TAG, "Exception caught in getUser: ", e);
            //some container in the gui to display a message?
            return null;
         }

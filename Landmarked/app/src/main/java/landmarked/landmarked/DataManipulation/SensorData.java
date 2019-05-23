@@ -8,13 +8,16 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 
 public class SensorData {
 
     private static final long LOCATION_REFRESH_TIME_IN_MS = 1000;
     private static final float LOCATION_REFRESH_DISTANCE = 0;
     private static final int DEGREES_IN_CIRCLE = 360;
+    private static final String TAG = "SensorData";
 
     private SensorManager mSensorManager;
     private Sensor accelerometer;
@@ -61,7 +64,7 @@ public class SensorData {
                     mLocationListener);
         }
         catch (SecurityException e) {
-            throw e;
+            Log.e(TAG, "Exception caught in registerLocationSensor: ", e);
         }
     }
 

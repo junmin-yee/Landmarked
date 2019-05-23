@@ -17,6 +17,7 @@ import java.util.Date;
 import landmarked.landmarked.LandmarkedMain;
 
 public class AzureConnectionClass {
+    private static final String TAG = "AzureConnectionClass";
     private static Connection mConnection;
     private static AzureConnectionClass m_instance;
     private static String m_username;
@@ -58,11 +59,11 @@ public class AzureConnectionClass {
         }
         catch (SQLException se)
         {
-            Log.e("Error 1","Failed to connect to SQL Database");
+            Log.e(TAG,"Failed to connect to SQL Database");
         }
         catch (Exception e)
         {
-            Log.e("Error 2","Something went wrong");
+            Log.e(TAG,"Exception caught in Connect: ", e);
         }
         return mConnection;
     }
@@ -72,9 +73,6 @@ public class AzureConnectionClass {
     {
         try
         {
-
-
-
            String query = "IF NOT EXISTS ( SELECT 1 FROM AppUser WHERE Email = '"+email+"')"
                 + "BEGIN "
                 +   "INSERT INTO AppUser (FirstName,LastName, Email) Values ('"+fname+"', '"+lname+"', '"+email+"')"
@@ -82,17 +80,14 @@ public class AzureConnectionClass {
 
             Statement m_query = mConnection.createStatement();
             m_query.executeUpdate(query);
-
-
-
         }
         catch (SQLException se)
         {
-            Log.e("Error 1","Failed to connect to SQL Database");
+            Log.e(TAG,"Failed to connect to SQL Database");
         }
         catch (Exception e)
         {
-            Log.e("Error 2","Something went wrong");
+            Log.e(TAG,"Exception caught in InsertUsername: ", e);
         }
     }
 
@@ -113,11 +108,11 @@ public class AzureConnectionClass {
         }
         catch (SQLException se)
         {
-            Log.e("Error 1","Failed to connect to SQL Database");
+            Log.e(TAG,"Failed to connect to SQL Database");
         }
         catch (Exception e)
         {
-            Log.e("Error 2","Something went wrong");
+            Log.e(TAG,"Exception caught in Insert: ", e);
         }
     }
 
@@ -150,11 +145,11 @@ public class AzureConnectionClass {
         }
         catch (SQLException se)
         {
-            Log.e("Error 1","Failed to connect to SQL Database");
+            Log.e(TAG,"Failed to connect to SQL Database");
         }
         catch (Exception e)
         {
-            Log.e("Error 2","Something went wrong");
+            Log.e(TAG,"Exception caught in InsertCustomLandmark: ", e);
         }
     }
 
@@ -180,11 +175,11 @@ public class AzureConnectionClass {
             }
             catch (SQLException se)
             {
-                Log.e("Error 1","Failed to connect to SQL Database");
+                Log.e(TAG,"Failed to connect to SQL Database");
             }
             catch (Exception e)
             {
-                Log.e("Error 2","Something went wrong");
+                Log.e(TAG,"Exception caught in InsertNote: ", e);
             }
         }
     }
@@ -208,11 +203,11 @@ public class AzureConnectionClass {
         }
         catch (SQLException se)
         {
-            Log.e("Error 1","Failed to connect to SQL Database");
+            Log.e(TAG,"Failed to connect to SQL Database");
         }
         catch (Exception e)
         {
-            Log.e("Error 2","Something went wrong");
+            Log.e(TAG,"Exception caught in getUserID: ", e);
         }
 
         return ID;
@@ -240,13 +235,12 @@ public class AzureConnectionClass {
         }
         catch (SQLException se)
         {
-            Log.e("Error 1","Failed to connect to SQL Database");
+            Log.e(TAG,"Failed to connect to SQL Database");
         }
         catch (Exception e)
         {
-            Log.e("Error 2","Something went wrong");
+            Log.e(TAG,"Exception caught in getLandmarks: ", e);
         }
-
         return lst;
     }
 
@@ -276,13 +270,12 @@ public class AzureConnectionClass {
         }
         catch (SQLException se)
         {
-            Log.e("Error 1","Failed to connect to SQL Database");
+            Log.e(TAG,"Failed to connect to SQL Database");
         }
         catch (Exception e)
         {
-            Log.e("Error 2","Something went wrong");
+            Log.e(TAG,"Exception caught in getLandmarksByEmail: ", e);
         }
-
         return lst;
     }
 
@@ -294,7 +287,7 @@ public class AzureConnectionClass {
         }
         catch (SQLException se)
         {
-            Log.e("Error 1","Connection not open");
+            Log.e(TAG,"Connection not open");
         }
     }
 }

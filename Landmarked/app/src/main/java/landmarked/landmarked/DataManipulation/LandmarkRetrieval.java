@@ -20,6 +20,7 @@ public class LandmarkRetrieval {
     private static final double DIRECTION_SHIFT = 0.45;
     private static final int FIELD_OF_VIEW_DEGREE = 20;
     private static final int BIGGER_BBOX_OFFSET = 3;
+    private static final String TAG = "LandmarkRetrieval";
 
     private SensorData mSensorData;
     private Location mCurrLocation;
@@ -68,7 +69,9 @@ public class LandmarkRetrieval {
         int losdistance = 0;
         // Get current pitch and roll and azimuth
         float pitch = mSensorData.getPitch();
+        Log.d(TAG, "Current pitch is: " + pitch);
         float direction = mSensorData.getDirectionInDegrees();
+        Log.d(TAG, "Current direction is: " + direction);
 
         double x = 0;
         double y = 0;
@@ -108,7 +111,6 @@ public class LandmarkRetrieval {
     private void CalculateBoundaryBox()
     {
         // Initial setup
-
         double testlat = mGeoCodeNELocation.getLatitude() - mGeoCodeSWLocation.getLatitude();
         double testlong = mGeoCodeNELocation.getLongitude() - mGeoCodeSWLocation.getLongitude();
         // Test if looking directly North within error
@@ -236,7 +238,6 @@ public class LandmarkRetrieval {
         // Test the bearing from current location to landmark result to determine if it's within the FOV.
         else if (testBearing >= mLeftField && testBearing <= mRightField)
             isWithinField = true;
-
 
         return isWithinField;
     }
@@ -372,6 +373,7 @@ public class LandmarkRetrieval {
 
         // If sensor info hasn't been set, return.
         if (!sensorInfoSet) {
+            Log.w(TAG, "Sensor info not set");
             return -1;
         }
 
@@ -398,6 +400,7 @@ public class LandmarkRetrieval {
 
         // If sensor info hasn't been set, return.
         if (!sensorInfoSet) {
+            Log.w(TAG, "Sensor info not set");
             return -1;
         }
 
