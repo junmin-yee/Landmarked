@@ -42,7 +42,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/buttondesign"
-        android:text="@string/LandmarksButtonText"
+        android:text="Custom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         android:onClick="seeCustomLandmarks"/>

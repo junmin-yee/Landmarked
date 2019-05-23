@@ -14,7 +14,7 @@
     <string name="title_activity_loading_page">LoadingPage</string>
     <string name="LocationGet">Get Location</string>
     <string name="LandmarksButtonText">Landmarks</string>
-    <string name="GetDataButtonText">Get Data</string>
+    <string name="GetDataButtonText">Search</string>
     <string name="HistoryButtonText">History</string>
     <string name="SignOutButtonText">Sign Out</string>
     <string name="SignInButtonText">Sign In</string>
