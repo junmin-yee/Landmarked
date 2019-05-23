@@ -203,6 +203,8 @@ public class LandmarkRetrieval {
      *
      * mLeftField and mRightField are from 0-360 degrees. From North at 0 increasing clockwise.
      *
+     * Don't think this works if FIELD_OF_VIEW_DEGREE >= 180.
+     *
      * @param location
      * @return True if the location is within the FOV, False otherwise.
      */
@@ -226,12 +228,16 @@ public class LandmarkRetrieval {
         if (testBearing < 0) // if testBearing is negative, align it with the left/right fields.
             testBearing = 180 + (180 + testBearing); // convert to a 0-360 degree value.
 
-
+        // If either left or right FOV crosses North
+        if ((mLeftField + FIELD_OF_VIEW_DEGREE) > 360 || (mRightField - FIELD_OF_VIEW_DEGREE) < 0){
+            if (testBearing >= mLeftField || testBearing <= mRightField)
+                isWithinField = true;
+        }
         // Test the bearing from current location to landmark result to determine if it's within the FOV.
-        if (testBearing >= mLeftField && testBearing <= mRightField)
+        else if (testBearing >= mLeftField && testBearing <= mRightField)
             isWithinField = true;
 
-        
+
         return isWithinField;
     }
 
