@@ -176,15 +176,36 @@ public class LandmarkRetrieval {
         // Otherwise facing Northeast and values are good
     }
 
+    /**
+     * Calculates and sets the Left and Right FOV of the user.
+     *
+     * Bearing is set from 0 - 360 degrees based on azimuth.
+     */
     private void CalculateFieldofView()
     {
         // Set current bearing
         mCurrLocation.setBearing(mCurrLocation.bearingTo(mGeoCodeLSLocation));
 
+        // Set the left and right field of views.
         mLeftField = mCurrLocation.getBearing() - FIELD_OF_VIEW_DEGREE;
         mRightField = mCurrLocation.getBearing() + FIELD_OF_VIEW_DEGREE;
+
+        // Adjust Field Of Views in case the left FOV is negative or the right FOV is above 360.
+        if (mLeftField < 0)
+            mLeftField = 360 - mLeftField;
+        else if (mRightField > 360)
+            mRightField = mRightField - 360;
+
     }
 
+    /**Check Field of View
+     * Requires that CalculateFieldofView has been called.
+     *
+     * mLeftField and mRightField are from 0-360 degrees. From North at 0 increasing clockwise.
+     *
+     * @param location
+     * @return True if the location is within the FOV, False otherwise.
+     */
     private boolean CheckFieldofView(CarmenFeature location)
     {
         float testBearing;
@@ -205,11 +226,12 @@ public class LandmarkRetrieval {
         if (testBearing < 0) // if testBearing is negative, align it with the left/right fields.
             testBearing = 180 + (180 + testBearing); // convert to a 0-360 degree value.
 
+
         // Test the bearing from current location to landmark result to determine if it's within the FOV.
         if (testBearing >= mLeftField && testBearing <= mRightField)
             isWithinField = true;
 
-
+        
         return isWithinField;
     }
 
@@ -403,7 +425,7 @@ public class LandmarkRetrieval {
 
         // number of results returned
         return mBoundaryBoxResults.size();
-    } 
+    }
 
     public Set<CarmenFeature> getLandmarkProximitySearchResults() {
 
