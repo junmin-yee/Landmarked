@@ -54,6 +54,7 @@ public class LandmarkedMain extends AppCompatActivity {
     private static GoogleSignInAccount m_acct;
     public TextView directionTV;
     public TextView locationTV;
+    CountDownLatch locationPermissionLock = new CountDownLatch(1);
 
     //DB instance
     AppDatabase db;
@@ -165,6 +166,14 @@ public class LandmarkedMain extends AppCompatActivity {
         // Checks if app has permission to use location.
         checkLocationPermission();
 
+        /*try {
+            locationPermissionLock.await();
+        }
+        catch (InterruptedException e)
+        {
+
+        }*/
+
         //Instantiate with this context
         mSensorData = new SensorData(this);
 
@@ -179,9 +188,6 @@ public class LandmarkedMain extends AppCompatActivity {
 
         // Create ProgressDialog for landmark searching
         dialog = new ProgressDialog(this);
-
-
-
     }
 
     @Override
@@ -580,8 +586,30 @@ public class LandmarkedMain extends AppCompatActivity {
         }
         else
         {
-            // Permission has already been granted
+            locationPermissionLock.countDown();
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+
+                }
+                else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+        locationPermissionLock.countDown();
     }
 
     @Override protected void onPause()
@@ -611,14 +639,8 @@ public class LandmarkedMain extends AppCompatActivity {
             //startActivity(i);
 
         }
-
-
-
-
     }
     public void LandmarkHist(View v) {
-
-
         Intent i = new Intent(this, LandmarkHistory.class);
 
         startActivity(i);
