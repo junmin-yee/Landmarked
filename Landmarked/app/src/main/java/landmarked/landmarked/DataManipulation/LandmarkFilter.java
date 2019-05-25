@@ -99,6 +99,32 @@ public class LandmarkFilter {
         return false;
     }
 
+    /**isNatural
+     * Checks if the feature is natural.
+     *
+     * @param feature Carmen Feature being tested.
+     * @return True if valid
+     */
+    public static boolean isNatural(CarmenFeature feature){
+        String catString;
+
+        try {
+            // if feature has the category property.
+            if (feature.properties().has("category")){
+                catString = feature.properties().get("category").getAsString();
+
+                // If the feature is any identified history-related landmark, return true.
+                return catString.contains("natural");
+            }
+        }
+        catch (NullPointerException e) {
+            Log.d(TAG, "isNatural no 'category' property found by has()", e);
+        }
+
+        // Default case.
+        return false;
+    }
+
     /**whitelistFilter
      *
      * @param filteredLandmarks
