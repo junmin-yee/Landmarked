@@ -37,14 +37,14 @@ public class LandmarkFilter {
         try {
             // if feature has the "accuracy" property, it is likely because it is a street. Check if it is a street.
             if (feature.properties().has("accuracy")) {
-                return !(feature.properties().get("accuracy").getAsString().equals("street"));
+                return feature.properties().get("accuracy").getAsString().equals("street");
             }
         }
         catch (NullPointerException e){
             Log.d(TAG, "validPropertyType no 'accuracy' property found by has()", e);
         }
 
-        return true; // inconclusive. If no properties member "accuracy" exists, we can't say it isn't valid on this test alone.
+        return false; // inconclusive. If no properties member "accuracy" exists, feature is not a street.
     }
 
     /**isHistorical
@@ -67,6 +67,32 @@ public class LandmarkFilter {
         }
         catch (NullPointerException e) {
             Log.d(TAG, "isHistorical no 'category' property found by has()", e);
+        }
+
+        // Default case.
+        return false;
+    }
+
+    /**isLodging
+     * Checks if the feature is a hotel, motel, or a place of lodging.
+     *
+     * @param feature Carmen Feature being tested.
+     * @return True if valid
+     */
+    public static boolean isLodging(CarmenFeature feature){
+        String catString;
+
+        try {
+            // if feature has the category property.
+            if (feature.properties().has("category")){
+                catString = feature.properties().get("category").getAsString();
+
+                // If the feature is any identified history-related landmark, return true.
+                return catString.contains("hotel") || catString.contains("motel") || catString.contains("lodging");
+            }
+        }
+        catch (NullPointerException e) {
+            Log.d(TAG, "isLodging no 'category' property found by has()", e);
         }
 
         // Default case.
