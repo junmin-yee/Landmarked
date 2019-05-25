@@ -483,13 +483,6 @@ public class LandmarkedMain extends AppCompatActivity {
         m_auth.signOut();
     }
 
-    // Runs the loading screen on click
-    public void loadingScreen(View v)
-    {
-        Intent load = new Intent(this, LoadingPage.class);
-        startActivity(load);
-    }
-
     // Gets landmark data from mapbox given sensor data
     public void getLandmarkData(View v){
 
