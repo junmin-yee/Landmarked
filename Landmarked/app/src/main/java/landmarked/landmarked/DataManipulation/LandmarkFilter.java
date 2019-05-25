@@ -1,13 +1,17 @@
 package landmarked.landmarked.DataManipulation;
 
 
+import android.util.Log;
+
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import java.util.HashSet;
 import java.util.Set;
 
 public class LandmarkFilter {
 
-    /**placeTypeFilter
+    private static final String TAG = "LandmarkedFilter";
+
+    /**isValidPlaceType
      * Extremely basic filter which removes anything that most certainly isn't a Landmark using the PlaceType parameters.
      *
      * See https://docs.mapbox.com/api/search/#data-types for different PlaceTypes.
@@ -18,24 +22,55 @@ public class LandmarkFilter {
      *
      * In short: What a mess.
       */
-    public static boolean validPlaceType(CarmenFeature feature){
+    public static boolean isValidPlaceType(CarmenFeature feature){
         // If the CarmenFeature is one of the following, it will not be filtered.
         return (feature.placeType().contains("poi") || feature.placeType().contains("address") || feature.placeType().contains("place"));
     }
 
-
-    public static boolean validPropertyType(CarmenFeature feature){
+    /**isStreet
+     * Checks if feature is a street.
+     *
+     * @param feature Carmen Feature being tested
+     * @return True if valid
+     */
+    public static boolean isStreet(CarmenFeature feature){
         try {
             // if feature has the "accuracy" property, it is likely because it is a street. Check if it is a street.
             if (feature.properties().has("accuracy")) {
                 return !(feature.properties().get("accuracy").getAsString().equals("street"));
-            } else {
-                return true; // Inconclusive. Feature does not have the "accuracy" property, therefore is may or may not be a valid result.
             }
         }
         catch (NullPointerException e){
-            return true; // Also inconclusive.
+            Log.d(TAG, "validPropertyType no 'accuracy' property found by has()", e);
         }
+
+        return true; // inconclusive. If no properties member "accuracy" exists, we can't say it isn't valid on this test alone.
+    }
+
+    /**isHistorical
+     * Checks if the feature is related to history in any way.
+     *
+     * @param feature Carmen Feature being tested
+     * @return True if valid
+     */
+    public static boolean isHistorical(CarmenFeature feature){
+        String catString;
+
+        try {
+            // if feature has the category property.
+            if (feature.properties().has("category")){
+                catString = feature.properties().get("category").getAsString();
+
+                // If the feature is any identified history-related landmark, return true.
+                return catString.contains("history") || catString.contains("historical") || catString.contains("historical site");
+            }
+        }
+        catch (NullPointerException e) {
+            Log.d(TAG, "isHistorical no 'category' property found by has()", e);
+        }
+
+        // Default case.
+        return false;
     }
 
     /**whitelistFilter
