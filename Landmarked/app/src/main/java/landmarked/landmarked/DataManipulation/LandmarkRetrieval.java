@@ -427,10 +427,11 @@ public class LandmarkRetrieval {
         }
 
         /* Basic Landmark Filtering
-         * Remove if Landmark is outside the Field of View or fails the basic PlaceType filter.
+         * Remove if Landmark is outside the Field of View, is not a valid landmark classification, or is a street.
+         * Never remove anything historical.
          */
         if (mBoundaryBoxResults != null)
-            mBoundaryBoxResults.removeIf(n -> (!LandmarkFilter.validPlaceType(n) || !CheckFieldofView(n) || !LandmarkFilter.validPropertyType(n)));
+            mBoundaryBoxResults.removeIf(n -> !LandmarkFilter.isHistorical(n) && (!LandmarkFilter.isValidPlaceType(n) || !CheckFieldofView(n) || !LandmarkFilter.isStreet(n)));
 
         // number of results returned
         return mBoundaryBoxResults.size();
