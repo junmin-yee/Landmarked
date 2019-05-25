@@ -428,14 +428,19 @@ public class LandmarkRetrieval {
 
         /* Basic Landmark Filtering
          * Remove if Landmark is outside the Field of View, is not a valid landmark classification, is a street, or is some form of lodging.
-         * Never remove anything historical.
+         * Never remove anything historical or natural if it is within the FOV.
+         *
+         * Separation makes debugging 10x easier.
          */
         if (mBoundaryBoxResults != null) {
-            // Filter for Landmarks within FOV first. Separation makes debugging 10x easier.
+            // Filter completely invalid results first (anything that is not a place, address, or point of interest). Nothing else is a landmark.
+            mBoundaryBoxResults.removeIf(n -> !LandmarkFilter.isValidPlaceType(n));
+
+            // Filter for Landmarks within FOV.
             mBoundaryBoxResults.removeIf(n -> !CheckFieldofView(n));
 
-            // If a landmark is historical, keep it. Else, check all the other stuff.
-            mBoundaryBoxResults.removeIf(n -> !LandmarkFilter.isHistorical(n) && (!LandmarkFilter.isValidPlaceType(n) || LandmarkFilter.isStreet(n) || LandmarkFilter.isLodging(n)));
+            // If a landmark is historical or natural, keep it. Else, check all the other stuff.
+            mBoundaryBoxResults.removeIf(n -> !LandmarkFilter.isHistorical(n) && !LandmarkFilter.isNatural(n) && (LandmarkFilter.isStreet(n) || LandmarkFilter.isLodging(n)));
         }
 
         // number of results returned
