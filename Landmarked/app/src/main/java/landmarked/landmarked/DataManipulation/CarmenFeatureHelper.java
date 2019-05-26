@@ -28,8 +28,8 @@ public class CarmenFeatureHelper {
         catch(NullPointerException e) {
             Log.e(TAG, "Exception caught in CarmenFeatureHelper: ", e);
             // Sets to invalid (impossible) Latitude and Longitude.
-            mLandmarkLatitude = -100.0;
-            mLandmarkLongitude = -100.0;
+            mLandmarkLatitude = -1000.0;
+            mLandmarkLongitude = -1000.0;
         }
 
         // Returns null if there is no wikidata entry within "properties"
@@ -41,7 +41,8 @@ public class CarmenFeatureHelper {
 
         // Checks if landmark has an associated altitude
         if ( carmenFeature.center().hasAltitude() ) {
-            mLandmarkElevation = carmenFeature.center().altitude();
+            // Converts from meters to feet.
+            mLandmarkElevation = carmenFeature.center().altitude() * 3.28084;
             mHasElevation = true;
         }
         else {

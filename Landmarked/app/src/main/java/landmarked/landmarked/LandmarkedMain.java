@@ -483,13 +483,6 @@ public class LandmarkedMain extends AppCompatActivity {
         m_auth.signOut();
     }
 
-    // Runs the loading screen on click
-    public void loadingScreen(View v)
-    {
-        Intent load = new Intent(this, LoadingPage.class);
-        startActivity(load);
-    }
-
     // Gets landmark data from mapbox given sensor data
     public void getLandmarkData(View v){
 
@@ -542,7 +535,8 @@ public class LandmarkedMain extends AppCompatActivity {
                             if (test_elev)
                                 elev_result = retriever.getLandmarkElevation();
                             else {
-                                elev_result = mSensorData.getCurrentLocation().getAltitude();       // else return current altitude/elevation
+                                // Sets to current elevation converted to feet from meters.
+                                elev_result = mSensorData.getCurrentLocation().getAltitude() * 3.28084;       // else return current altitude/elevation
                             }
 
                             // Add landmarks to GUI
