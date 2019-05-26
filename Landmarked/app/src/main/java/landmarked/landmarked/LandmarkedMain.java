@@ -80,7 +80,7 @@ public class LandmarkedMain extends AppCompatActivity {
     public ProgressDialog dialog;
 
     private static final String TAG = "LandmarkedMain";
-    public Vector<LocalLandmark> m_list = new Vector<>();
+    //public Vector<LocalLandmark> m_list = new Vector<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -243,11 +243,11 @@ public class LandmarkedMain extends AppCompatActivity {
 
     // Gets all landmarks from Azure given specific username
 
-    public Vector<LocalLandmark> getUserLandmarksFromAzure()throws InterruptedException
+    public List<LocalLandmark> getUserLandmarksFromAzure()throws InterruptedException
     {
         CountDownLatch threadLatch = new CountDownLatch(1);
-       //ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
-       m_list.clear();
+       ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
+
 
         Runnable runCommand = new Runnable() {
             @Override
@@ -255,7 +255,7 @@ public class LandmarkedMain extends AppCompatActivity {
                    ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
                    for(int x = 0; x < temp.size(); x++)
                    {
-                       m_list.add(temp.get(x));
+                       lst.add(temp.get(x));
                    }
                 threadLatch.countDown();
             }
@@ -269,7 +269,7 @@ public class LandmarkedMain extends AppCompatActivity {
         {
             Log.w(TAG, "getUserLandmarksFromAzure CountDownLatch await failed", e);
         }
-        return m_list;
+        return lst;
     }
 
     public Vector<CustomLocalLandmark> getCustomLandmarksFromAzure() throws InterruptedException

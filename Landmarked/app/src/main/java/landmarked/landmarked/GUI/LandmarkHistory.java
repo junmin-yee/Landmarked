@@ -52,7 +52,7 @@ public class LandmarkHistory extends AppCompatActivity {
         LandmarkList = findViewById(R.id.LandmarkInfo);
 
         try {
-            Vector<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
+            List<LocalLandmark> lst = m_instance.getUserLandmarksFromAzure();
             int x = 10;
             for (int v = 0; v < lst.size(); v++) {
                 elementWrapper(lst.get(v));
