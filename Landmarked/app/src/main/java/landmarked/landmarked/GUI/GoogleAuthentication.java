@@ -26,13 +26,13 @@ import landmarked.landmarked.R;
 
 public class GoogleAuthentication extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "GoogleAuthentication";
-    GoogleSignInClient m_GoogleSignInClient;
+    static GoogleSignInClient m_GoogleSignInClient;
     static GoogleSignInAccount m_account;
     private static final int RC_SIGN_ON = 9001;
     public static String Name;
     Connection m_conn_instance;
     AzureConnectionClass m_azure;
-    LandmarkedMain main_instance;
+    static LandmarkedMain main_instance;
     ExecutorService m_thread;
 
     @Override
@@ -171,6 +171,11 @@ public class GoogleAuthentication extends AppCompatActivity implements View.OnCl
                     }
                 });
         finish();
+        if(main_instance != null)
+        {
+            main_instance.finish();
+        }
+
     }
 
     @Override protected void onStop()
