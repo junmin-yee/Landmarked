@@ -24,6 +24,24 @@
                 android:text="@string/LandmarkSelect"
                 android:textAlignment="center"
                 android:textSize="30sp" />
+
+            <ImageView
+                android:id="@+id/arrowImage"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="100dp"
+                android:adjustViewBounds="true"
+                app:srcCompat="@drawable/arrow" />
+
+            <TextView
+                android:id="@+id/directionInfo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="20sp"/>
+
             <TextView
                 android:id="@+id/noteInfo"
                 android:layout_width="match_parent"

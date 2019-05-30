@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
@@ -570,6 +571,11 @@ public class LandmarkedMain extends AppCompatActivity {
                             Intent result = new Intent(m_instance, RetrievedLandmarks.class);
                             result.putParcelableArrayListExtra("sending_history", landmarkGet);
                             startActivity(result);
+                        }
+                        else
+                        {
+                            Context c = getApplicationContext();
+                            Toast.makeText(c, "No landmarks were found", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

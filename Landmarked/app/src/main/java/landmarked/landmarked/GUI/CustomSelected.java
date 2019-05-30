@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import landmarked.landmarked.Database.CustomLandmarkPass;
@@ -13,6 +14,7 @@ import landmarked.landmarked.R;
 public class CustomSelected extends AppCompatActivity
 {
     static LandmarkedMain m_instance;
+    ImageView directionArrow;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,13 @@ public class CustomSelected extends AppCompatActivity
 
         //This is the call to insert into azure cloud
         //m_instance.InsertAzure(my_land.getName(), my_land.getLatitiude(), my_land.getLongitude(),my_land.getElevation(), "" );
+
+        directionArrow = findViewById(R.id.arrowImage);
+        directionArrow.setRotation(90); //math to set the rotation of the arrow should go here
+
+        TextView distanceInfo = findViewById(R.id.directionInfo);
+        distanceInfo.setText("Insert distance information here:");
+
         LandmarkInfo.setText(conCatStr);
 
         LandmarkInfo = findViewById(R.id.noteInfo);
