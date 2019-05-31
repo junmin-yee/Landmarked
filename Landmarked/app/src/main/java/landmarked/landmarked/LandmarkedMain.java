@@ -248,6 +248,7 @@ public class LandmarkedMain extends AppCompatActivity {
     {
         CountDownLatch threadLatch = new CountDownLatch(1);
        ArrayList<LocalLandmark> lst = new ArrayList<LocalLandmark>();
+       ArrayList<String> names = new ArrayList<String>();
 
 
         Runnable runCommand = new Runnable() {
@@ -256,7 +257,12 @@ public class LandmarkedMain extends AppCompatActivity {
                    ArrayList<LocalLandmark> temp = m_conn.getLandmarksByEmail(m_username);
                    for(int x = 0; x < temp.size(); x++)
                    {
-                       lst.add(temp.get(x));
+
+                       if(!names.contains(temp.get(x).getName()))
+                       {
+                           lst.add(temp.get(x));
+                           names.add(temp.get(x).getName());
+                       }
                    }
                 threadLatch.countDown();
             }

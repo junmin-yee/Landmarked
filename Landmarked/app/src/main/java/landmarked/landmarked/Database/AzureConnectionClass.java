@@ -247,6 +247,7 @@ public class AzureConnectionClass {
     // Query to find a list of landmarks by email
     public ArrayList<LocalLandmark> getLandmarksByEmail(String Email)
     {
+
         ArrayList lst = new ArrayList();
         try
         {
@@ -264,7 +265,8 @@ public class AzureConnectionClass {
                 String longitude = Landmarks.getString("LandmarkLong");
                 float elevation = Landmarks.getFloat("LandmarkEle");
                 String wiki = Landmarks.getString("LandmarkWikiInfo");
-                LocalLandmark temp = new LocalLandmark(name, latitude,longitude,elevation,wiki,new Date());
+
+                LocalLandmark temp = new LocalLandmark(name, latitude,longitude,elevation,wiki,null);
                 lst.add(temp);
             }
         }
