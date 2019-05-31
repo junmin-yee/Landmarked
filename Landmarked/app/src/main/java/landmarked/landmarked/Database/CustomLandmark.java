@@ -37,7 +37,7 @@ public class CustomLandmark extends AppCompatActivity {
         //get user ID that correlates to the database
         landmarkInfo = findViewById(R.id.LandmarkAttributes);
 
-        landmarkInfo.setText(R.string.LandmarksFoundHeader);
+        landmarkInfo.setText("Custom Landmarks");
 
         LandmarkList = findViewById(R.id.landmarkList);
 
