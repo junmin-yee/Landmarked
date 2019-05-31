@@ -32,7 +32,7 @@ public class CustomSelected extends AppCompatActivity
 
         String[] attributesArr = getResources().getStringArray(R.array.ShortenedLocData);
         String conCatStr = attributesArr[0] + ": " + my_land.getName() + "\n" + attributesArr[1] + ": " + my_land.getLatitiude() +
-                "\n" + attributesArr[2] + ": " + my_land.getLongitude() + "\n" + attributesArr[3] + ": " + my_land.getElevation();
+                "\n" + attributesArr[2] + ": " + my_land.getLongitude();
 
         //This is the call to insert into azure cloud
         //m_instance.InsertAzure(my_land.getName(), my_land.getLatitiude(), my_land.getLongitude(),my_land.getElevation(), "" );
