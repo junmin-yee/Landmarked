@@ -7,6 +7,7 @@ import android.content.Context;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimationDrawable;
 import android.location.Location;
 
 import android.net.ConnectivityManager;
@@ -17,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -146,6 +148,12 @@ public class LandmarkedMain extends AppCompatActivity {
         //directionTV = findViewById(R.id.current_direction_text);
         //locationTV = findViewById(R.id.current_location_text);
 
+        AnimationDrawable anim;
+
+        ImageView animView = (ImageView) findViewById(R.id.imageView);
+        animView.setBackgroundResource(R.drawable.animation);
+        anim = (AnimationDrawable) animView.getBackground();
+        anim.start();
     }
 
     // Setter/Getter for Google Authentication Username

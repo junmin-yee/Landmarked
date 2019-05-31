@@ -1,6 +1,7 @@
 package landmarked.landmarked.GUI;
 
 import android.content.Intent;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,10 +37,19 @@ public class LandmarkSelected extends AppCompatActivity {
                 "\n" + attributesArr[2] + ": " + my_land.getLongitude() + "\n" + attributesArr[3] + ": " + my_land.getElevation();
 
         directionArrow = findViewById(R.id.arrowImage);
-        directionArrow.setRotation(30);
+        //directionArrow.setRotation(30);
 
         TextView distanceInfo = findViewById(R.id.directionInfo);
         distanceInfo.setText("Insert distance information here:");
+
+        Location l = new Location("");
+        l.setLatitude(Double.parseDouble(my_land.getLatitiude()));
+        l.setLongitude(Double.parseDouble(my_land.getLongitude()));
+
+        directionArrow.setRotation(m_instance.mSensorData.getCurrentLocation().bearingTo(l));
+        directionArrow.setVisibility(View.GONE);
+        float tempflo = m_instance.mSensorData.getCurrentLocation().bearingTo(l);
+        distanceInfo.setText(Float.toString(m_instance.mSensorData.getCurrentLocation().distanceTo(l) / 1000) + " km to landmark");
 
         //This is the call to insert into azure cloud
         m_instance.InsertAzure(my_land.getName(), my_land.getLatitiude(), my_land.getLongitude(),my_land.getElevation(), "" );

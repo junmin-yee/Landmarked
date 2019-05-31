@@ -1,6 +1,7 @@
 package landmarked.landmarked.GUI;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -38,10 +39,20 @@ public class CustomSelected extends AppCompatActivity
         //m_instance.InsertAzure(my_land.getName(), my_land.getLatitiude(), my_land.getLongitude(),my_land.getElevation(), "" );
 
         directionArrow = findViewById(R.id.arrowImage);
-        directionArrow.setRotation(90); //math to set the rotation of the arrow should go here
+        //directionArrow.setRotation(90); //math to set the rotation of the arrow should go here
+
+        //float rotAmount = LandmarkedMain.getInstance().mSensorData.getCurrentLocation().distanceTo(new Location(my_land.getLatitiude(), my_land.getLongitude()));
+        Location l = new Location("");
+        l.setLatitude(Double.parseDouble(my_land.getLatitiude()));
+        l.setLongitude(Double.parseDouble(my_land.getLongitude()));
 
         TextView distanceInfo = findViewById(R.id.directionInfo);
         distanceInfo.setText("Insert distance information here:");
+        //distanceInfo.setText(Float.toString(m_instance.mSensorData.getCurrentLocation().distanceTo(l)));
+        distanceInfo.setText(Float.toString(m_instance.mSensorData.getCurrentLocation().distanceTo(l) / 1000) + " km to custom landmark");
+
+        //directionArrow.setRotation(m_instance.mSensorData.getCurrentLocation().bearingTo(l));
+        directionArrow.setVisibility(View.GONE);
 
         LandmarkInfo.setText(conCatStr);
 
