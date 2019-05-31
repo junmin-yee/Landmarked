@@ -79,14 +79,14 @@ public class LandmarkRetrieval {
         // Check phone pitch
         if (pitch <= 0)
         {
-            losdistance = 50000;
+            losdistance = 500000;
             // Calculate change in distance in Cartesian
             //x = losdistance * Math.sin(-Math.PI/2 - pitch) * Math.cos(roll);
             //y = losdistance * Math.sin(-Math.PI/2 - pitch) * Math.sin(roll);
         }
         else if (pitch > 0)
         {
-            losdistance = 25000;
+            losdistance = 250000;
             // Calculate change in distance in Cartesian
             //x = losdistance * Math.sin(Math.PI/2 - pitch) * Math.cos(roll);
             //y = losdistance * Math.sin(Math.PI/2 - pitch) * Math.sin(roll);
