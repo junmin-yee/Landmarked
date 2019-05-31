@@ -49,7 +49,13 @@ public class CustomSelected extends AppCompatActivity
         TextView distanceInfo = findViewById(R.id.directionInfo);
         distanceInfo.setText("Insert distance information here:");
         //distanceInfo.setText(Float.toString(m_instance.mSensorData.getCurrentLocation().distanceTo(l)));
-        distanceInfo.setText(Float.toString(m_instance.mSensorData.getCurrentLocation().distanceTo(l) / 1000) + " km to custom landmark");
+        try {
+            distanceInfo.setText(Float.toString(m_instance.mSensorData.getCurrentLocation().distanceTo(l) / 1000) + " km to custom landmark");
+        }
+        catch(Exception e)
+        {
+            distanceInfo.setVisibility(View.GONE);
+        }
 
         //directionArrow.setRotation(m_instance.mSensorData.getCurrentLocation().bearingTo(l));
         directionArrow.setVisibility(View.GONE);

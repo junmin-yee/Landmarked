@@ -49,8 +49,13 @@ public class LandmarkSelected extends AppCompatActivity {
         directionArrow.setRotation(m_instance.mSensorData.getCurrentLocation().bearingTo(l));
         directionArrow.setVisibility(View.GONE);
         float tempflo = m_instance.mSensorData.getCurrentLocation().bearingTo(l);
-        distanceInfo.setText(Float.toString(m_instance.mSensorData.getCurrentLocation().distanceTo(l) / 1000) + " km to landmark");
-
+        try {
+            distanceInfo.setText(Float.toString(m_instance.mSensorData.getCurrentLocation().distanceTo(l) / 1000) + " km to landmark");
+        }
+        catch(Exception e)
+        {
+            distanceInfo.setVisibility(View.GONE);
+        }
         //This is the call to insert into azure cloud
         m_instance.InsertAzure(my_land.getName(), my_land.getLatitiude(), my_land.getLongitude(),my_land.getElevation(), "" );
         LandmarkInfo.setText(conCatStr);
